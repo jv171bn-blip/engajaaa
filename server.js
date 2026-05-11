@@ -10,9 +10,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));
 
-// Rota raiz - redireciona para a página de análise
+// Rota raiz - redireciona para a página principal
 app.get('/', (req, res) => {
-  res.redirect('/analise/index.html');
+  res.redirect('/index.html');
 });
 
 const ACTOR_ID = "coderx/instagram-profile-scraper-api";
