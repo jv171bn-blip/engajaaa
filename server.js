@@ -15,6 +15,11 @@ app.get('/', (req, res) => {
   res.redirect('/index.html');
 });
 
+// Rota explícita para o index.html principal
+app.get('/index.html', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
 const ACTOR_ID = "coderx/instagram-profile-scraper-api";
 const API_BASE = "https://api.apify.com/v2";
 const APIFY_TOKEN = process.env.APIFY_TOKEN;
