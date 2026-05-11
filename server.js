@@ -10,6 +10,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));
 
+// Rota raiz - redireciona para a página de análise
+app.get('/', (req, res) => {
+  res.redirect('/analise/index.html');
+});
+
 const ACTOR_ID = "coderx/instagram-profile-scraper-api";
 const API_BASE = "https://api.apify.com/v2";
 const APIFY_TOKEN = process.env.APIFY_TOKEN;
