@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engaja+ · Ativar Otimização</title>
+  <link rel="stylesheet" href="../assets/css/checkout.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Botão de voltar para o site (fora do popup) -->
+  <button class="modal-back-above" id="modal-back-above" style="display: none;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    Voltar para o Site
+  </button>
+
+  <canvas id="matrix-canvas" class="bg-canvas"></canvas>
+
+  <!-- Header Personalizado -->
+  <header class="checkout-header">
+    <div class="profile-summary">
+      <div class="profile-img-header placeholder-avatar" style="display: flex; align-items: center; justify-content: center; background: #1e293b; color: #94a3b8; font-weight: 800; font-size: 12px;">@</div>
+      <img src="" alt="Profile" class="profile-img-header real-avatar" style="display: none;">
+      <div class="profile-info-header">
+        <span class="username-header">@usuario</span>
+        <div class="badge-header">
+          <span class="badge-dot"></span>
+          Perfil analisado • Elegível para otimização
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-checkout animate-enter">
+    <!-- Barra de Status do Perfil -->
+    <div class="stats-preview-container">
+      <h1 class="stats-preview-text">Este será seu perfil em poucos dias</h1>
+      
+      <!-- Instagram-style Profile Card (Dark Theme) -->
+      <div class="ig-comparison-wrapper">
+        <div class="ig-profile-card">
+          <div class="ig-card-header">
+            <span class="ig-card-label">SEU PERFIL OTIMIZADO</span>
+          </div>
+          <div class="ig-profile-content">
+            <div class="ig-profile-top">
+              <div class="ig-avatar-wrapper">
+                <div class="ig-avatar placeholder-avatar" style="display: flex; align-items: center; justify-content: center; background: #262626; color: #a8a8a8; font-weight: 600; font-size: 24px;">@</div>
+                <img src="" alt="Profile" class="ig-avatar real-avatar" style="display: none;">
+              </div>
+              <div class="ig-stats-row">
+                <div class="ig-stat">
+                  <span class="ig-stat-value" id="ig-after-posts">0</span>
+                  <span class="ig-stat-label">publicações</span>
+                </div>
+                <div class="ig-stat">
+                  <span class="ig-stat-value" id="ig-after-followers">0</span>
+                  <span class="ig-stat-label">seguidores</span>
+                </div>
+                <div class="ig-stat">
+                  <span class="ig-stat-value" id="ig-after-following">0</span>
+                  <span class="ig-stat-label">seguindo</span>
+                </div>
+              </div>
+            </div>
+            <div class="ig-profile-info">
+              <div class="ig-name-handle">
+                <span class="ig-profile-name" id="ig-after-name"></span>
+                <span class="ig-verified-badge" style="display: none;">✓</span>
+              </div>
+              <p class="ig-profile-bio" id="ig-after-bio"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      
+      
+      <div class="hero-badges">
+        <div class="hero-badge active">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Perfil compatível
+        </div>
+        <div class="hero-badge active">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Simulação concluída
+        </div>
+        <div class="hero-badge active">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Otimização disponível
+        </div>
+      </div>
+    </div>
+
+    <h2 class="hero-title">Agora é a sua vez de crescer</h2>
+    <p class="hero-subtitle">
+      Milhares de perfis já usaram essa estratégia para aumentar o engajamento e o alcance. Hoje você tem a chance de fazer o mesmo.
+    </p>
+    <a href="#engaja-trimestral" style="text-decoration: none;">
+      <button class="btn-main">ATIVAR OTIMIZAÇÃO DO MEU PERFIL</button>
+    </a>
+  </section>
+
+  <!-- Notificação de Prova Social -->
+  <div id="live-notification" class="live-notification">
+    <div class="notification-content">
+      <div class="notification-img">
+        <img src="https://i.pravatar.cc/100" alt="User" id="noti-avatar">
+      </div>
+      <div class="notification-text">
+        <p id="noti-message"><strong>Pedro S.</strong> acabou de ativar a otimização!</p>
+        <span>há 2 minutos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Como Funciona -->
+  <section class="how-it-works">
+    <h2 class="section-title">Como funciona a otimização</h2>
+    <div class="steps-container">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <h3 class="step-title">Análise de IA</h3>
+        <p class="step-desc">Nosso sistema processa os metadados do seu perfil para identificar gargalos de distribuição e alcance.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <h3 class="step-title">Ajuste de Algoritmo</h3>
+        <p class="step-desc">Aplicamos correções técnicas nos sinais que o seu perfil envia para o algoritmo do Instagram.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <h3 class="step-title">Entrega Acelerada</h3>
+        <p class="step-desc">Seu conteúdo passa a ser priorizado para usuários com alto potencial de engajamento no seu nicho.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recursos Principais -->
+  <section class="features-section">
+    <h2 class="section-title">O que acontece após ativar a otimização?</h2>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <span aria-hidden="true">🔥 1</span>
+        </div>
+        <h3 class="feature-title">Mais oportunidades de parceria</h3>
+        <p class="feature-desc">Perfis com melhor desempenho e presença ativa tendem a gerar mais interesse de marcas e possíveis colaborações.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <span aria-hidden="true">🧠 2</span>
+        </div>
+        <h3 class="feature-title">Perfil mais valorizado</h3>
+        <p class="feature-desc">Um perfil otimizado transmite mais credibilidade e melhora a percepção de autoridade para novos visitantes.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <span aria-hidden="true">💣 3</span>
+        </div>
+        <h3 class="feature-title">Maior potencial de alcance</h3>
+        <p class="feature-desc">Conteúdos otimizados possuem mais chances de alcançar novas pessoas e gerar interações consistentes.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <span aria-hidden="true">🚀 4</span>
+        </div>
+        <h3 class="feature-title">Crescimento mais estável</h3>
+        <p class="feature-desc">A análise ajuda a identificar padrões que podem melhorar a consistência do desempenho do perfil.</p>
+      </div>
+    </div>
+
+    <div class="benefits-banner">
+      <div class="benefit-stat">
+        <span class="stat-value">+150%</span>
+        <span class="stat-label">Média de Alcance</span>
+      </div>
+      <div class="benefit-stat">
+        <span class="stat-value">24/7</span>
+        <span class="stat-label">Monitoramento</span>
+      </div>
+      <div class="benefit-stat">
+        <span class="stat-value">100%</span>
+        <span class="stat-label">Seguro e Orgânico</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Provas Sociais -->
+  <section class="social-proof">
+    <a href="#engaja-trimestral" style="text-decoration: none;">
+      <button class="btn-main">ATIVAR OTIMIZAÇÃO DO MEU PERFIL</button>
+    </a>
+    <h2 class="section-title">Depoimentos de quem já ativou</h2>
+    
+    <div class="dm-carousel-container">
+      <div class="dm-carousel-wrapper">
+        <button class="dm-carousel-nav prev" aria-label="Depoimento anterior">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        
+        <div class="dm-carousel">
+          <div class="dm-slide active">
+            <img src="../assets/img/instagram-dm.png" alt="Depoimento 1">
+          </div>
+          <div class="dm-slide">
+            <img src="../assets/img/instagram-dm (1).png" alt="Depoimento 2">
+          </div>
+          <div class="dm-slide">
+            <img src="../assets/img/instagram-dm (2).png" alt="Depoimento 3">
+          </div>
+          <div class="dm-slide">
+            <img src="../assets/img/instagram-dm (3).png" alt="Depoimento 4">
+          </div>
+          <div class="dm-slide">
+            <img src="../assets/img/instagram-dm (4).png" alt="Depoimento 5">
+          </div>
+          <div class="dm-slide">
+            <img src="../assets/img/instagram-dm (5).png" alt="Depoimento 6">
+          </div>
+        </div>
+        
+        <button class="dm-carousel-nav next" aria-label="Próximo depoimento">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+      
+      <div class="dm-carousel-dots">
+        <div class="dm-dot active" data-index="0"></div>
+        <div class="dm-dot" data-index="1"></div>
+        <div class="dm-dot" data-index="2"></div>
+        <div class="dm-dot" data-index="3"></div>
+        <div class="dm-dot" data-index="4"></div>
+        <div class="dm-dot" data-index="5"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dashboard-preview-section">
+    <div class="dashboard-preview-copy">
+      <span class="dashboard-preview-eyebrow">Painel exclusivo</span>
+      <h2 class="section-title">Veja o painel da sua otimização</h2>
+      <p class="dashboard-preview-text">
+        Acompanhe a evolução do seu perfil, os conteúdos com melhor desempenho e o status da otimização em um painel simples e visual.
+      </p>
+    </div>
+
+    <div class="dashboard-preview-frame">
+      <img
+        src="../assets/img/d2df13bc-bd88-4fc0-8c2f-77708359342e.png"
+        alt="Painel de otimização do Engaja+"
+        class="dashboard-preview-image"
+      >
+    </div>
+  </section>
+
+  <!-- Planos -->
+  <section id="planos" class="plans-section">
+    <div class="plans-header-text">
+      <h2 class="section-title">Ative sua Otimização</h2>
+      <p class="section-subtitle">Oferta exclusiva para você ativar seu crescimento.</p>
+    </div>
+
+    <div class="single-plan-wrapper">
+      <div id="engaja-trimestral" class="plan-card pro-card active-card">
+        <div class="plan-badge-top featured">OFERTA EXCLUSIVA</div>
+        <div class="plan-card-header">
+          <h3 class="plan-title">Engaja+ Trimestral</h3>
+          <p class="plan-tagline">Plano trimestral de otimização</p>
+        </div>
+        
+        <div class="plan-price-highlight pro-price">
+          <span class="price-old-tag">De R$ 197,90</span>
+          <div class="price-main highlighted">
+            <span class="currency">R$</span>
+            <span class="amount">37</span>
+            <span class="decimal">,90</span>
+          </div>
+          <div class="price-save-tag">ECONOMIZE R$ 160,00</div>
+        </div>
+
+        <div class="activation-access-section activation-access-inline">
+          <div class="activation-access-header">
+            <h3 class="activation-access-plan-title">O que você vai receber ao ativar</h3>
+            <p class="activation-access-subtitle">Seu acesso será liberado imediatamente após a ativação da otimização.</p>
+          </div>
+
+          <ul class="plan-features-list">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Acesso ao painel da otimização</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Suporte VIP 24h via WhatsApp</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Análise personalizada do perfil</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Liberação imediata após ativação</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Recursos exclusivos ENGAJA+</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Acesso por 3 meses</li>
+          </ul>
+        </div>
+
+        <button class="plan-action-btn highlighted pulse-effect">ATIVAR AGORA</button>
+      </div>
+    </div>
+
+    <!-- Selos de Segurança -->
+    <div class="trust-badges-plans">
+      <div class="trust-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        <span>Pagamento 100% Seguro</span>
+      </div>
+      <div class="trust-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        <span>30 Dias de Garantia</span>
+      </div>
+    </div>
+
+    <div class="refund-guarantee-badge">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h11a4 4 0 1 0 0-8H6"></path><path d="m3 6 3-4 3 4"></path><path d="M21 14H10a4 4 0 1 0 0 8h8"></path><path d="m21 18-3 4-3-4"></path></svg>
+      <div class="refund-guarantee-text">
+        <strong>Garantia de reembolso</strong>
+        <span>Se não fizer sentido para você, solicite seu reembolso dentro do prazo de garantia.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2 class="section-title">Perguntas frequentes</h2>
+    <div class="faq-container">
+      <div class="faq-item">
+        <button class="faq-question">
+          Isso altera meu Instagram?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="faq-answer">
+          Não. A ferramenta fornece análises e recomendações baseadas nos dados do seu perfil.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Quanto tempo leva?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="faq-answer">
+          O acesso é liberado imediatamente após a ativação.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Preciso instalar algo?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="faq-answer">
+          Não. A plataforma funciona totalmente online.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Posso cancelar?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="faq-answer">
+          Sim. Você pode cancelar o acesso conforme os termos da plataforma.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          Como recebo o acesso?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="faq-answer">
+          Após a ativação, você é redirecionado ao painel de clientes ENGAJA+.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../assets/js/matrix.obf.js"></script>
+  <script src="../assets/js/checkout.js"></script>
+
+  <!-- Checkout Modal Premium -->
+  <div id="checkout-modal" class="modal-overlay">
+    <div class="modal-content premium-checkout">
+      <button class="modal-close" id="close-modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="modal-banner-premium">
+        <img id="img-banner" src="../assets/img/7bf7b808-14b7-441d-939e-f0c8023f741f.png" alt="Engaja+ Banner" class="banner-img-premium">
+      </div>
+
+      <!-- 1. HEADER -->
+      <div class="modal-header-premium">
+        <div class="trust-ticker-container">
+          <div class="trust-ticker-track">
+            <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Pagamento protegido</span>
+            <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Liberação imediata</span>
+            <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Suporte via WhatsApp</span>
+            <!-- Duplicate for seamless loop -->
+            <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Pagamento protegido</span>
+            <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Liberação imediata</span>
+            <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Suporte via WhatsApp</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body-premium">
+        <!-- Main Content Area -->
+        <div class="checkout-main-grid">
+          
+          <!-- Right Column: Form & Payment (MOVED TO TOP) -->
+          <div class="checkout-col-action">
+            
+            <!-- Step 1: DADOS PESSOAIS -->
+            <div id="step-customer-data" class="checkout-step active">
+              <div class="step-model-header">
+                <span class="step-model-number">1</span>
+                <span class="step-model-title">DADOS PESSOAIS</span>
+              </div>
+              
+              <div class="premium-form">
+                <div class="form-group-premium">
+                  <label for="checkout-name">Nome completo</label>
+                  <input type="text" id="checkout-name" placeholder="Digite seu nome completo">
+                </div>
+                <div class="form-group-premium">
+                  <label for="checkout-whatsapp">Telefone</label>
+                  <input type="tel" id="checkout-whatsapp" placeholder="Digite seu Telefone (Acesso/Suporte)">
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: PAGAMENTO -->
+            <div id="step-payment-selection" class="checkout-step active">
+              <div class="step-model-header">
+                <span class="step-model-number">2</span>
+                <span class="step-model-title">PAGAMENTO</span>
+              </div>
+
+              <div class="payment-model-grid">
+                <div class="payment-model-item active" style="grid-column: span 2;">
+                  <div class="payment-model-content">
+                    <img src="../assets/img/logo-pix-520x520.png" alt="Pix" style="width: 20px; height: 20px; object-fit: contain;">
+                    <span>Pix</span>
+                  </div>
+                  <div class="selected-check">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 6. RESUMO DO PEDIDO -->
+              <div class="order-summary-card" id="summary-card">
+                <div class="summary-header-main" id="summary-toggle">
+                  <div class="summary-title-row">
+                    <h4 class="summary-title">RESUMO DA COMPRA</h4>
+                    <svg class="summary-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                  </div>
+                </div>
+                <div class="summary-content-wrapper">
+                  <div class="summary-rows">
+                    <div class="summary-row">
+                      <span class="row-label">Produto</span>
+                      <span class="row-value">ENGAJA+ PRO</span>
+                    </div>
+                    <div class="summary-row">
+                      <span class="row-label">Plano</span>
+                      <span class="row-value">Acesso Trimestral</span>
+                    </div>
+                    <div class="summary-row">
+                      <span class="row-label">Pagamento</span>
+                      <div class="payment-method-indicator">
+                        <img src="../assets/img/logo-pix-520x520.png" alt="Pix" class="mini-pix">
+                        <span>Pix</span>
+                      </div>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-row total-row">
+                      <span class="total-label">VALOR TOTAL</span>
+                      <div class="total-price-box">
+                        <span class="total-currency">R$</span>
+                        <span class="total-amount">37,90</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button id="btn-generate-pix" class="btn-premium-action">
+                <svg class="btn-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                GERAR PIX
+              </button>
+            </div>
+
+            <!-- Step 3: PIX DETALHES (Aparece após gerar) -->
+            <div id="step-payment-pix" class="checkout-step">
+              <div class="pix-payment-card">
+                <div class="order-status-badge">
+                  <div class="order-approved">
+                    <span class="checkmark-icon">✅</span>
+                    PEDIDO APROVADO
+                  </div>
+                  <div class="order-waiting">
+                    STATUS: AGUARDANDO PAGAMENTO
+                    <span class="waiting-dots">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="qr-code-wrapper">
+                  <img src="" alt="QR Code Pix" class="qr-code-img" id="qr-code-img">
+                  <div class="qr-overlay-logo">
+                    <img src="../assets/img/logo-pix-520x520.png" alt="Pix">
+                  </div>
+                </div>
+                
+                <div class="pix-status-info">
+                  <div class="status-waiting">
+                    <div class="spinner-sm"></div>
+                    <span>Estamos aguardando seu pagamento...</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar-fill"></div>
+                  </div>
+                  <p class="pix-expiration-timer" id="pix-expiration-timer">Faltam 7:00 minutos para o pix expirar...</p>
+                  <p class="pix-support-text">Após o pagamento, a confirmação é automática.</p>
+                </div>
+                
+                <div class="pix-copy-paste">
+                  <p class="pix-label">Código copia e cola:</p>
+                  <div class="pix-code-box">
+                    <span id="pix-code-text"></span>
+                  </div>
+                  <button id="btn-copy-pix" class="btn-secondary-premium">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    COPIAR CÓDIGO PIX
+                  </button>
+
+                  <div class="payment-instructions">
+                    <p class="instructions-title">Realize o pagamento do PIX</p>
+                    <div class="instructions-list">
+                      <div class="instruction-item">
+                        <span class="instruction-num">1</span>
+                        <p>Copie o código abaixo</p>
+                      </div>
+                      <div class="instruction-item">
+                        <span class="instruction-num">2</span>
+                        <p>Abra o app do seu banco</p>
+                      </div>
+                      <div class="instruction-item">
+                        <span class="instruction-num">3</span>
+                        <p>Cole o código na opção PIX Copia e Cola</p>
+                      </div>
+                      <div class="instruction-item">
+                        <span class="instruction-num">4</span>
+                        <p>Ou escaneie o QR Code acima.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4: SUCESSO -->
+            <div id="step-success" class="checkout-step">
+              <div class="success-animation-wrapper">
+                <div class="success-checkmark">
+                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3 class="success-title">Pagamento aprovado!</h3>
+                <p class="success-subtitle">Sua otimização já está disponível.</p>
+              </div>
+              
+              <ul class="success-features-list">
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Acesso liberado</li>
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Otimização disponível</li>
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Redirecionando para a plataforma</li>
+              </ul>
+
+              <button id="btn-access-platform" class="btn-premium-action success-btn">
+                ACESSAR PAINEL ENGAJA+
+              </button>
+            </div>
+          </div>
+
+          <!-- Left Column: Product & Summary -->
+          <div class="checkout-col-info">
+            <!-- Unified Trust Section -->
+            <div class="premium-trust-container">
+              <div class="trust-item">
+                <div class="trust-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div class="trust-content">
+                  <strong>Ambiente 100% Seguro</strong>
+                  <p>Dados protegidos por criptografia de ponta a ponta.</p>
+                </div>
+              </div>
+              
+              <div class="trust-item">
+                <div class="trust-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
+                <div class="trust-content">
+                  <strong>30 Dias de Garantia</strong>
+                  <p>Satisfeito ou seu dinheiro de volta integralmente.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Fixed Footer CTA -->
+  <div id="mobile-checkout-cta" class="mobile-footer-cta">
+    <button id="btn-mobile-action" class="btn-premium-action">
+      <svg class="btn-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      GERAR PIX
+    </button>
+  </div>
+</body>
+</html>

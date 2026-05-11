@@ -1,0 +1,1403 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Engaja+ · Teste de Engajamento</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <style>
+    .sim-title.attention {
+      background: linear-gradient(90deg, #6f2dff 0%, #8b4dff 72%, #f7f4ff 98%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .simulation-panel .sim-title {
+      color: #fff;
+      font-size: clamp(22px, 5.2vw, 36px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      text-wrap: wrap; /* Estável durante digitação */
+      hyphens: auto;
+      max-width: 28ch;
+      text-align: center;
+      margin-inline: auto;
+      margin-bottom: 10px;
+      min-height: calc(3 * 1.15 * clamp(22px, 5.2vw, 36px)); /* Reserva espaço para 3 linhas */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Alinhamento ao topo reservado */
+    }
+    .simulation-panel .sim-title .line-1,
+    .simulation-panel .sim-title .line-2 {
+      display: block;
+      white-space: normal;
+      min-height: 1.15em; /* Evita colapso quando vazio */
+    }
+    .simulation-panel .section-sub.sim-subtitle {
+      color: #9CA3AF;
+      font-weight: 500;
+      font-size: clamp(14px, 3.7vw, 24px);
+      line-height: 1.2;
+      max-width: 32ch;
+      text-align: center;
+      margin-inline: auto;
+      margin-bottom: 16px;
+      min-height: 2.4em; /* Reserva espaço para 2 linhas */
+    }
+    .sim-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 8px;
+      color: #E5E7EB;
+      font-size: clamp(12px, 3.4vw, 16px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .sim-trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .sim-trust-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #a78bfa;
+    }
+    .sim-trust-icon svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+    .trust-bar {
+      margin-top: 0;
+      padding-top: 0;
+    }
+    .hl-purple { color: #7c3aed; }
+    .hl-red { color: #ffffff; }
+    .sim-logo { display: grid; place-items: center; margin-bottom: calc(var(--spacing-xs) + 6px); min-height: clamp(48px, 12vw, 96px); }
+    .sim-logo img { width: clamp(48px, 12vw, 96px); height: auto; }
+    main { display: grid; place-items: center; align-content: center; min-height: 100vh; width: 100%; }
+    .simulation-panel { min-height: auto; padding: var(--spacing-md); margin: var(--spacing-sm) auto 0; max-width: min(520px, 90vw); text-align: center; }
+    .simulation-panel .sim-command { justify-items: center; }
+    .simulation-panel .sim-wrap { gap: var(--spacing-xs); }
+    #simulation + #trustBar { margin-top: 0; }
+    .conv-separator { display: none; }
+    .section-sub.one-line { margin-top: 4px; }
+    .sim-action-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .sim-action-btn .btn-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-field-action {
+      grid-template-columns: 1fr auto;
+      align-items: stretch;
+      background: #0b0f14;
+      border: 1px solid #7c3aed;
+      border-radius: 34px;
+      box-shadow: none;
+    }
+    .sim-field-action::after {
+      content: none;
+    }
+    .sim-field.accent.sim-field-action {
+      box-shadow: none;
+    }
+    .sim-field.accent.sim-field-action:focus-within {
+      box-shadow: none;
+    }
+    .sim-field-action:focus-within {
+      border-color: #7c3aed;
+      box-shadow: none;
+    }
+    .sim-field-action input {
+      border-right: 0;
+      background: transparent;
+    }
+    .sim-action-arrow {
+      width: 40px;
+      min-height: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      font-size: 18px;
+      letter-spacing: 0;
+      background: linear-gradient(135deg, #6f2dff 0%, rgba(255,255,255,0.06) 100%);
+      border: 1px solid #7c3aed;
+      box-shadow: none;
+      animation: none;
+      margin: 6px 8px 6px 0;
+    }
+    .sim-action-arrow .btn-inner {
+      gap: 0;
+    }
+    .sim-action-arrow .btn-label {
+      line-height: 1;
+    }
+    @media (max-width: 520px) {
+      .sim-action-arrow {
+        width: 38px;
+        min-height: 38px;
+        height: 38px;
+        margin: 6px 8px 6px 0;
+      }
+    }
+    .sim-action-btn .btn-spinner {
+        width: 15px;
+        height: 15px;
+        display: none;
+        color: #ffffff;
+      }
+    .sim-action-btn.is-loading {
+      cursor: wait;
+      pointer-events: none;
+      color: #f6f0ff;
+      box-shadow: 0 0 18px rgba(111, 45, 255, 0.35), inset 0 0 12px rgba(111, 45, 255, 0.25);
+    }
+    .sim-action-btn.is-loading .btn-spinner {
+      display: inline-block;
+      animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 8px rgba(155, 120, 255, 0.5);
+    }
+    .sim-action-btn.is-loading .btn-label {
+      display: none;
+    }
+    .sim-action-btn.is-loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 10%, rgba(170, 130, 255, 0.2) 45%, rgba(230, 220, 255, 0.25) 50%, rgba(170, 130, 255, 0.2) 55%, transparent 90%);
+      transform: translateX(-60%);
+      animation: scan 1.6s linear infinite;
+      pointer-events: none;
+    }
+    .sim-action-btn.is-loading::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(111, 45, 255, 0.18), transparent 60%);
+      opacity: 0.7;
+      animation: flicker 2.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes scan {
+      0% { transform: translateX(-70%); }
+      100% { transform: translateX(70%); }
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 0.65; }
+      40% { opacity: 0.9; }
+      70% { opacity: 0.5; }
+    }
+    #confirmModal .modal-card {
+      background: rgba(10, 12, 14, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 26px;
+      padding: 18px 18px 16px;
+      max-width: 520px;
+      width: min(90vw, 520px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    }
+    #confirmModal .modal-overlay {
+      background: rgba(4, 6, 7, 0.92);
+      backdrop-filter: none;
+    }
+    .confirm-title {
+      font-size: 30px;
+      font-weight: 800;
+      color: #22c55e;
+      text-align: center;
+      margin-bottom: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-shadow: 0 0 12px rgba(34, 197, 94, 0.55), 0 0 28px rgba(34, 197, 94, 0.35);
+    }
+    .confirm-title .confirm-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #22c55e;
+      font-size: 14px;
+      line-height: 1;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.55);
+    }
+    .confirm-title::after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: -8px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.6), transparent);
+    }
+    .confirm-header.confirm-title {
+      position: relative;
+      padding-bottom: 8px;
+    }
+    .confirm-subtitle {
+      text-align: center;
+      font-size: 19px;
+      color: #e7e5f3;
+      margin-bottom: 10px;
+    }
+    .confirm-subtitle .confirm-user {
+      color: #ffffff;
+      font-weight: 700;
+    }
+    .confirm-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .confirm-profile .ig-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      box-shadow: 0 0 18px rgba(139, 92, 246, 0.25);
+    }
+    .confirm-stats {
+      display: flex;
+      gap: 22px;
+      margin-left: 6px;
+      flex: 1;
+      justify-content: space-between;
+      max-width: 360px;
+    }
+    .confirm-stats .ig-stat {
+      text-align: center;
+      min-width: 84px;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+    .confirm-stats .ig-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .confirm-stats .ig-label {
+      font-size: 14px;
+      color: #9ca3af;
+      text-transform: lowercase;
+    }
+    .confirm-name {
+      color: #c6c7d3;
+      font-size: 16px;
+      margin: 0;
+      display: none;
+    }
+    #confirmBio {
+      color: #e5e7eb;
+      font-size: 14px;
+      margin: 0;
+      white-space: pre-line;
+    }
+    .confirm-warning {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: rgba(64, 14, 18, 0.6);
+      color: #f87171;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+    .confirm-warning .warn-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .confirm-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 16px;
+    }
+    .confirm-actions .btn-secondary,
+    .confirm-actions .btn-primary {
+      flex: 1;
+      border-radius: 18px;
+      padding: 14px 18px;
+      font-size: 18px;
+    }
+    .confirm-actions .btn-secondary {
+      background: #0f1216;
+      border: 1px solid #2b2f36;
+      color: #f9fafb;
+    }
+    .confirm-actions .btn-primary {
+      background: linear-gradient(135deg, #6f2dff, #9b6bff);
+      color: #ffffff;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 24px rgba(111, 45, 255, 0.35);
+    }
+    .confirm-actions .btn-primary .btn-arrow {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .analysis-overlay {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 60;
+      background: radial-gradient(120% 120% at 50% 50%, rgba(111, 45, 255, 0.18), rgba(8, 10, 14, 0.95));
+      backdrop-filter: blur(2px);
+      overflow: hidden;
+    }
+    .analysis-overlay.is-fixed::before {
+      animation: none;
+    }
+    .analysis-overlay.hidden {
+      display: none;
+    }
+    body.hide-sim-seal #simSeal {
+      display: none !important;
+    }
+    body.hide-sim-metrics #simResult {
+      display: none !important;
+    }
+    .analysis-overlay::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0, rgba(0,0,0,0) 3px, rgba(255,255,255,0.02) 6px);
+      opacity: 0.08;
+      pointer-events: none;
+      animation: scan 6s linear infinite;
+    }
+    .analysis-card,
+    .analysis-diagnosis {
+      width: min(90vw, 560px);
+      background: rgba(10, 12, 16, 0.96);
+      border: 1px solid rgba(129, 140, 248, 0.25);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), 0 0 40px rgba(111, 45, 255, 0.2);
+      display: grid;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .analysis-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #e5e7eb;
+      text-shadow: 0 0 16px rgba(111, 45, 255, 0.35);
+    }
+    .analysis-title .dots {
+      display: inline-block;
+      width: 1.2em;
+      text-align: left;
+      animation: dotsTypewriter 1.5s steps(4, end) infinite;
+    }
+    @keyframes dotsTypewriter {
+      0% { content: ""; }
+      25% { content: "."; }
+      50% { content: ".."; }
+      75% { content: "..."; }
+      100% { content: ""; }
+    }
+    /* Fallback robusto para navegadores que não animam content */
+    .analysis-title .dots::after {
+      content: "";
+      animation: dotsTypewriter 1.5s steps(4, end) infinite;
+    }
+    .analysis-subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #a5b4fc;
+    }
+    .analysis-progress {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+    .analysis-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6f2dff, #9b6bff, #6f2dff);
+      background-size: 200% 100%;
+      animation: analysisFlow 1.6s linear infinite;
+      box-shadow: 0 0 12px rgba(111, 45, 255, 0.4);
+      transition: width 240ms ease;
+    }
+    @keyframes analysisFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    .analysis-progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #c7d2fe;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .analysis-progress-meta .pct {
+      color: #22c55e;
+      font-weight: 700;
+    }
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+    .analysis-terminal {
+      background: rgba(8, 10, 14, 0.9);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 14px;
+      padding: 10px;
+      font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color: #d1d5db;
+      height: 170px;
+      overflow: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(111, 45, 255, 0.6) rgba(15, 23, 42, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      box-shadow: inset 0 0 16px rgba(111, 45, 255, 0.15);
+    }
+    .analysis-terminal::-webkit-scrollbar {
+      width: 6px;
+    }
+    .analysis-terminal::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 999px;
+    }
+    .analysis-terminal::-webkit-scrollbar-thumb {
+      background: rgba(111, 45, 255, 0.6);
+      border-radius: 999px;
+    }
+    .analysis-log {
+      opacity: 0;
+      transform: translateY(6px);
+      width: 100%;
+      text-align: left;
+      animation: logIn 280ms ease-out forwards;
+    }
+    .analysis-log.ok {
+      color: #a7f3d0;
+    }
+    .analysis-log.warn {
+      color: #fbbf24;
+    }
+    .analysis-log.error {
+      color: #ef4444;
+    }
+    @keyframes logIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .analysis-status {
+      background: rgba(12, 14, 18, 0.9);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 14px;
+      padding: 10px;
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: #e5e7eb;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .analysis-status .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+    .analysis-status .label {
+      color: #9ca3af;
+      flex: 1 1 auto;
+    }
+    .analysis-status .value {
+      color: #22c55e;
+      font-weight: 700;
+      text-align: right;
+      flex: 0 0 88px;
+    }
+    .analysis-status .value.is-critical {
+      color: #ef4444;
+    }
+    .analysis-stage {
+      text-align: center;
+      font-size: 14px;
+      color: #d1d5db;
+    }
+    .analysis-diagnosis {
+      text-align: center;
+      gap: 14px;
+      max-width: 520px;
+      width: min(92vw, 520px);
+      margin: 0 auto;
+      animation: diagnosisIn 1.2s ease-out;
+      border-color: rgba(248, 113, 113, 0.35);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 26px rgba(111, 45, 255, 0.2), 0 0 18px rgba(248, 113, 113, 0.18);
+      position: relative;
+      overflow: hidden;
+      padding: 22px 22px 20px;
+      animation: diagnosisIn 1.2s ease-out, alertGlow 1.4s ease-in-out infinite;
+    }
+    .analysis-diagnosis .analysis-title {
+      text-align: center;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #c7d2fe;
+    }
+    .analysis-alert {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f87171;
+      text-shadow: 0 0 20px rgba(248, 113, 113, 0.6);
+      line-height: 1.25;
+      text-align: center;
+      padding: 10px 14px;
+      border: 1px solid rgba(248, 113, 113, 0.5);
+      border-radius: 12px;
+      background: rgba(127, 29, 29, 0.3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: alertPulse 1.3s ease-in-out infinite;
+    }
+    .analysis-alert-sub {
+      font-size: 14px;
+      color: #e5e7eb;
+      line-height: 1.55;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(248, 113, 113, 0.25);
+      background: rgba(15, 23, 42, 0.45);
+    }
+    .analysis-alert-hint {
+      font-size: 13px;
+      color: #ffffff;
+      font-weight: 600;
+      text-align: center;
+      text-shadow: 0 0 12px rgba(248, 113, 113, 0.4);
+    }
+    .analysis-block {
+      display: grid;
+      gap: 8px;
+    }
+    .analysis-block-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #cbd5f5;
+      text-align: center;
+    }
+    .analysis-system-panel {
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(8, 12, 22, 0.82);
+      box-shadow: inset 0 0 16px rgba(111, 45, 255, 0.16);
+      display: grid;
+      gap: 10px;
+    }
+    .analysis-system-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #a5b4fc;
+      text-align: center;
+    }
+    .analysis-system-title .profile-handle {
+      color: #ffffff;
+    }
+    .analysis-system-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .analysis-system-item {
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      color: #e5e7eb;
+      font-size: 12px;
+      display: grid;
+      gap: 4px;
+      text-align: center;
+    }
+    .analysis-system-item .label {
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 800;
+      opacity: 1;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+    .analysis-system-item .value {
+      color: #f87171;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .analysis-impact-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: #cbd5f5;
+    }
+    .analysis-cause-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+    .analysis-cause-item {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: center;
+    }
+    .analysis-cause-item .dot {
+      color: #a78bfa;
+      font-weight: 700;
+    }
+    .analysis-impact-item {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      align-items: center;
+    }
+    .analysis-impact-item .dot {
+      color: #f87171;
+      font-weight: 700;
+    }
+    .analysis-impact-lead {
+      font-size: 13px;
+      color: #fca5a5;
+      text-align: center;
+      margin-top: 2px;
+    }
+    .analysis-score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .analysis-score-item {
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(10, 14, 22, 0.75);
+      border: 1px solid rgba(111, 45, 255, 0.3);
+      display: grid;
+      gap: 4px;
+      text-align: center;
+    }
+    .analysis-score-item .label {
+      color: #a5b4fc;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 10px;
+    }
+    .analysis-score-item .value {
+      color: #fef3c7;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .analysis-recovery-note {
+      font-size: 12px;
+      color: #e2e8f0;
+      text-align: center;
+    }
+    .analysis-emphasis {
+      font-size: 14px;
+      color: #22c55e;
+      font-weight: 700;
+      text-align: center;
+      padding: 0;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      white-space: nowrap;
+    }
+    .analysis-micro {
+      font-size: 12px;
+      color: #a7f3d0;
+      text-align: center;
+      font-weight: 600;
+    }
+    .analysis-score {
+      display: grid;
+      gap: 6px;
+      text-align: center;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+    .analysis-score-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(127, 29, 29, 0.35);
+      border: 1px solid rgba(248, 113, 113, 0.45);
+      overflow: hidden;
+      box-shadow: inset 0 0 10px rgba(248, 113, 113, 0.2);
+    }
+    .analysis-score-fill {
+      height: 100%;
+      width: 42%;
+      background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+      box-shadow: 0 0 12px rgba(248, 113, 113, 0.4);
+    }
+    .analysis-proof {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      text-align: center;
+    }
+    .analysis-trust {
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: #cbd5f5;
+      text-align: center;
+    }
+    .analysis-trust-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .analysis-cta-sub {
+      font-size: 12px;
+      color: #cbd5f5;
+      text-align: center;
+    }
+    .analysis-cta-btn {
+      margin-top: 12px;
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed 80%, #ffffff 100%);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      box-shadow: 0 18px 36px rgba(124, 58, 237, 0.25), 0 10px 20px rgba(255, 255, 255, 0.1);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+      animation: ctaPulse 2s infinite ease-in-out;
+    }
+    .analysis-cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 40px rgba(124, 58, 237, 0.3), 0 12px 24px rgba(255, 255, 255, 0.15);
+      animation-play-state: paused;
+    }
+    .analysis-cta-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 14px 28px rgba(124, 58, 237, 0.22), 0 8px 16px rgba(255, 255, 255, 0.08);
+    }
+    @keyframes ctaPulse {
+      0% { transform: scale(1); box-shadow: 0 18px 36px rgba(124, 58, 237, 0.25), 0 10px 20px rgba(255, 255, 255, 0.1); }
+      50% { transform: scale(1.02); box-shadow: 0 22px 45px rgba(124, 58, 237, 0.4), 0 12px 25px rgba(255, 255, 255, 0.2); }
+      100% { transform: scale(1); box-shadow: 0 18px 36px rgba(124, 58, 237, 0.25), 0 10px 20px rgba(255, 255, 255, 0.1); }
+    }
+    .analysis-diagnosis::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(111, 45, 255, 0.12), transparent 40%), radial-gradient(circle at 80% 0%, rgba(248, 113, 113, 0.12), transparent 45%);
+      pointer-events: none;
+    }
+    @keyframes alertPulse {
+      0%, 100% { transform: translateZ(0) scale(1); text-shadow: 0 0 16px rgba(248, 113, 113, 0.6); }
+      50% { transform: translateZ(0) scale(1.02); text-shadow: 0 0 26px rgba(248, 113, 113, 0.85); }
+    }
+    @keyframes alertGlow {
+      0%, 100% { box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 18px rgba(111, 45, 255, 0.18), 0 0 12px rgba(248, 113, 113, 0.16); }
+      50% { box-shadow: 0 26px 70px rgba(0, 0, 0, 0.75), 0 0 28px rgba(111, 45, 255, 0.26), 0 0 18px rgba(248, 113, 113, 0.24); }
+    }
+    @keyframes diagnosisIn {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    /* Efeito Typewriter */
+    .typewriter-text {
+      display: inline;
+      position: relative;
+    }
+    .typewriter-text.active::after {
+      content: "";
+      display: inline-block;
+      width: 3px;
+      height: 1.1em;
+      background-color: #7c3aed;
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blinkCursor 0.8s step-end infinite;
+    }
+    @keyframes blinkCursor {
+      from, to { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    .reveal-after {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: transform 1.2s ease, opacity 1.2s ease, border-color 1.2s ease, box-shadow 1.2s ease;
+      pointer-events: none;
+    }
+    .reveal-after.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    /* Delays sequenciais para uma entrada mais elegante e lenta */
+    #simForm.reveal-after.visible { transition-delay: 0.4s; }
+    .sim-trust-item.reveal-after.visible:nth-child(1) { transition-delay: 1.0s; }
+    .sim-trust-item.reveal-after.visible:nth-child(2) { transition-delay: 1.4s; }
+    .sim-trust-item.reveal-after.visible:nth-child(3) { transition-delay: 1.8s; }
+    #trustBar.reveal-after.visible { transition-delay: 2.4s; }
+
+    .scarcity-fill { display: block; height: 100%; width: 65%; background: linear-gradient(90deg, rgba(34,197,94,0.8), rgba(34,197,94,1)); box-shadow: 0 10px 20px rgba(34,197,94,0.24); transition: width 1.2s ease; }
+
+    /* Estilos para o aviso de perfil privado */
+    .private-alert {
+      display: none;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 16px;
+      margin-top: 12px;
+    }
+    .private-alert-icon {
+      width: 24px;
+      height: 24px;
+      color: #ef4444;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .private-alert-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .private-alert-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ef4444;
+    }
+    .private-alert-text {
+      font-size: 13px;
+      color: #d1d5db;
+      line-height: 1.5;
+    }
+    .private-alert-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .private-alert-btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-canvas" class="bg-canvas"></canvas>
+  <main>
+    <section id="simulation" class="simulation-panel reveal is-visible" data-state="activating">
+      <canvas id="simCanvas" class="sim-canvas"></canvas>
+      <div class="sim-wrap">
+        
+        <div class="sim-head">
+          <div class="sim-logo">
+            <img src="../assets/img/engaja+.png" alt="Engaja+ logo" loading="lazy">
+          </div>
+          <h2 class="sim-title">
+            <span class="line-1" id="twLine1"></span>
+            <span class="line-2" id="twLine2"></span>
+          </h2>
+        </div>
+        <div class="section-sub sim-subtitle" id="twSubtitle"></div>
+        <form id="simForm" class="sim-command reveal-after">
+          <div class="sim-field accent sim-field-action">
+            <span class="sim-at"><span>@</span></span>
+            <input id="simUsername" name="simUsername" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Digite seu perfil" required>
+            <button id="simActivate" type="submit" class="sim-action-btn sim-action-arrow">
+              <span class="btn-inner">
+                <svg class="btn-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M23 4v6h-6"></path>
+                  <path d="M1 20v-6h6"></path>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span class="btn-label">&gt;</span>
+              </span>
+            </button>
+          </div>
+          <div class="sim-trust">
+            <span class="sim-trust-item reveal-after">
+              <span class="sim-trust-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="10" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 118 0v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </span>
+              100% Seguro
+            </span>
+            <span class="sim-trust-item reveal-after">
+              <span class="sim-trust-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="16.5" cy="7.5" r="5.5" />
+                  <circle cx="16.5" cy="7.5" r="1.5" />
+                  <path d="M12.5 11.5L2 22l3 0 1.5-1.5h2L10 19h2l1.5-1.5" />
+                </svg>
+              </span>
+              Sem Senha
+            </span>
+            <span class="sim-trust-item reveal-after">
+              <span class="sim-trust-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M7 12.5l3 3 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Teste Grátis
+            </span>
+          </div>
+        </form>
+        <div id="simResult" class="sim-result hidden">
+          <div id="simSeal" class="sim-label hidden">Resultado simulado após 3 dias</div>
+          <div class="sim-metrics">
+            <div class="sim-metric" data-key="followers">
+              <div class="sim-metric-label">Seguidores</div>
+              <div class="sim-metric-number" id="simFollowers">0</div>
+            </div>
+            <div class="sim-metric" data-key="likes">
+              <div class="sim-metric-label">Curtidas</div>
+              <div class="sim-metric-number" id="simLikes">0</div>
+            </div>
+            <div class="sim-metric" data-key="comments">
+              <div class="sim-metric-label">Comentários</div>
+              <div class="sim-metric-number" id="simComments">0</div>
+            </div>
+          </div>
+          <div id="simFinalText" class="sim-final hidden">Esse é o efeito do robô Engaja+ no seu perfil.</div>
+          <a id="simCta" class="sim-cta hidden" href="../resultado analise/index.html">Ativar o robô Engaja+</a>
+        </div>
+      </div>
+    </section>
+    <section id="trustBar" class="trust-bar reveal-after" style="margin-top:0;">
+      <div class="trust-wrap">
+        <ul class="trust-list" aria-label="Indicadores de confiança">
+          <li class="trust-pill">
+            <span class="pill-text"><span class="gradient">+<span id="trustCount">10.027</span></span> perfis analisados hoje (<span id="trustDay"></span>)</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <div id="confirmModal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-card">
+      <div class="confirm-header confirm-title">Perfil Encontrado<span class="confirm-check">✓</span></div>
+      <div class="confirm-subtitle">Você deseja analisar o perfil <span id="confirmUsername" class="confirm-user"></span>?</div>
+      <div class="confirm-profile">
+        <div id="confirmAvatar" class="ig-avatar"></div>
+        <div class="confirm-stats">
+          <div class="ig-stat"><div id="confirmPosts" class="ig-number">—</div><div class="ig-label">posts</div></div>
+          <div class="ig-stat"><div id="confirmFollowers" class="ig-number">—</div><div class="ig-label">seguidores</div></div>
+          <div class="ig-stat"><div id="confirmFollowing" class="ig-number">—</div><div class="ig-label">seguindo</div></div>
+        </div>
+      </div>
+      <div id="confirmName" class="confirm-name"></div>
+      <div id="confirmBio" class="confirm-bio"></div>
+      
+      <div id="privateAlert" class="private-alert">
+        <div class="private-alert-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <div class="private-alert-content">
+          <span class="private-alert-title">Atenção: Perfil Restrito</span>
+           <span class="private-alert-text">Sua conta está privada. Para uma análise técnica completa e precisa, é necessário que o perfil esteja público.</span>
+           <button class="private-alert-btn" onclick="hideConfirm(); byId('simUsername').focus();">Voltar</button>
+         </div>
+      </div>
+
+      <div id="confirmWarning" class="confirm-warning">
+        <span class="warn-icon">⚠️</span>
+        <span>Limite de apenas 1 pesquisa por dispositivo, certifique-se que digitou o usuário corretamente.</span>
+      </div>
+      <div id="confirmActions" class="confirm-actions">
+        <button id="btnFixUname" class="btn-secondary">Corrigir @</button>
+        <button id="btnConfirmUname" class="btn-primary"><span>Confirmar</span><span class="btn-arrow">›</span></button>
+      </div>
+    </div>
+  </div>
+  <div id="analysisOverlay" class="analysis-overlay hidden">
+    <div id="analysisCard" class="analysis-card">
+      <div class="analysis-title">Analisando seu perfil<span class="dots"></span></div>
+      <div class="analysis-subtitle">Estamos verificando sinais de limitação de engajamento no seu perfil.</div>
+      <div class="analysis-progress-meta">
+        <span>Progresso</span>
+        <span id="analysisPct" class="pct">0%</span>
+      </div>
+      <div class="analysis-progress">
+        <div id="analysisProgressBar" class="analysis-progress-bar"></div>
+      </div>
+      <div class="analysis-grid">
+        <div id="analysisLogs" class="analysis-terminal"></div>
+        <div class="analysis-status">
+          <div class="row"><span class="label">Conexão</span><span id="statusConnection" class="value">INICIANDO</span></div>
+          <div class="row"><span class="label">Dados coletados</span><span id="statusData" class="value">AGUARDANDO</span></div>
+          <div class="row"><span class="label">Engajamento</span><span id="statusEngagement" class="value">PROCESSANDO</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="analysisDiagnosis" class="analysis-diagnosis hidden">
+      <div class="analysis-title">Resultado da análise</div>
+      <div class="analysis-alert">SEU PERFIL APRESENTA SINAIS DE ENGAJAMENTO REDUZIDO</div>
+      <div class="analysis-alert-hint">Detectamos padrões comuns em perfis com baixo crescimento.</div>
+      <div class="analysis-block">
+        <div class="analysis-system-panel">
+          <div id="analysisSystemTitle" class="analysis-system-title">STATUS DO PERFIL: @usuario</div>
+          <div class="analysis-system-grid">
+            <div class="analysis-system-item"><span class="label">ENGAJAMENTO</span><span class="value">🔻 1.8% (abaixo do esperado)</span></div>
+            <div class="analysis-system-item"><span class="label">DISTRIBUIÇÃO</span><span class="value" style="color: #f97316;">⚠️ Alcance abaixo da média</span></div>
+            <div class="analysis-system-item"><span class="label">PRIORIDADE</span><span class="value" style="color: #f97316;">📉 Baixa frequência de entrega</span></div>
+            <div class="analysis-system-item"><span class="label">CRESCIMENTO</span><span class="value" style="color: #f97316;">🚫 Abaixo da média</span></div>
+          </div>
+        </div>
+        <div class="analysis-score">
+          <div id="analysisScoreText">Score do Perfil: 42 / 100</div>
+          <div class="analysis-score-bar"><div id="analysisScoreFill" class="analysis-score-fill"></div></div>
+        </div>
+        <div class="analysis-micro">✔ Perfil compatível com otimização</div>
+      </div>
+      <a class="analysis-cta-btn" href="../resultado%20analise/index.html">ATIVAR RECUPERAÇÃO DE ALCANCE</a>
+      <div class="analysis-cta-sub"><span style="color: #22c55e;">✔</span> Otimização automática iniciada em menos de 2 minutos</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const PROXY_BASE = "/api";
+
+      const requestJson = async (url, options = {}) => {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || `request_failed_${response.status}`);
+        }
+        return response.json();
+      };
+
+      const runActor = async (usernames) => {
+        const url = `${PROXY_BASE}/run-actor`;
+        const run = await requestJson(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usernames })
+        });
+        return run;
+      };
+
+      const getDatasetItems = async (datasetId) => {
+        const url = `${PROXY_BASE}/dataset/${encodeURIComponent(datasetId)}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || `dataset_failed_${response.status}`);
+        }
+        return response.json();
+      };
+
+      const pickValue = (...values) => values.find((value) => value !== undefined && value !== null && value !== "");
+
+      const getNumber = (value) => {
+        const num = Number(value);
+        return Number.isFinite(num) ? num : null;
+      };
+
+      const buildProxyUrl = (url) => {
+        if (!url) return "";
+        const cleanUrl = String(url).replace(/^\/\//, "https://");
+        return `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}`;
+      };
+
+      const mapProfile = async (item, fallbackHandle) => {
+        const base = item || {};
+        const user = base.user || base.owner || base.profile || {};
+        const handle = String(pickValue(base.username, base.userName, base.handle, user.username, user.userName, user.handle, fallbackHandle, "usuario"))
+          .replace(/^@+/, "")
+          .toLowerCase();
+        const name = pickValue(base.fullName, base.name, base.full_name, user.fullName, user.name, user.full_name, "");
+        const bio = pickValue(base.biography, base.bio, base.biografia, user.biography, user.bio, user.biografia, "");
+        const followers = pickValue(
+          base.followersCount,
+          base.followers,
+          base.followers_count,
+          base.followerCount,
+          base.followedByCount,
+          base.edge_followed_by?.count,
+          base.edgeFollowedBy?.count,
+          user.followersCount,
+          user.followers,
+          user.followers_count,
+          user.edge_followed_by?.count,
+          user.edgeFollowedBy?.count
+        );
+        const following = pickValue(
+          base.followingCount,
+          base.following,
+          base.following_count,
+          base.followsCount,
+          base.follows,
+          base.edge_follow?.count,
+          base.edgeFollow?.count,
+          user.followingCount,
+          user.following,
+          user.following_count,
+          user.edge_follow?.count,
+          user.edgeFollow?.count
+        );
+        const posts = pickValue(base.postsCount, base.posts, base.posts_count, base.mediaCount, base.media_count, user.postsCount, user.posts, user.posts_count);
+        let isPrivate = pickValue(base.isPrivate, base.is_private, base.private, user.isPrivate, user.is_private, user.private, false);
+        const avatarRaw = pickValue(
+          base.profilePicUrlHd,
+          base.profilePicUrlHD,
+          base.profilePicUrl,
+          base.profile_pic_url_hd,
+          base.profile_pic_url,
+          base.profile_picture,
+          base.profilePic,
+          base.profileImage,
+          base.profile_image,
+          base.profileImageUrl,
+          base.profile_image_url,
+          base.avatarUrl,
+          base.avatar_url,
+          base.imageUrl,
+          base.image_url,
+          user.profilePicUrlHd,
+          user.profilePicUrlHD,
+          user.profilePicUrl,
+          user.profile_pic_url_hd,
+          user.profile_pic_url,
+          user.profile_picture,
+          user.profilePic,
+          user.profileImage,
+          user.profile_image,
+          user.profileImageUrl,
+          user.profile_image_url,
+          user.avatarUrl,
+          user.avatar_url,
+          user.imageUrl,
+          user.image_url,
+          ""
+        );
+        const avatarUrl = buildProxyUrl(avatarRaw);
+        const rawPosts = item.latestPosts || item.posts || item.postsList || item.latestMedia || item.edge_owner_to_timeline_media?.edges || [];
+        const postsList = Array.isArray(rawPosts)
+          ? rawPosts
+              .map((post) => {
+                const p = post || {};
+                const likes = [
+                  p.likesCount,
+                  p.likes,
+                  p.likeCount,
+                  p.edge_media_preview_like?.count,
+                  p.edge_liked_by?.count,
+                  p.edgeLikedBy?.count,
+                  p.node?.edge_media_preview_like?.count,
+                  p.node?.edge_liked_by?.count,
+                  p.node?.edge_media_preview_like?.count
+                ].find(v => v !== undefined && v !== null && v !== "" && v !== 0) ?? 0;
+
+                const comments = [
+                  p.commentsCount,
+                  p.comments,
+                  p.commentCount,
+                  p.edge_media_to_comment?.count,
+                  p.edgeMediaToComment?.count,
+                  p.node?.edge_media_to_comment?.count,
+                  p.node?.edge_media_to_comment?.count
+                ].find(v => v !== undefined && v !== null && v !== "" && v !== 0) ?? 0;
+
+                const image = pickValue(
+                  p.image,
+                  p.imageUrl,
+                  p.thumbnailUrl,
+                  p.displayUrl,
+                  p.thumbnail_src,
+                  p.node?.display_url,
+                  p.node?.thumbnail_src,
+                  p.node?.thumbnail_resources?.[0]?.src
+                );
+
+                return {
+                  image: buildProxyUrl(image),
+                  likes: getNumber(likes) || 0,
+                  comments: getNumber(comments) || 0
+                };
+              })
+              .filter((post) => post.image)
+          : [];
+
+        // Heurística: se tem posts mas a lista veio vazia, é provável que seja privada
+        if (!isPrivate && getNumber(posts) > 0 && postsList.length === 0) {
+          isPrivate = true;
+        }
+
+        const engagementRate = item.engagementRate ?? item.engagement_rate ?? null;
+        return {
+          handle,
+          name,
+          bio,
+          followers: getNumber(followers),
+          following: getNumber(following),
+          posts: getNumber(posts),
+          isPrivate: !!isPrivate,
+          avatarUrl,
+          postsList,
+          engagementRate
+        };
+      };
+
+      const fetchProfile = async (handle) => {
+        const run = await runActor([handle]);
+        const datasetId = run.defaultDatasetId;
+        if (!datasetId) throw new Error("missing_dataset");
+        const items = await getDatasetItems(datasetId);
+        const item = Array.isArray(items) ? items[0] : null;
+        if (!item) throw new Error("empty_dataset");
+        return await mapProfile(item, handle);
+      };
+
+      window.engajaApi = { fetchProfile };
+    })();
+  </script>
+  <script>
+    const trustCountEl = document.getElementById("trustCount");
+    const trustDayEl = document.getElementById("trustDay");
+    if (trustCountEl) {
+      const fmt = new Intl.NumberFormat("pt-BR");
+      const saved = parseInt(localStorage.getItem("engaja_trust_count") || "", 10);
+      let count = Number.isFinite(saved) && saved > 0 ? saved : 10027;
+      trustCountEl.textContent = fmt.format(count);
+      setInterval(() => {
+        count += Math.floor(5 + Math.random() * 6);
+        trustCountEl.textContent = fmt.format(count);
+        localStorage.setItem("engaja_trust_count", String(count));
+      }, 2000);
+    }
+    if (trustDayEl) {
+      trustDayEl.textContent = new Date().toLocaleDateString("pt-BR", { weekday: "long" }).toLowerCase();
+    }
+  </script>
+  <script src="../assets/js/analise.js"></script>
+  <script src="../assets/js/matrix.obf.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const line1 = document.getElementById("twLine1");
+      const line2 = document.getElementById("twLine2");
+      const subtitle = document.getElementById("twSubtitle");
+      const reveals = document.querySelectorAll(".reveal-after");
+
+      const typeWriter = async (el, parts, speed = 40) => {
+        el.classList.add("typewriter-text", "active");
+        for (const part of parts) {
+          const span = document.createElement("span");
+          if (part.class) span.className = part.partClass || part.class;
+          el.appendChild(span);
+          
+          for (let i = 0; i < part.text.length; i++) {
+            span.textContent += part.text[i];
+            await new Promise(r => setTimeout(r, speed));
+          }
+        }
+        el.classList.remove("active");
+      };
+
+      const startTypewriter = async () => {
+        await typeWriter(line1, [
+          { text: "Seu " },
+          { text: "Engajamento", class: "hl-purple" },
+          { text: " caiu" }
+        ], 68);
+        
+        await typeWriter(line2, [
+          { text: "e o " },
+          { text: "motivo", class: "hl-red" },
+          { text: " pode não ser seu " },
+          { text: "conteúdo", class: "hl-purple" }
+        ], 68);
+
+        await typeWriter(subtitle, [
+          { text: "Analise seu " },
+          { text: "perfil", class: "hl-purple" },
+          { text: " e descubra se ainda é possível recuperar seu " },
+          { text: "alcance", class: "hl-purple" },
+          { text: "." }
+        ], 40);
+
+        reveals.forEach(el => el.classList.add("visible"));
+      };
+
+      startTypewriter();
+    });
+  </script>
+</body>
+</html>
+  &lt;script src="../assets/js/css-editor.js"&gt;&lt;/script&gt;

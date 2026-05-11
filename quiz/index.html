@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagnóstico de Engajamento · Quiz</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="is-quiz">
+  <canvas id="matrix-canvas" class="bg-canvas"></canvas>
+  <header class="ig-topbar">
+    <div class="ig-bar">
+      <div class="ig-logo">ENGAJA+</div>
+    </div>
+  </header>
+  <section class="section reveal">
+    <div class="section-header" id="quizIntroHeader">
+      <h3 class="section-title">Seu <span class="gradient" style="background: linear-gradient(135deg, #6D28D9 0%, #7C3AED 68%, #C4B5FD 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Instagram</span> pode estar com o <span style="color:#F3F4F6;">Engajamento</span> <span style="color:#EF4444; text-shadow: 0 0 8px rgba(239,68,68,0.22);">Bloqueado</span>.</h3>
+    </div>
+    <div class="hero-card" id="quizCard" style="max-width: 620px; padding: calc(var(--spacing-lg) + 8px);">
+      <div id="startWrap" class="quiz-welcome">
+        <div class="welcome-figure">
+          <div id="welcomeWrap" class="welcome-img-wrap">
+            <img id="welcomeImg" class="welcome-img" src="../assets/img/quiz-welcome.png" alt="Diagnóstico do algoritmo">
+          </div>
+          <svg class="welcome-illustration" viewBox="0 0 200 140" width="200" height="140" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#4a37b6"/>
+                <stop offset="1" stop-color="#ab58f4"/>
+              </linearGradient>
+              <radialGradient id="g2" cx="50%" cy="50%" r="60%">
+                <stop offset="0" stop-color="rgba(171,88,244,0.8)"/>
+                <stop offset="1" stop-color="rgba(171,88,244,0)"/>
+              </radialGradient>
+            </defs>
+            <rect x="0" y="0" width="200" height="140" fill="none"/>
+            <circle cx="36" cy="42" r="10" fill="url(#g1)"/>
+            <circle cx="160" cy="36" r="9" fill="url(#g1)"/>
+            <circle cx="106" cy="92" r="11" fill="url(#g1)"/>
+            <circle cx="60" cy="106" r="8" fill="url(#g1)"/>
+            <circle cx="176" cy="104" r="7" fill="url(#g1)"/>
+            <path d="M36 42 L106 92 L160 36 L176 104 L60 106 L36 42" stroke="url(#g1)" stroke-width="2" fill="none"/>
+            <ellipse cx="100" cy="70" rx="86" ry="54" fill="url(#g2)"/>
+          </svg>
+        </div>
+        <div class="brand-mark">Análise do algoritmo do Instagram</div>
+        <ul class="feature-list">
+          <li><span class="fl-emoji">📉</span><span class="fl-text">Descubra se o algoritmo está limitando seu engajamento</span></li>
+          <li><span class="fl-emoji">👁️</span><span class="fl-text">Veja onde o algoritmo corta seu alcance</span></li>
+          <li><span class="fl-emoji">🚦</span><span class="fl-text">Saiba se seu perfil está pronto para crescer</span></li>
+        </ul>
+        <div class="cta-actions">
+          <button id="btnStart" class="cta primary cta-glow pulse" type="button">Descobrir se meu perfil está travado</button>
+        </div>
+        <div class="trust-note" style="font-size: var(--font-sm); font-weight: 700; color: #F3F4F6; text-shadow: 0 0 10px rgba(129,140,248,0.28), 0 6px 14px rgba(0,0,0,0.28);">🔒 Não pedimos senha e não acessamos sua conta</div>
+      </div>
+      <div id="progress" style="display:none;position:relative;height:6px;border-radius:999px;background:rgba(255,255,255,0.08);overflow:hidden;">
+        <div id="progressInner" style="height:100%;width:0%;background:linear-gradient(90deg,#4a37b6,#ab58f4);transition:width 240ms ease;"></div>
+        <div id="progressPct">0%</div>
+      </div>
+      <div id="microNote"></div>
+      <div id="stepWrap" class="step-anim" style="display:none;gap:12px;margin-top:12px;">
+        <div class="section-sub" id="questionText"></div>
+        <div id="answers" style="display:grid;gap:8px;"></div>
+        <div class="cta-actions" style="display:grid;grid-auto-flow:column;align-items:center;justify-content:center;gap:8px;margin-top:8px;">
+          <button id="btnPrev" class="cta" type="button" style="display:none;">Voltar</button>
+          <button id="btnNext" class="cta primary" type="button" disabled style="opacity:0.5;filter:grayscale(24%);pointer-events:none;">Avançar</button>
+        </div>
+      </div>
+      <div id="simOverlay" class="sim-overlay hidden" aria-hidden="true">
+        <div id="simLoading" class="sim-loading">
+          <div class="section-title" id="simTitle" style="text-align:center;">Processando análise<br>comportamental do perfil</div>
+          <div id="simSubtext" class="section-sub" style="text-align:center;">Sistema cruzando sinais algorítmicos com base nas suas respostas.</div>
+          <div class="sim-progress-wrap">
+            <div class="sim-bar"><div id="simBar" class="sim-bar-inner" style="width:0%"></div></div>
+            <div id="simPercent" class="sim-percent">0%</div>
+          </div>
+          <div id="simLogs" class="sim-logs"></div>
+        </div>
+      </div>
+      <div id="diagResult" class="reveal hidden" style="gap:10px;margin-top:12px;">
+        <div class="section-header">
+          <h3 class="section-title">Relatório de Entrega do perfil</h3>
+        </div>
+        <div class="hero-card" style="display:grid;gap:10px;justify-items:center;">
+          <div class="section-sub">Engajamento atual</div>
+          <div id="engRate" style="font-size:clamp(28px,8.5vw,46px);font-weight:800;color:#F9F9F9;letter-spacing:-0.01em;">—</div>
+          <div class="diag-bars" style="width:100%;max-width:640px;display:grid;gap:8px;">
+            <div class="diag-item">
+              <div class="diag-item-head">
+                <span class="diag-name">Perfil atual</span>
+                <span id="engCurrent" class="diag-value">—</span>
+              </div>
+              <div class="diag-bar"><div id="barCurrentFill" class="diag-fill" style="width:0%"></div></div>
+            </div>
+            <div class="diag-item">
+              <div class="diag-item-head">
+                <span class="diag-name">Perfis saudáveis</span>
+                <span id="engNicheVal" class="diag-value">—</span>
+              </div>
+              <div class="diag-bar"><div id="barNicheFill" class="diag-fill" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div id="lossPct" class="diag-loss">—</div>
+          <div id="reactivationNote" class="section-sub diag-callout">Com base na sua análise, é possível aplicar uma reativação estratégica para recuperar prioridade de entrega.</div>
+          <div class="cta-actions" style="margin-top:6px;">
+            <button id="btnSimulateStart" class="cta primary pulse">Ver recuperação de engajamento</button>
+          </div>
+        </div>
+        <div id="simHandleWrap" class="hero-card hidden" style="gap:8px;">
+          <div class="section-sub" style="text-align:center;">Insira seu @ do Instagram</div>
+          <form id="quizSimForm" class="sim-command" style="display:grid;gap:8px;">
+            <div class="sim-field accent">
+              <span class="sim-at"><span>@</span></span>
+              <input id="qsUname" name="qsUname" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Ex: nomedoconjuge_10" required>
+            </div>
+            <div class="sim-action">
+              <button id="qsConnect" type="submit" class="sim-action-btn">Conectar perfil</button>
+            </div>
+          </form>
+        </div>
+        <div id="simSummary" class="hero-card hidden" style="gap:10px;">
+          <div class="section-sub">Visualização técnica do seu perfil</div>
+          <div class="ig-profile">
+            <div id="qsAvatar" class="ig-avatar"></div>
+            <div class="ig-info">
+              <div id="qsName" class="ig-name">—</div>
+              <div id="qsHandle" class="ig-handle">@—</div>
+            </div>
+          </div>
+          <div class="ig-stats">
+            <div class="ig-stat"><div id="qsFollowers" class="ig-number">—</div><div class="ig-label">Seguidores</div></div>
+            <div class="ig-stat"><div id="qsFollowing" class="ig-number">—</div><div class="ig-label">Seguindo</div></div>
+          </div>
+          <div id="qsFeed" class="ig-feed"></div>
+          <div class="cta-actions" style="justify-items:center;margin-top:4px;">
+            <button id="btnProject" class="cta">Ver projeção após reativação estratégica</button>
+          </div>
+          <div id="projWrap" class="sim-result hidden" style="justify-items:center;">
+            <div class="sim-metrics" style="grid-template-columns:1fr 1fr;">
+              <div class="sim-metric"><div class="sim-metric-label">Seguidores</div><div class="sim-metric-number" id="projFollowers">0</div></div>
+              <div class="sim-metric"><div class="sim-metric-label">Curtidas médias</div><div class="sim-metric-number" id="projLikes">0</div></div>
+              <div class="sim-metric"><div class="sim-metric-label">Comentários</div><div class="sim-metric-number" id="projComments">0</div></div>
+              <div class="sim-metric"><div class="sim-metric-label">Engajamento</div><div class="sim-metric-number" id="projEngagement">0%</div></div>
+            </div>
+            <div class="sim-final">Projeção baseada em perfis com padrão semelhante ao seu.</div>
+          </div>
+          <div id="solutionWrap" class="hidden" style="gap:6px;justify-items:center;margin-top:6px;">
+            <div class="section-sub" style="text-align:center;">Perfis nesse estado precisam de estímulo estratégico para recuperar prioridade de entrega.</div>
+            <div class="section-sub" style="text-align:center;">Mecanismo Automatizado de Reativação de Impulso</div>
+            <div class="section-sub" style="text-align:center;color:#9CA3AF;">Sistema que atua diretamente nos sinais sociais priorizados pelo algoritmo.</div>
+            <a class="cta" href="../resultado analise/index.html">Ativar reativação no meu perfil agora</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="trustBar" class="trust-bar reveal">
+    <div class="trust-wrap">
+      <ul class="trust-list" aria-label="Indicadores de confiança">
+        <li class="trust-pill">
+          <span class="pill-text"><span class="gradient">+<span id="trustCount">10.027</span></span> perfis analisados hoje (<span id="trustDay"></span>)</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <script>window.engajaMatrix = true;</script>
+  <script src="../assets/js/quiz.js"></script>
+  <script src="../assets/js/matrix.obf.js"></script>
+  </body>
+</html>
