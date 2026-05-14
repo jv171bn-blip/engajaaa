@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Engaja+ · Teste de Engajamento</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
   <style>
     .sim-title.attention {
       background: linear-gradient(90deg, #6f2dff 0%, #8b4dff 72%, #f7f4ff 98%);
@@ -966,7 +966,7 @@
         
         <div class="sim-head">
           <div class="sim-logo">
-            <img src="/assets/img/engaja+.png" alt="Engaja+ logo" loading="lazy">
+            <img src="../assets/img/engaja+.png" alt="Engaja+ logo" loading="lazy">
           </div>
           <h2 class="sim-title">
             <span class="line-1" id="twLine1"></span>
@@ -1031,7 +1031,7 @@
             </div>
           </div>
           <div id="simFinalText" class="sim-final hidden">Esse é o efeito do robô Engaja+ no seu perfil.</div>
-          <a id="simCta" class="sim-cta hidden" href="/resultado analise/index.html">Ativar o robô Engaja+</a>
+          <a id="simCta" class="sim-cta hidden" href="../resultado analise/index.html">Ativar o robô Engaja+</a>
         </div>
       </div>
     </section>
@@ -1132,7 +1132,9 @@
   </div>
   <script>
     (() => {
-      const PROXY_BASE = "/api";
+      const ACTOR_ID = "coderx/instagram-profile-scraper-api";
+      const API_BASE = "https://api.apify.com/v2";
+      const APIFY_TOKEN = "apify_api_AIgFMgZHgVcH3PAO8PV1kw3Zyam1oO0CKnYP";
 
       const requestJson = async (url, options = {}) => {
         const response = await fetch(url, options);
@@ -1144,17 +1146,18 @@
       };
 
       const runActor = async (usernames) => {
-        const url = `${PROXY_BASE}/run-actor`;
+        if (!APIFY_TOKEN) throw new Error("missing_token");
+        const url = `${API_BASE}/acts/${encodeURIComponent(ACTOR_ID)}/runs?token=${encodeURIComponent(APIFY_TOKEN)}&waitForFinish=120`;
         const run = await requestJson(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ usernames })
         });
-        return run;
+        return run.data || run;
       };
 
       const getDatasetItems = async (datasetId) => {
-        const url = `${PROXY_BASE}/dataset/${encodeURIComponent(datasetId)}`;
+        const url = `${API_BASE}/datasets/${encodeURIComponent(datasetId)}/items?token=${encodeURIComponent(APIFY_TOKEN)}&clean=1`;
         const response = await fetch(url);
         if (!response.ok) {
           const text = await response.text();
@@ -1346,8 +1349,8 @@
       trustDayEl.textContent = new Date().toLocaleDateString("pt-BR", { weekday: "long" }).toLowerCase();
     }
   </script>
-  <script src="/assets/js/analise.js"></script>
-  <script src="/assets/js/matrix.obf.js"></script>
+  <script src="../assets/js/analise.js"></script>
+  <script src="../assets/js/matrix.obf.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const line1 = document.getElementById("twLine1");
@@ -1400,4 +1403,4 @@
   </script>
 </body>
 </html>
-  &lt;script src="/assets/js/css-editor.js"&gt;&lt;/script&gt;
+  &lt;script src="../assets/js/css-editor.js"&gt;&lt;/script&gt;
