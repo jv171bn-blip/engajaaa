@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "checkout", "index.html"));
+  res.sendFile(path.join(__dirname, "quiz", "index.html"));
 });
 
 const requestJson = async (url, options = {}) => {
