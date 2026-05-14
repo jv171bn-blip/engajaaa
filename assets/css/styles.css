@@ -281,7 +281,7 @@ body::before { content: ""; position: fixed; inset: 0; background: radial-gradie
 .ig-name { font-weight: 600; color: #F9F9F9; }
 .ig-handle { color: #9CA3AF; font-size: var(--font-xs); }
 .ig-stats { padding: 0 var(--spacing-md) var(--spacing-md); display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-xs); }
-.ig-stat { padding: var(--spacing-xs); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); background: #0B1014; text-align: center; }
+.ig-stat { padding: var(--spacing-xs); border: none; border-radius: var(--radius-sm); background: transparent; text-align: center; }
 .ig-number { font-size: var(--font-md); font-weight: 700; color: #F9F9F9; }
 .ig-number.accent { color: #ab58f4; }
 .ig-label { font-size: var(--font-xs); color: #9CA3AF; }

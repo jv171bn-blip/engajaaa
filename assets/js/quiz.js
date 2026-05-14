@@ -376,7 +376,7 @@ if (btnNext) {
       };
       localStorage.setItem("quiz_analysis_data", JSON.stringify(profileData));
       
-      const dest = "./analise/index.html";
+      const dest = "../analise/index.html";
       window.location.href = dest;
     }
   });

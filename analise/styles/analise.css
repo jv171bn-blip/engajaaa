@@ -1,11 +1,3 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Engaja+ · Teste de Engajamento</title>
-  <link rel="stylesheet" href="./assets/css/styles.css">
-  <style>
     .sim-title.attention {
       background: linear-gradient(90deg, #6f2dff 0%, #8b4dff 72%, #f7f4ff 98%);
       -webkit-background-clip: text;
@@ -18,22 +10,22 @@
       font-weight: 700;
       line-height: 1.15;
       letter-spacing: -0.01em;
-      text-wrap: wrap; /* Estável durante digitação */
+      text-wrap: wrap;
       hyphens: auto;
       max-width: 28ch;
       text-align: center;
       margin-inline: auto;
       margin-bottom: 10px;
-      min-height: calc(3 * 1.15 * clamp(22px, 5.2vw, 36px)); /* Reserva espaço para 3 linhas */
+      min-height: calc(3 * 1.15 * clamp(22px, 5.2vw, 36px));
       display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* Alinhamento ao topo reservado */
+      justify-content: flex-start;
     }
     .simulation-panel .sim-title .line-1,
     .simulation-panel .sim-title .line-2 {
       display: block;
       white-space: normal;
-      min-height: 1.15em; /* Evita colapso quando vazio */
+      min-height: 1.15em;
     }
     .simulation-panel .section-sub.sim-subtitle {
       color: #9CA3AF;
@@ -44,7 +36,7 @@
       text-align: center;
       margin-inline: auto;
       margin-bottom: 16px;
-      min-height: 2.4em; /* Reserva espaço para 2 linhas */
+      min-height: 2.4em;
     }
     .sim-trust {
       display: flex;
@@ -432,7 +424,6 @@
       75% { content: "..."; }
       100% { content: ""; }
     }
-    /* Fallback robusto para navegadores que não animam content */
     .analysis-title .dots::after {
       content: "";
       animation: dotsTypewriter 1.5s steps(4, end) infinite;
@@ -870,7 +861,6 @@
       0% { opacity: 0; transform: translateY(8px); }
       100% { opacity: 1; transform: translateY(0); }
     }
-    /* Efeito Typewriter */
     .typewriter-text {
       display: inline;
       position: relative;
@@ -900,7 +890,6 @@
       transform: translateY(0);
       pointer-events: auto;
     }
-    /* Delays sequenciais para uma entrada mais elegante e lenta */
     #simForm.reveal-after.visible { transition-delay: 0.4s; }
     .sim-trust-item.reveal-after.visible:nth-child(1) { transition-delay: 1.0s; }
     .sim-trust-item.reveal-after.visible:nth-child(2) { transition-delay: 1.4s; }
@@ -909,7 +898,6 @@
 
     .scarcity-fill { display: block; height: 100%; width: 65%; background: linear-gradient(90deg, rgba(34,197,94,0.8), rgba(34,197,94,1)); box-shadow: 0 10px 20px rgba(34,197,94,0.24); transition: width 1.2s ease; }
 
-    /* Estilos para o aviso de perfil privado */
     .private-alert {
       display: none;
       align-items: flex-start;
@@ -955,452 +943,3 @@
       transition: opacity 0.2s;
     }
     .private-alert-btn:hover { opacity: 0.9; }
-  </style>
-</head>
-<body>
-  <canvas id="matrix-canvas" class="bg-canvas"></canvas>
-  <main>
-    <section id="simulation" class="simulation-panel reveal is-visible" data-state="activating">
-      <canvas id="simCanvas" class="sim-canvas"></canvas>
-      <div class="sim-wrap">
-        
-        <div class="sim-head">
-          <div class="sim-logo">
-            <img src="./assets/img/engaja+.png" alt="Engaja+ logo" loading="lazy">
-          </div>
-          <h2 class="sim-title">
-            <span class="line-1" id="twLine1"></span>
-            <span class="line-2" id="twLine2"></span>
-          </h2>
-        </div>
-        <div class="section-sub sim-subtitle" id="twSubtitle"></div>
-        <form id="simForm" class="sim-command reveal-after">
-          <div class="sim-field accent sim-field-action">
-            <span class="sim-at"><span>@</span></span>
-            <input id="simUsername" name="simUsername" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Digite seu perfil" required>
-            <button id="simActivate" type="submit" class="sim-action-btn sim-action-arrow">
-              <span class="btn-inner">
-                <svg class="btn-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M23 4v6h-6"></path>
-                  <path d="M1 20v-6h6"></path>
-                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                </svg>
-                <span class="btn-label">&gt;</span>
-              </span>
-            </button>
-          </div>
-          <div class="sim-trust">
-            <span class="sim-trust-item reveal-after">
-              <span class="sim-trust-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="10" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.6"./><path d="M8 10V7a4 4 0 118 0v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"./></svg>
-              </span>
-              100% Seguro
-            </span>
-            <span class="sim-trust-item reveal-after">
-              <span class="sim-trust-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="16.5" cy="7.5" r="5.5" />
-                  <circle cx="16.5" cy="7.5" r="1.5" />
-                  <path d="M12.5 11.5L2 22l3 0 1.5-1.5h2L10 19h2l1.5-1.5" />
-                </svg>
-              </span>
-              Sem Senha
-            </span>
-            <span class="sim-trust-item reveal-after">
-              <span class="sim-trust-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M7 12.5l3 3 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"./></svg>
-              </span>
-              Teste Grátis
-            </span>
-          </div>
-        </form>
-        <div id="simResult" class="sim-result hidden">
-          <div id="simSeal" class="sim-label hidden">Resultado simulado após 3 dias</div>
-          <div class="sim-metrics">
-            <div class="sim-metric" data-key="followers">
-              <div class="sim-metric-label">Seguidores</div>
-              <div class="sim-metric-number" id="simFollowers">0</div>
-            </div>
-            <div class="sim-metric" data-key="likes">
-              <div class="sim-metric-label">Curtidas</div>
-              <div class="sim-metric-number" id="simLikes">0</div>
-            </div>
-            <div class="sim-metric" data-key="comments">
-              <div class="sim-metric-label">Comentários</div>
-              <div class="sim-metric-number" id="simComments">0</div>
-            </div>
-          </div>
-          <div id="simFinalText" class="sim-final hidden">Esse é o efeito do robô Engaja+ no seu perfil.</div>
-          <a id="simCta" class="sim-cta hidden" href="./resultado-analise/index.html">Ativar o robô Engaja+</a>
-        </div>
-      </div>
-    </section>
-    <section id="trustBar" class="trust-bar reveal-after" style="margin-top:0;">
-      <div class="trust-wrap">
-        <ul class="trust-list" aria-label="Indicadores de confiança">
-          <li class="trust-pill">
-            <span class="pill-text"><span class="gradient">+<span id="trustCount">10.027</span></span> perfis analisados hoje (<span id="trustDay"></span>)</span>
-          </li>
-        </ul>
-      </div>
-    </section>
-  </main>
-  <div id="confirmModal" class="modal hidden">
-    <div class="modal-overlay"></div>
-    <div class="modal-card">
-      <div class="confirm-header confirm-title">Perfil Encontrado<span class="confirm-check">✓</span></div>
-      <div class="confirm-subtitle">Você deseja analisar o perfil <span id="confirmUsername" class="confirm-user"></span>?</div>
-      <div class="confirm-profile">
-        <div id="confirmAvatar" class="ig-avatar"></div>
-        <div class="confirm-stats">
-          <div class="ig-stat"><div id="confirmPosts" class="ig-number">—</div><div class="ig-label">posts</div></div>
-          <div class="ig-stat"><div id="confirmFollowers" class="ig-number">—</div><div class="ig-label">seguidores</div></div>
-          <div class="ig-stat"><div id="confirmFollowing" class="ig-number">—</div><div class="ig-label">seguindo</div></div>
-        </div>
-      </div>
-      <div id="confirmName" class="confirm-name"></div>
-      <div id="confirmBio" class="confirm-bio"></div>
-      
-      <div id="privateAlert" class="private-alert">
-        <div class="private-alert-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-            <line x1="12" y1="9" x2="12" y2="13"></line>
-            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-          </svg>
-        </div>
-        <div class="private-alert-content">
-          <span class="private-alert-title">Atenção: Perfil Restrito</span>
-           <span class="private-alert-text">Sua conta está privada. Para uma análise técnica completa e precisa, é necessário que o perfil esteja público.</span>
-           <button class="private-alert-btn" onclick="hideConfirm(); byId('simUsername').focus();">Voltar</button>
-         </div>
-      </div>
-
-      <div id="confirmWarning" class="confirm-warning">
-        <span class="warn-icon">⚠️</span>
-        <span>Limite de apenas 1 pesquisa por dispositivo, certifique-se que digitou o usuário corretamente.</span>
-      </div>
-      <div id="confirmActions" class="confirm-actions">
-        <button id="btnFixUname" class="btn-secondary">Corrigir @</button>
-        <button id="btnConfirmUname" class="btn-primary"><span>Confirmar</span><span class="btn-arrow">›</span></button>
-      </div>
-    </div>
-  </div>
-  <div id="analysisOverlay" class="analysis-overlay hidden">
-    <div id="analysisCard" class="analysis-card">
-      <div class="analysis-title">Analisando seu perfil<span class="dots"></span></div>
-      <div class="analysis-subtitle">Estamos verificando sinais de limitação de engajamento no seu perfil.</div>
-      <div class="analysis-progress-meta">
-        <span>Progresso</span>
-        <span id="analysisPct" class="pct">0%</span>
-      </div>
-      <div class="analysis-progress">
-        <div id="analysisProgressBar" class="analysis-progress-bar"></div>
-      </div>
-      <div class="analysis-grid">
-        <div id="analysisLogs" class="analysis-terminal"></div>
-        <div class="analysis-status">
-          <div class="row"><span class="label">Conexão</span><span id="statusConnection" class="value">INICIANDO</span></div>
-          <div class="row"><span class="label">Dados coletados</span><span id="statusData" class="value">AGUARDANDO</span></div>
-          <div class="row"><span class="label">Engajamento</span><span id="statusEngagement" class="value">PROCESSANDO</span></div>
-        </div>
-      </div>
-    </div>
-    <div id="analysisDiagnosis" class="analysis-diagnosis hidden">
-      <div class="analysis-title">Resultado da análise</div>
-      <div class="analysis-alert">SEU PERFIL APRESENTA SINAIS DE ENGAJAMENTO REDUZIDO</div>
-      <div class="analysis-alert-hint">Detectamos padrões comuns em perfis com baixo crescimento.</div>
-      <div class="analysis-block">
-        <div class="analysis-system-panel">
-          <div id="analysisSystemTitle" class="analysis-system-title">STATUS DO PERFIL: @usuario</div>
-          <div class="analysis-system-grid">
-            <div class="analysis-system-item"><span class="label">ENGAJAMENTO</span><span class="value">🔻 1.8% (abaixo do esperado)</span></div>
-            <div class="analysis-system-item"><span class="label">DISTRIBUIÇÃO</span><span class="value" style="color: #f97316;">⚠️ Alcance abaixo da média</span></div>
-            <div class="analysis-system-item"><span class="label">PRIORIDADE</span><span class="value" style="color: #f97316;">📉 Baixa frequência de entrega</span></div>
-            <div class="analysis-system-item"><span class="label">CRESCIMENTO</span><span class="value" style="color: #f97316;">🚫 Abaixo da média</span></div>
-          </div>
-        </div>
-        <div class="analysis-score">
-          <div id="analysisScoreText">Score do Perfil: 42 / 100</div>
-          <div class="analysis-score-bar"><div id="analysisScoreFill" class="analysis-score-fill"></div></div>
-        </div>
-        <div class="analysis-micro">✔ Perfil compatível com otimização</div>
-      </div>
-      <a class="analysis-cta-btn" href="./resultado-analise/index.html">ATIVAR RECUPERAÇÃO DE ALCANCE</a>
-      <div class="analysis-cta-sub"><span style="color: #22c55e;">✔</span> Otimização automática iniciada em menos de 2 minutos</div>
-    </div>
-  </div>
-  <script>
-    (() => {
-      const ACTOR_ID = "coderx/instagram-profile-scraper-api";
-      const API_BASE = "https://api.apify.com/v2";
-      const APIFY_TOKEN = "apify_api_AIgFMgZHgVcH3PAO8PV1kw3Zyam1oO0CKnYP";
-
-      const requestJson = async (url, options = {}) => {
-        const response = await fetch(url, options);
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(text || `request_failed_${response.status}`);
-        }
-        return response.json();
-      };
-
-      const runActor = async (usernames) => {
-        if (!APIFY_TOKEN) throw new Error("missing_token");
-        const url = `${API_BASE}/acts/${encodeURIComponent(ACTOR_ID)}/runs?token=${encodeURIComponent(APIFY_TOKEN)}&waitForFinish=120`;
-        const run = await requestJson(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ usernames })
-        });
-        return run.data || run;
-      };
-
-      const getDatasetItems = async (datasetId) => {
-        const url = `${API_BASE}/datasets/${encodeURIComponent(datasetId)}/items?token=${encodeURIComponent(APIFY_TOKEN)}&clean=1`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(text || `dataset_failed_${response.status}`);
-        }
-        return response.json();
-      };
-
-      const pickValue = (...values) => values.find((value) => value !== undefined && value !== null && value !== "");
-
-      const getNumber = (value) => {
-        const num = Number(value);
-        return Number.isFinite(num) ? num : null;
-      };
-
-      const buildProxyUrl = (url) => {
-        if (!url) return "";
-        const cleanUrl = String(url).replace(/^\/\//, "https://");
-        return `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}`;
-      };
-
-      const mapProfile = async (item, fallbackHandle) => {
-        const base = item || {};
-        const user = base.user || base.owner || base.profile || {};
-        const handle = String(pickValue(base.username, base.userName, base.handle, user.username, user.userName, user.handle, fallbackHandle, "usuario"))
-          .replace(/^@+/, "")
-          .toLowerCase();
-        const name = pickValue(base.fullName, base.name, base.full_name, user.fullName, user.name, user.full_name, "");
-        const bio = pickValue(base.biography, base.bio, base.biografia, user.biography, user.bio, user.biografia, "");
-        const followers = pickValue(
-          base.followersCount,
-          base.followers,
-          base.followers_count,
-          base.followerCount,
-          base.followedByCount,
-          base.edge_followed_by?.count,
-          base.edgeFollowedBy?.count,
-          user.followersCount,
-          user.followers,
-          user.followers_count,
-          user.edge_followed_by?.count,
-          user.edgeFollowedBy?.count
-        );
-        const following = pickValue(
-          base.followingCount,
-          base.following,
-          base.following_count,
-          base.followsCount,
-          base.follows,
-          base.edge_follow?.count,
-          base.edgeFollow?.count,
-          user.followingCount,
-          user.following,
-          user.following_count,
-          user.edge_follow?.count,
-          user.edgeFollow?.count
-        );
-        const posts = pickValue(base.postsCount, base.posts, base.posts_count, base.mediaCount, base.media_count, user.postsCount, user.posts, user.posts_count);
-        let isPrivate = pickValue(base.isPrivate, base.is_private, base.private, user.isPrivate, user.is_private, user.private, false);
-        const avatarRaw = pickValue(
-          base.profilePicUrlHd,
-          base.profilePicUrlHD,
-          base.profilePicUrl,
-          base.profile_pic_url_hd,
-          base.profile_pic_url,
-          base.profile_picture,
-          base.profilePic,
-          base.profileImage,
-          base.profile_image,
-          base.profileImageUrl,
-          base.profile_image_url,
-          base.avatarUrl,
-          base.avatar_url,
-          base.imageUrl,
-          base.image_url,
-          user.profilePicUrlHd,
-          user.profilePicUrlHD,
-          user.profilePicUrl,
-          user.profile_pic_url_hd,
-          user.profile_pic_url,
-          user.profile_picture,
-          user.profilePic,
-          user.profileImage,
-          user.profile_image,
-          user.profileImageUrl,
-          user.profile_image_url,
-          user.avatarUrl,
-          user.avatar_url,
-          user.imageUrl,
-          user.image_url,
-          ""
-        );
-        const avatarUrl = buildProxyUrl(avatarRaw);
-        const rawPosts = item.latestPosts || item.posts || item.postsList || item.latestMedia || item.edge_owner_to_timeline_media?.edges || [];
-        const postsList = Array.isArray(rawPosts)
-          ? rawPosts
-              .map((post) => {
-                const p = post || {};
-                const likes = [
-                  p.likesCount,
-                  p.likes,
-                  p.likeCount,
-                  p.edge_media_preview_like?.count,
-                  p.edge_liked_by?.count,
-                  p.edgeLikedBy?.count,
-                  p.node?.edge_media_preview_like?.count,
-                  p.node?.edge_liked_by?.count,
-                  p.node?.edge_media_preview_like?.count
-                ].find(v => v !== undefined && v !== null && v !== "" && v !== 0) ?? 0;
-
-                const comments = [
-                  p.commentsCount,
-                  p.comments,
-                  p.commentCount,
-                  p.edge_media_to_comment?.count,
-                  p.edgeMediaToComment?.count,
-                  p.node?.edge_media_to_comment?.count,
-                  p.node?.edge_media_to_comment?.count
-                ].find(v => v !== undefined && v !== null && v !== "" && v !== 0) ?? 0;
-
-                const image = pickValue(
-                  p.image,
-                  p.imageUrl,
-                  p.thumbnailUrl,
-                  p.displayUrl,
-                  p.thumbnail_src,
-                  p.node?.display_url,
-                  p.node?.thumbnail_src,
-                  p.node?.thumbnail_resources?.[0]?.src
-                );
-
-                return {
-                  image: buildProxyUrl(image),
-                  likes: getNumber(likes) || 0,
-                  comments: getNumber(comments) || 0
-                };
-              })
-              .filter((post) => post.image)
-          : [];
-
-        // Heurística: se tem posts mas a lista veio vazia, é provável que seja privada
-        if (!isPrivate && getNumber(posts) > 0 && postsList.length === 0) {
-          isPrivate = true;
-        }
-
-        const engagementRate = item.engagementRate ?? item.engagement_rate ?? null;
-        return {
-          handle,
-          name,
-          bio,
-          followers: getNumber(followers),
-          following: getNumber(following),
-          posts: getNumber(posts),
-          isPrivate: !!isPrivate,
-          avatarUrl,
-          postsList,
-          engagementRate
-        };
-      };
-
-      const fetchProfile = async (handle) => {
-        const run = await runActor([handle]);
-        const datasetId = run.defaultDatasetId;
-        if (!datasetId) throw new Error("missing_dataset");
-        const items = await getDatasetItems(datasetId);
-        const item = Array.isArray(items) ? items[0] : null;
-        if (!item) throw new Error("empty_dataset");
-        return await mapProfile(item, handle);
-      };
-
-      window.engajaApi = { fetchProfile };
-    })();
-  </script>
-  <script>
-    const trustCountEl = document.getElementById("trustCount");
-    const trustDayEl = document.getElementById("trustDay");
-    if (trustCountEl) {
-      const fmt = new Intl.NumberFormat("pt-BR");
-      const saved = parseInt(localStorage.getItem("engaja_trust_count") || "", 10);
-      let count = Number.isFinite(saved) && saved > 0 ? saved : 10027;
-      trustCountEl.textContent = fmt.format(count);
-      setInterval(() => {
-        count += Math.floor(5 + Math.random() * 6);
-        trustCountEl.textContent = fmt.format(count);
-        localStorage.setItem("engaja_trust_count", String(count));
-      }, 2000);
-    }
-    if (trustDayEl) {
-      trustDayEl.textContent = new Date().toLocaleDateString("pt-BR", { weekday: "long" }).toLowerCase();
-    }
-  </script>
-  <script src="./assets/js/analise.js"></script>
-  <script src="./assets/js/matrix.obf.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const line1 = document.getElementById("twLine1");
-      const line2 = document.getElementById("twLine2");
-      const subtitle = document.getElementById("twSubtitle");
-      const reveals = document.querySelectorAll(".reveal-after");
-
-      const typeWriter = async (el, parts, speed = 40) => {
-        el.classList.add("typewriter-text", "active");
-        for (const part of parts) {
-          const span = document.createElement("span");
-          if (part.class) span.className = part.partClass || part.class;
-          el.appendChild(span);
-          
-          for (let i = 0; i < part.text.length; i++) {
-            span.textContent += part.text[i];
-            await new Promise(r => setTimeout(r, speed));
-          }
-        }
-        el.classList.remove("active");
-      };
-
-      const startTypewriter = async () => {
-        await typeWriter(line1, [
-          { text: "Seu " },
-          { text: "Engajamento", class: "hl-purple" },
-          { text: " caiu" }
-        ], 68);
-        
-        await typeWriter(line2, [
-          { text: "e o " },
-          { text: "motivo", class: "hl-red" },
-          { text: " pode não ser seu " },
-          { text: "conteúdo", class: "hl-purple" }
-        ], 68);
-
-        await typeWriter(subtitle, [
-          { text: "Analise seu " },
-          { text: "perfil", class: "hl-purple" },
-          { text: " e descubra se ainda é possível recuperar seu " },
-          { text: "alcance", class: "hl-purple" },
-          { text: "." }
-        ], 40);
-
-        reveals.forEach(el => el.classList.add("visible"));
-      };
-
-      startTypewriter();
-    });
-  </script>
-</body>
-</html>
-  &lt;script src="./assets/js/css-editor.js"&gt;&lt;/script&gt;

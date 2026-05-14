@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperação de Engajamento</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="./styles/resultado-analise.css">
+</head>
+<body>
+  <main class="page">
+    <section class="card profile-card reveal">
+      <header class="header" style="text-align: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(129, 140, 248, 0.2);">
+        <h1 class="reveal delay-1">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
+            <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 12px #22c55e; animation: statusPulse 2s infinite;"></span>
+            <span style="color: #22c55e; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);">Protocolo de otimização disponivel para:</span>
+          </div>
+          <span id="headerProfileName" style="display: block; font-size: 28px; color: #ffffff; font-weight: 900; letter-spacing: -0.02em;">@usuario</span>
+        </h1>
+        <p class="reveal delay-2" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span style="color: #22c55e; font-weight: bold;">✔</span>
+          Seu perfil foi aprovado para ajustes de crescimento.
+        </p>
+      </header>
+
+      <div class="profile-top-layout reveal delay-3">
+        <div class="avatar-wrapper">
+          <div id="profileAvatar" class="avatar"></div>
+        </div>
+        <div class="profile-right-content">
+          <div class="profile-header-info">
+            <div id="profileName" class="profile-handle">Perfil analisado</div>
+          </div>
+          <div class="metrics-row">
+            <div class="metric-item">
+              <div id="metricPosts" class="metric-value">—</div>
+              <div class="metric-label">posts</div>
+            </div>
+            <div class="metric-item">
+              <div id="metricFollowers" class="metric-value">—</div>
+              <div class="metric-label">seguidores</div>
+            </div>
+            <div class="metric-item">
+              <div id="metricFollowing" class="metric-value">—</div>
+              <div class="metric-label">seguindo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="profileBio" class="profile-bio reveal delay-4">—</div>
+      
+      <!-- Barra de Performance Média -->
+      <div id="perfContainer" class="perf-container reveal delay-4" style="margin-top: 14px;">
+        <div class="perf-header">
+          <span>Análise de Performance do Conteúdo</span>
+          <span class="perf-value"><span id="perfScore">0</span> / 100</span>
+        </div>
+        <div class="perf-bar-bg">
+          <div id="perfBarFill" class="perf-bar-fill"></div>
+        </div>
+        <div class="perf-note">Detectamos sinais de restrição no alcance das postagens.</div>
+      </div>
+
+      <!-- Alerta de Conta Privada (Substitui performance em contas privadas) -->
+      <div id="privateAlert" class="private-alert reveal delay-4" style="display: none;">
+        <div class="private-alert-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <div class="private-alert-content">
+          <span class="private-alert-title">Atenção: Perfil Restrito</span>
+          <span class="private-alert-text">Sua conta está privada. Para uma análise técnica completa e precisa, é necessário que o perfil esteja público.</span>
+        </div>
+      </div>
+
+      <div class="perf-benchmark reveal delay-4">Perfis otimizados normalmente ficam entre 85–95</div>
+      <div id="postsEmpty" class="empty-posts" style="display: none;"></div>
+      
+      <!-- Seção de Posts integrada -->
+      <div class="posts-container reveal delay-5" style="margin-top: 0; padding-top: 8px; padding-bottom: 24px;">
+        <div id="postsGrid" class="posts-grid is-collapsed"></div>
+        <div id="loadMoreContainer" class="load-more-container">
+          <button id="loadMoreBtn" class="load-more-btn">Ver Mais</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card compare reveal">
+      <div class="compare-row reveal delay-1">
+        <span>Performance atual do perfil</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span id="rateCurrentVar" class="var-badge" style="color: #ef4444; background: rgba(239, 68, 68, 0.12);"></span>
+          <strong id="rateCurrent" style="color: #ef4444; text-shadow: 0 0 15px rgba(239, 68, 68, 0.4);">0.0%</strong>
+        </div>
+      </div>
+      <div class="compare-row reveal delay-1">
+        <span>Perfis com engajamento ativado</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span id="rateSimilarVar" class="var-badge" style="color: #22c55e; background: rgba(34, 197, 94, 0.12);"></span>
+          <strong id="rateSimilar" style="color: #22c55e; text-shadow: 0 0 15px rgba(34, 197, 94, 0.4);">0.0%</strong>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-wrap reveal">
+      <div class="cta-badge reveal delay-1">STATUS DA ANÁLISE</div>
+      <div class="recovery-status reveal delay-1">Perfil validado para otimização</div>
+
+      <div class="cta-profile-info reveal delay-2">
+        <div class="cta-avatar">
+          <img id="ctaAvatarImg" src="" alt="">
+        </div>
+        <div id="ctaHandle" class="cta-handle">@usuario</div>
+      </div>
+
+      <div class="cta-tech-block reveal delay-3">
+        <div class="tech-block-title">
+          <span>VERIFICAÇÕES DE INTEGRIDADE DO PERFIL</span>
+        </div>
+        <div class="tech-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Integridade de metadados verificada
+        </div>
+        <div class="tech-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Frequência de postagem qualificada
+        </div>
+        <div class="tech-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Score de autoridade de nicho: A+
+        </div>
+        <div class="tech-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Conexão com servidor: Ativa
+        </div>
+        <div class="tech-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Otimização pronta para execução
+        </div>
+      </div>
+
+      <button id="simulateBtn" class="cta-btn reveal delay-4">
+        <span>INICIAR OTIMIZAÇÃO AGORA</span>
+        <div class="cta-btn-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </button>
+      
+      <div class="cta-process-info reveal delay-5">
+        Processo leva menos de 15 segundos • nenhuma alteração será feita sem confirmação
+      </div>
+
+      <div class="tech-session-info reveal delay-3">
+        <span>Session: IG-72841</span>
+        <span>Status: Ready</span>
+      </div>
+
+      <div id="simNote" class="sim-note reveal delay-5"></div>
+      <div id="finalIndicator" class="final-indicator reveal delay-5">Simulação de crescimento possível após recuperação.</div>
+    </div>
+  </main>
+
+  <!-- Modal de Processamento -->
+  <div id="processingModal" class="modal-overlay">
+    <div class="processing-card">
+      <div class="loader-container">
+        <svg class="spinner-svg" viewBox="0 0 100 100">
+          <circle class="spinner-bg" cx="50" cy="50" r="45"></circle>
+          <circle id="spinnerFill" class="spinner-fill" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div id="percentageText" class="percentage-display">0%</div>
+      </div>
+
+      <div id="statusMain" class="status-text-main">Sincronizando dados...</div>
+      <div id="statusSub" class="status-text-sub">Iniciando análise técnica do perfil</div>
+
+      <div class="modal-carousel">
+        <div id="modalCarouselTrack" class="carousel-track">
+          <!-- Posts injetados via JS -->
+        </div>
+      </div>
+
+      <div class="steps-container">
+        <div id="step1" class="step-item">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Coleta de dados concluída</span>
+        </div>
+        <div id="step2" class="step-item">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Conteúdos processados</span>
+        </div>
+        <div id="step3" class="step-item">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Métricas comparadas</span>
+        </div>
+        <div id="step4" class="step-item">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Simulação preparada</span>
+        </div>
+      </div>
+
+      <div class="modal-footer-text">
+        Simulação baseada em padrões de performance observados
+      </div>
+    </div>
+  </div>
+
+    <script src="./script/resultado-analise.js"></script>
+</body>
+</html>

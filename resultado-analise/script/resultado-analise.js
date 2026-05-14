@@ -1,3 +1,4 @@
+
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
 
@@ -11,7 +12,6 @@ const formatCount = (value) => {
   return Number.isFinite(num) && num >= 0 ? fmt.format(num) : "—";
 };
 
-// Função para animar números
 const animateValue = (element, start, end, duration, suffix = "") => {
   if (!element) return;
   let startTimestamp = null;
@@ -20,7 +20,6 @@ const animateValue = (element, start, end, duration, suffix = "") => {
     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
     const current = (progress * (end - start) + start);
     
-    // Se tiver sufixo (ex: %), formata com uma casa decimal
     if (suffix) {
       element.textContent = `${current.toFixed(1)}${suffix}`;
     } else {
@@ -65,7 +64,6 @@ const loadProfile = () => {
     
     const clean = String(data.handle || data.username || getUsernameFromUrl() || "usuario").replace(/^@+/, "").toLowerCase();
     
-    // Se tiver dados do quiz, usa eles para engajamento
     let engagementRate = data.engagementRate ?? data.rateCurrent ?? null;
     let recoveryEstimate = data.recoveryEstimate ?? data.recoveryPercent ?? null;
     
@@ -77,8 +75,6 @@ const loadProfile = () => {
     const postsList = Array.isArray(data.postsList) ? data.postsList : [];
     const postsCount = Number.isFinite(Number(data.posts || data.postsCount)) ? Number(data.posts || data.postsCount) : null;
     
-    // Heurística de segurança: se o perfil tem posts mas a lista veio vazia, é provável que seja privado
-    // (A flag isPrivate pode não ter vindo do scraper em alguns casos)
     const isPrivate = !!(data.isPrivate || data.private) || (postsCount > 0 && postsList.length === 0);
 
     return {
@@ -150,7 +146,6 @@ if (ctaAvatarImg) {
   if (profile.avatarUrl) {
     ctaAvatarImg.src = profile.avatarUrl;
   } else if (profile.avatarBg) {
-    // Se não tiver imagem real, podemos usar uma cor de fundo ou placeholder
     ctaAvatarImg.style.background = profile.avatarBg;
   }
 }
@@ -171,7 +166,6 @@ const renderPosts = () => {
   const list = Array.isArray(profile.postsList) ? profile.postsList : [];
   const total = list.length;
   
-  // Atualiza a barra de performance média
   const updatePerformanceBar = () => {
     const perfScoreEl = byId("perfScore");
     const perfBarFill = byId("perfBarFill");
@@ -179,11 +173,9 @@ const renderPosts = () => {
 
     let score = 0;
     if (total > 0) {
-      // Se tiver engajamento vindo do quiz, usa ele como base
       if (profile.engagementRate) {
         score = Math.floor(profile.engagementRate);
       } else {
-        // Gera um valor fixo baseado no handle do perfil para não mudar ao recarregar
         const handle = profile.handle || "usuario";
         let hash = 0;
         for (let i = 0; i < handle.length; i++) {
@@ -191,7 +183,6 @@ const renderPosts = () => {
           hash |= 0;
         }
         const seed = Math.abs(hash);
-        // Força o engajamento a parecer baixo (entre 25 e 39) para incentivar a recuperação
         const baseScore = 25 + (seed % 15);
         score = baseScore;
       }
@@ -211,7 +202,6 @@ const renderPosts = () => {
     if (postsEmpty) {
       postsEmpty.style.display = "flex";
       
-      // Se a conta for privada, oculta elementos de performance que dependem de posts
       if (profile.isPrivate) {
         const perfContainer = document.getElementById("perfContainer");
         const perfBenchmark = document.querySelector(".perf-benchmark");
@@ -254,13 +244,12 @@ const renderPosts = () => {
   
   if (postsEmpty) postsEmpty.style.display = "none";
   
-  // Pre-calcula engajamento real de todos os posts para determinar a lógica de %
   const postsWithEng = list.map((p, idx) => {
     const l = p.likes ?? p.likesCount ?? p.likeCount ?? 0;
     const c = p.comments ?? p.commentsCount ?? p.commentCount ?? 0;
     return {
       index: idx,
-      eng: l + (c * 3), // Comentários valem mais na conta de engajamento
+      eng: l + (c * 3),
       likes: l,
       comments: c
     };
@@ -271,25 +260,21 @@ const renderPosts = () => {
   const minEng = sortedByEng.length > 0 ? sortedByEng[sortedByEng.length - 1].eng : 0;
   const bestPostIdx = sortedByEng.length > 0 ? sortedByEng[0].index : 0;
 
-  // Mostra o botão "Ver Mais" apenas se houver mais de 3 posts
   if (total > 3) {
     if (loadMoreBtn) {
       loadMoreBtn.style.display = "block";
       loadMoreBtn.textContent = "Ver Mais";
       loadMoreBtn.onclick = () => {
         if (postsGrid.classList.contains("is-collapsed")) {
-          // Expandir
           postsGrid.classList.remove("is-collapsed");
           postsGrid.classList.add("is-expanded");
           postsGrid.style.maxHeight = "2000px"; 
           loadMoreBtn.textContent = "Ver Menos";
         } else {
-          // Recolher
           postsGrid.classList.add("is-collapsed");
           postsGrid.classList.remove("is-expanded");
           postsGrid.style.maxHeight = "280px";
           loadMoreBtn.textContent = "Ver Mais";
-          // Scroll suave de volta para o topo da seção de posts se necessário
           postsGrid.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }
       };
@@ -305,7 +290,6 @@ const renderPosts = () => {
     const pEng = sortedPost;
     const post = document.createElement("div");
     
-    // O primeiro post é o melhor
     const isBest = i === 0;
     post.className = `post-card ${isBest ? "is-best" : "is-other"}`;
 
@@ -340,7 +324,6 @@ const renderPosts = () => {
     
     thumbContainer.appendChild(thumb);
 
-    // Adiciona as métricas do post (curtidas e comentários) centralizadas
     const metrics = document.createElement("div");
     metrics.className = "post-metrics";
     const likesCount = pEng.likes;
@@ -352,31 +335,23 @@ const renderPosts = () => {
     thumbContainer.appendChild(metrics);
     post.appendChild(thumbContainer);
 
-    // Rodapé de Performance
     const footer = document.createElement("div");
     footer.className = "post-perf-footer";
     
-    // Lógica Proporcional: quanto mais engajamento, maior a %
-    // Normaliza o engajamento entre 0 e 1 dentro do contexto do perfil
     const rangeEng = maxEng - minEng || 1;
     const normalized = (pEng.eng - minEng) / rangeEng;
 
-    // Base de cálculo vinda do quiz ou default baixo
     const baseEng = profile.engagementRate ? Number(profile.engagementRate) : 32;
 
     let perfScore;
     if (isBest) {
-      // O melhor post fica um pouco acima da média do perfil (entre 1.2x e 1.5x a média)
-      // Mas limitado a 65% para nunca chegar perto dos 85% dos otimizados
       perfScore = Math.floor(baseEng * (1.2 + (normalized * 0.3)));
       perfScore = Math.min(65, perfScore);
     } else {
-      // Outros posts ficam entre 0.6x e 1.1x a média do perfil
       perfScore = Math.floor(baseEng * (0.6 + (normalized * 0.5)));
       perfScore = Math.min(Math.floor(baseEng * 1.1), perfScore);
     }
 
-    // Garante que o perfScore seja pelo menos 15% para não parecer erro
     perfScore = Math.max(15, perfScore);
 
     const labelText = "PERFORMANCE";
@@ -403,10 +378,9 @@ renderPosts();
 const rateValue = profile.engagementRate;
 const simValue = profile.similarRate;
 
-// Diferencia as variações para parecerem independentes e realistas
 const dropValue = (simValue - rateValue).toFixed(1);
-const growthPotential = (dropValue * 1.15).toFixed(1); // Potencial de ganho ligeiramente maior que a queda
-const currentLoss = (dropValue * 0.92).toFixed(1); // Queda estimada ligeiramente menor
+const growthPotential = (dropValue * 1.15).toFixed(1);
+const currentLoss = (dropValue * 0.92).toFixed(1);
 
 if (rateCurrent) {
   if (Number.isFinite(Number(rateValue))) {
@@ -446,14 +420,13 @@ const initReveal = () => {
       });
     },
     { 
-      threshold: 0.01, // Dispara quase imediatamente ao tocar a tela
-      rootMargin: "0px 0px -20px 0px" // Ajustado para a subida de 100px
+      threshold: 0.01,
+      rootMargin: "0px 0px -20px 0px"
     }
   );
   items.forEach((el) => obs.observe(el));
 };
 
-// Lógica do Modal de Processamento
 const startProcessing = () => {
   const modal = byId("processingModal");
   const spinnerFill = byId("spinnerFill");
@@ -465,7 +438,6 @@ const startProcessing = () => {
   
   if (!modal) return;
 
-  // 1. Preparar Carrossel com posts reais (apenas se não for privado)
   if (profile.isPrivate) {
     if (modalCarousel) modalCarousel.style.display = "none";
   } else if (carouselTrack && profile.postsList.length > 0) {
@@ -473,7 +445,6 @@ const startProcessing = () => {
     carouselTrack.innerHTML = "";
     const labels = ["Conteúdo analisado", "Engajamento avaliado", "Performance calculada", "Potencial identificado"];
     
-    // Duplicar a lista para o efeito de loop infinito no CSS
     const displayList = [...profile.postsList, ...profile.postsList];
     
     displayList.forEach((post, i) => {
@@ -490,11 +461,9 @@ const startProcessing = () => {
     });
   }
 
-  // 2. Mostrar Modal
   modal.classList.add("is-active");
 
-  // 3. Configurações da Animação
-  const duration = 8000 + Math.random() * 4000; // Entre 8 e 12 segundos
+  const duration = 8000 + Math.random() * 4000;
   const startTime = Date.now();
   
   const statusUpdates = profile.isPrivate ? [
@@ -527,7 +496,6 @@ const startProcessing = () => {
     { pct: 98, id: "step4" }
   ];
 
-  // Se for privado, atualiza o texto do step 2 no modal (originalmente "Conteúdos processados")
   if (profile.isPrivate) {
     const step2 = byId("step2");
     if (step2) {
@@ -547,21 +515,18 @@ const startProcessing = () => {
     const progress = Math.min(elapsed / duration, 1);
     const currentPct = Math.floor(progress * 100);
 
-    // Atualizar UI
     if (percentageText) percentageText.textContent = `${currentPct}%`;
     if (spinnerFill) {
       const offset = 283 - (283 * progress);
       spinnerFill.style.strokeDashoffset = offset;
     }
 
-    // Atualizar Textos
     const currentStatus = [...statusUpdates].reverse().find(s => currentPct >= s.pct);
     if (currentStatus) {
       if (statusMain) statusMain.textContent = currentStatus.main;
       if (statusSub) statusSub.textContent = currentStatus.sub;
     }
 
-    // Atualizar Etapas
     steps.forEach(step => {
       const el = byId(step.id);
       if (el) {
@@ -577,23 +542,19 @@ const startProcessing = () => {
     if (progress < 1) {
       requestAnimationFrame(update);
     } else {
-      // Finalizado
       setTimeout(() => {
         modal.classList.remove("is-active");
         
-        // Remove o campo cta-wrap quando o loading terminar
         const ctaWrap = document.querySelector(".cta-wrap");
         if (ctaWrap) {
           ctaWrap.remove();
         }
 
-        // Remove a seção de comparação quando o loading terminar
         const compareRows = document.querySelectorAll(".compare-row");
         if (compareRows.length > 1) {
           compareRows[1].remove();
         }
 
-        // Troca o conteúdo do Header para a versão profissional de 7 dias
         const header = document.querySelector(".header");
         if (header) {
           header.innerHTML = `
@@ -612,7 +573,6 @@ const startProcessing = () => {
           `;
         }
 
-        // Insere o novo card de ativação abaixo da seção de comparação
         const compareSection = document.querySelector(".card.compare");
         if (compareSection) {
           const activationCard = document.createElement("div");
@@ -668,7 +628,7 @@ const startProcessing = () => {
             </div>
 
             <div style="display: flex; justify-content: center;">
-              <a href="./checkout/index.html" style="text-decoration: none; width: 100%; max-width: 300px; display: block;">
+              <a href="../checkout/index.html" style="text-decoration: none; width: 100%; max-width: 300px; display: block;">
                 <button class="cta-btn" style="
                   width: 100%; 
                   background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 50%, #4c1d95 100%); 
@@ -738,7 +698,6 @@ const startProcessing = () => {
           compareSection.parentNode.insertBefore(activationCard, compareSection.nextSibling);
         }
         
-        // Mostrar resultados originais
         const estimate = profile.recoveryEstimate;
         if (simNote && estimate != null) {
           const value = typeof estimate === "string" ? estimate.trim() : `${Number(estimate).toFixed(1)}%`;
@@ -746,21 +705,17 @@ const startProcessing = () => {
         }
         if (finalIndicator) finalIndicator.classList.add("is-visible");
         
-        // Voltar para o topo da página suavemente
         window.scrollTo({ top: 0, behavior: "smooth" });
 
-        // Iniciar animação dos números após o scroll
         setTimeout(() => {
           const startFollowers = profile.followers || 0;
-          const addFollowers = 20000 + Math.floor(Math.random() * 20001); // 20k a 40k
+          const addFollowers = 20000 + Math.floor(Math.random() * 20001);
           const endFollowers = startFollowers + addFollowers;
 
-          // Salva o valor impulsionado para usar no checkout
           const updatedProfile = { ...profile, followersBoosted: endFollowers, addFollowers: addFollowers };
           sessionStorage.setItem("engajaProfile", JSON.stringify(updatedProfile));
           localStorage.setItem("engajaProfileSnapshot", JSON.stringify(updatedProfile));
 
-          // Cria o elemento de badge com a quantidade adicionada
           const addBadge = document.createElement("div");
           addBadge.className = "added-followers-badge";
           addBadge.textContent = `+${fmt.format(addFollowers)}`;
@@ -786,24 +741,21 @@ const startProcessing = () => {
             metricFollowers.parentElement.appendChild(addBadge);
           }
 
-          // Proporção baseada no aumento de seguidores
           const ratio = addFollowers / (startFollowers || 1000);
           
           const startLikes = Math.floor(startFollowers * 0.05) || 50;
-          const endLikes = Math.floor(endFollowers * 0.08); // Engajamento melhorado
+          const endLikes = Math.floor(endFollowers * 0.08);
 
           const startComments = Math.floor(startLikes * 0.1) || 5;
           const endComments = Math.floor(endLikes * 0.15);
 
           animateValue(metricFollowers, startFollowers, endFollowers, 2500);
           
-          // Mostra o badge após o fim da animação
           setTimeout(() => {
             addBadge.style.opacity = "1";
             addBadge.style.transform = "translateY(0)";
           }, 2600);
           
-          // Anima curtidas e comentários se os elementos existirem (podem estar no card de simulação)
           const metricLikes = byId("metricLikes") || byId("projLikes");
           const metricComments = byId("metricComments") || byId("projComments");
 
@@ -818,10 +770,9 @@ const startProcessing = () => {
           
           if (metricFollowers) metricFollowers.classList.add("is-boosted");
 
-           // --- ANIMAÇÃO DA PERFORMANCE GERAL ---
            const perfScoreEl = byId("perfScore");
             const perfBarFill = byId("perfBarFill");
-            const perfValueText = document.querySelector(".perf-value"); // Elemento que contém o score e a cor
+            const perfValueText = document.querySelector(".perf-value");
             if (perfScoreEl) {
               const start = parseInt(perfScoreEl.textContent || "0");
               const end = 88 + Math.floor(Math.random() * 8);
@@ -841,23 +792,17 @@ const startProcessing = () => {
              }
            }
 
-           // --- ANIMAÇÃO DA SEÇÃO DE COMPARAÇÃO (SECTION) ---
            if (rateCurrent && rateSimilar) {
              const startVal = parseFloat(rateCurrent.textContent) || 0;
              const similarVal = parseFloat(rateSimilar.textContent) || 84.4;
              
-             // O perfil analisado deve terminar SEMPRE acima dos perfis otimizados
-             // Adiciona entre 2.5% e 4.8% a mais que o benchmark similar
              const targetVal = similarVal + 2.5 + (Math.random() * 2.3);
              
-             // Animar o número principal
              animateValue(rateCurrent, startVal, targetVal, 2500, "%");
              
-             // Mudar cores para verde
              rateCurrent.style.color = "#22c55e";
              rateCurrent.style.textShadow = "0 0 15px rgba(34, 197, 94, 0.4)";
              
-             // Ajustar o badge de variação (rateCurrentVar)
              if (rateCurrentVar) {
                const diff = targetVal - startVal;
                rateCurrentVar.textContent = `▲ +${diff.toFixed(1)}%`;
@@ -865,13 +810,11 @@ const startProcessing = () => {
                rateCurrentVar.style.background = "rgba(34, 197, 94, 0.12)";
              }
 
-             // Mudar a borda da linha (opcional, para combinar com o estado de sucesso)
              const firstCompareRow = document.querySelector(".compare-row:first-child");
              if (firstCompareRow) {
                firstCompareRow.style.borderLeftColor = "#22c55e";
                firstCompareRow.style.background = "rgba(34, 197, 94, 0.02)";
                
-               // Atualizar o texto do span
                const labelSpan = firstCompareRow.querySelector("span");
                if (labelSpan) {
                  labelSpan.textContent = "Perfomance do seu perfil após Otimização ativada";
@@ -879,7 +822,6 @@ const startProcessing = () => {
              }
            }
 
-           // --- ANIMAÇÃO DOS POSTS INDIVIDUAIS ---
            const postLikes = document.querySelectorAll(".post-likes-val");
            const postComments = document.querySelectorAll(".post-comments-val");
            const postPerfBars = document.querySelectorAll(".post-perf-fill-el");
@@ -930,11 +872,14 @@ const startProcessing = () => {
              window.requestAnimationFrame(step);
            });
 
-           postPerfVals.forEach((el, i) => {
+           postPerfVals.forEach((el, idx) => {
              const start = parseInt(el.getAttribute("data-val") || "0");
-             // Performance sobe para a faixa de 85-95%
-             const end = 85 + Math.floor(Math.random() * 11);
-             const bar = postPerfBars[i];
+             let end;
+             if (idx === 0) {
+               end = 92 + Math.floor(Math.random() * 8);
+             } else {
+               end = 82 + Math.floor(Math.random() * 10);
+             }
              
              let startTimestamp = null;
              const step = (timestamp) => {
@@ -942,36 +887,36 @@ const startProcessing = () => {
                const progress = Math.min((timestamp - startTimestamp) / 2500, 1);
                const current = Math.floor(progress * (end - start) + start);
                el.innerHTML = `${current}% <span style='font-size:10px;'>✅</span>`;
-               el.style.color = "#4ade80";
-               el.style.textShadow = "0 0 8px rgba(74, 222, 128, 0.4)";
-               if (bar) {
-                 bar.style.width = `${current}%`;
-                 bar.style.background = "linear-gradient(90deg, #22c55e, #4ade80)";
-                 bar.style.boxShadow = "0 0 10px rgba(34, 197, 94, 0.4)";
-               }
                if (progress < 1) window.requestAnimationFrame(step);
              };
              window.requestAnimationFrame(step);
            });
 
-         }, 800); // Espera o scroll terminar
-      }, 800);
+           postPerfBars.forEach((el, idx) => {
+             const start = parseInt(el.style.width || "0");
+             let end;
+             if (idx === 0) {
+               end = 92 + Math.floor(Math.random() * 8);
+             } else {
+               end = 82 + Math.floor(Math.random() * 10);
+             }
+             
+             setTimeout(() => {
+               el.style.width = `${end}%`;
+               el.style.background = "linear-gradient(90deg, #22c55e, #4ade80)";
+               el.style.boxShadow = "0 0 15px rgba(34, 197, 94, 0.5)";
+             }, 500);
+           });
+        }, 800);
+      }, 500);
     }
   };
 
-  requestAnimationFrame(update);
+  update();
 };
 
 if (simulateBtn) {
-  simulateBtn.addEventListener("click", () => {
-    startProcessing();
-  });
+  simulateBtn.addEventListener("click", startProcessing);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  window.scrollTo(0, 0);
-  if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-  }
-  initReveal();
-});
+initReveal();

@@ -58,8 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let expirationTimeLeft = 0; // segundos
   
   // SRCs originais das imagens
-  const ORIGINAL_BANNER_SRC = '/assets/img/7bf7b808-14b7-441d-939e-f0c8023f741f.png';
-  const ORIGINAL_TUTORIAL_SRC = '/assets/img/12bb9b63-7a03-4f56-94b3-7290173d7580.png';
+  const ORIGINAL_BANNER_SRC = '../assets/img/7bf7b808-14b7-441d-939e-f0c8023f741f.png';
+  const ORIGINAL_TUTORIAL_SRC = '../assets/img/12bb9b63-7a03-4f56-94b3-7290173d7580.png';
 
   const formatCount = (value) => {
     const num = Number(value);

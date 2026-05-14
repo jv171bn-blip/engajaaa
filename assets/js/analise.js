@@ -322,7 +322,7 @@ const startAnalysis = () => {
   const ctaEl = document.querySelector(".analysis-cta-btn");
   if (ctaEl) {
     const clean = currentProfile ? currentProfile.handle : "usuario";
-    ctaEl.href = `/resultado-analise/index.html?username=${encodeURIComponent(clean)}`;
+    ctaEl.href = `../resultado-analise/index.html?username=${encodeURIComponent(clean)}`;
   }
   const logs = [
     { t: 200, text: `✓ Conectando ao perfil ${handleText}`, type: "ok", status: () => { if (statusConnection) statusConnection.textContent = "ESTÁVEL"; } },
