@@ -9,9 +9,15 @@ const APIFY_TOKEN = process.env.APIFY_TOKEN;
 const ACTOR_ID = "coderx/instagram-profile-scraper-api";
 const API_BASE = "https://api.apify.com/v2";
 
+const path = require("path");
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "checkout", "index.html"));
+});
 
 const requestJson = async (url, options = {}) => {
   const response = await fetch(url, options);
@@ -58,10 +64,6 @@ app.get("/api/dataset/:datasetId", async (req, res) => {
   }
 });
 
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
-}
-
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
