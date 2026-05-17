@@ -2202,7 +2202,7 @@ section#planos > div.single-plan-wrapper > div.plan-card > div.plan-price-highli
   }
   
   .checkout-step.active .btn-premium-action {
-    display: none; /* Hide button in form, use fixed footer instead */
+    display: block; /* Mostrar botão no formulário */
   }
   
   #step-payment-pix.active .btn-premium-action,
