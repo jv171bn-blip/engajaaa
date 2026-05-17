@@ -2205,6 +2205,41 @@ section#planos > div.single-plan-wrapper > div.plan-card > div.plan-price-highli
     display: block; /* Mostrar botão no formulário */
   }
   
+  /* DIMINUIR TAMANHO DA FOTO DE PERFIL E MÉTRICAS NO MOBILE */
+  .ig-profile-top {
+    gap: 16px;
+  }
+  
+  .ig-avatar {
+    width: 80px;
+    height: 80px;
+    border-width: 3px;
+  }
+  
+  .ig-stats-row {
+    padding-top: 10px;
+  }
+  
+  .ig-stat-value {
+    font-size: 20px;
+  }
+  
+  .ig-stat-label {
+    font-size: 10px;
+  }
+  
+  .ig-profile-info {
+    margin-top: 10px;
+  }
+  
+  .ig-profile-name {
+    font-size: 16px;
+  }
+  
+  .ig-profile-bio {
+    font-size: 12px;
+  }
+  
   #step-payment-pix.active .btn-premium-action,
   #step-success.active .btn-premium-action {
     display: block; /* Show in success or payment steps if needed */
