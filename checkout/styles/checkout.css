@@ -2198,7 +2198,7 @@ section#planos > div.single-plan-wrapper > div.plan-card > div.plan-price-highli
   }
 
   .mobile-footer-cta {
-    display: block;
+    display: none;
   }
   
   .checkout-step.active .btn-premium-action {
@@ -3358,7 +3358,8 @@ section.hero-checkout > div.stats-preview-container > div.single-profile-wrapper
   }
   
   .modal-banner-premium {
-    display: none;
+    display: block;
+    border-radius: 24px 24px 0 0;
   }
   
   .trust-ticker-track {
