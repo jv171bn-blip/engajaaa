@@ -3207,3 +3207,243 @@ section.hero-checkout > div.stats-preview-container > div.single-profile-wrapper
   color: var(--text-dim);
   line-height: 1.5;
 }
+
+/* ================================
+   OTIMIZAÇÃO 100% PARA MOBILE
+   ================================ */
+@media (max-width: 520px) {
+  .checkout-header {
+    padding: 14px 16px;
+  }
+  
+  .profile-summary {
+    gap: 8px;
+  }
+  
+  .profile-img-header {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .username-header {
+    font-size: 14px;
+  }
+  
+  .hero-checkout {
+    padding: 30px 16px 24px;
+  }
+  
+  .hero-badges {
+    gap: 8px;
+  }
+  
+  .hero-badge {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+  
+  .profile-stats-bar {
+    padding: 24px 20px;
+    border-radius: 28px;
+  }
+  
+  .stats-avatar {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .stats-info {
+    gap: 16px;
+  }
+  
+  .stat-item .stat-value {
+    font-size: 28px;
+  }
+  
+  .stat-item .stat-label {
+    font-size: 11px;
+  }
+  
+  .stat-item:nth-child(2) {
+    margin-top: -20px;
+  }
+  
+  .plans-section {
+    padding: 30px 0 26px;
+  }
+  
+  .single-plan-wrapper {
+    padding: 16px 16px;
+  }
+  
+  .plan-card {
+    padding: 22px 18px 18px;
+    border-radius: 28px;
+  }
+  
+  .plan-badge-top {
+    left: 18px;
+    font-size: 9px;
+    padding: 3px 10px;
+  }
+  
+  section#planos > div.single-plan-wrapper > div.plan-card > div.plan-card-header > h3.plan-title {
+    font-size: clamp(26px, 6vw, 32px);
+  }
+  
+  .plan-price-highlight {
+    padding: 16px 14px;
+    border-radius: 20px;
+  }
+  
+  .price-main .currency {
+    font-size: clamp(20px, 4.5vw, 26px);
+  }
+  
+  .price-main .amount {
+    font-size: clamp(64px, 14vw, 80px);
+  }
+  
+  .price-main .decimal {
+    font-size: clamp(24px, 5vw, 34px);
+  }
+  
+  section#planos > div.single-plan-wrapper > div.plan-card > div.plan-price-highlight.pro-price .price-main .currency {
+    font-size: clamp(22px, 5vw, 28px);
+  }
+  
+  section#planos > div.single-plan-wrapper > div.plan-card > div.plan-price-highlight.pro-price .price-main .amount {
+    font-size: clamp(72px, 16vw, 90px);
+  }
+  
+  section#planos > div.single-plan-wrapper > div.plan-card > div.plan-price-highlight.pro-price .price-main .decimal {
+    font-size: clamp(26px, 5.5vw, 36px);
+  }
+  
+  .plan-features-list li {
+    font-size: 13px;
+    gap: 10px;
+  }
+  
+  .plan-action-btn {
+    height: 54px;
+    font-size: 15px;
+    border-radius: 18px;
+  }
+  
+  .trust-badges-plans {
+    gap: 20px;
+    margin-top: 30px;
+    padding: 0 16px;
+  }
+  
+  .refund-guarantee-badge {
+    padding: 14px 16px;
+    margin: 20px 16px 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .checkout-main-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .premium-checkout {
+    max-height: 88vh;
+  }
+  
+  .modal-body-premium {
+    padding: 24px 16px;
+  }
+  
+  .modal-banner-premium {
+    display: none;
+  }
+  
+  .trust-ticker-track {
+    animation-duration: 15s;
+  }
+  
+  .order-summary-card {
+    width: 100%;
+  }
+  
+  .summary-arrow {
+    position: static;
+  }
+  
+  .payment-model-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .payment-model-item {
+    width: 100%;
+  }
+  
+  .payment-model-content {
+    width: 100%;
+    padding: 0;
+  }
+  
+  .form-group-premium input {
+    width: 100%;
+    font-size: 16px;
+  }
+  
+  .btn-premium-action {
+    height: 58px;
+    font-size: 14px;
+  }
+  
+  .pix-payment-card {
+    padding: 24px 16px;
+  }
+  
+  .qr-code-wrapper {
+    padding: 10px;
+    border-radius: 16px;
+  }
+  
+  .qr-code-img {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .payment-instructions {
+    padding: 14px;
+  }
+  
+  .instructions-title {
+    font-size: 15px;
+  }
+  
+  .instruction-item p {
+    font-size: 13px;
+  }
+  
+  .success-animation-wrapper {
+    margin-bottom: 24px;
+  }
+  
+  .success-checkmark {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .success-title {
+    font-size: 22px;
+  }
+  
+  .success-subtitle {
+    font-size: 15px;
+  }
+  
+  .success-features-list {
+    padding: 20px;
+  }
+  
+  .success-features-list li {
+    font-size: 14px;
+  }
+}
