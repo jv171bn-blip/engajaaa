@@ -27,13 +27,15 @@ body {
   color: #F9F9F9; 
   min-height: 100vh; 
   min-height: -webkit-fill-available;
-  width: 100vw;
+  width: 100%;
+  max-width: 100vw;
   line-height: 1.7; 
   position: relative; 
   overflow-x: hidden; 
   transition: opacity 0.35s ease; 
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
   overscroll-behavior-y: none;
 }
@@ -970,3 +972,84 @@ img { max-width: 100%; height: auto; display: block; }
   .secure-item { padding: 6px 8px; gap: 6px; }
   .secure-icon { font-size: var(--font-sm); }
 }
+
+/* ================================
+   100% OTIMIZADO PARA MOBILE
+   ================================ */
+
+/* Garante que tudo caiba na tela mobile */
+html, body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit !important;
+}
+
+/* Todas as imagens responsivas */
+img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Botões com área mínima de toque (44px) */
+button, .btn-primary, .btn-secondary, .conv-cta, .sim-action-btn, .plan-cta, .price-cta, .sticky-cta, .quiz-opt, .diag-opt {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Ajusta textos para mobile */
+p, span, div, li {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Evita zoom acidental */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Todos os grids em coluna única para mobile */
+.compare, .steps-grid, .feature-grid, .stats-grid, .proofs-grid, .plans-grid, .hero-grid, .audience-grid, .status-grid, .sim-metrics {
+  grid-template-columns: 1fr !important;
+}
+
+/* Ajusta o card simulador para mobile */
+.simulation-hero, .simulation-panel, .hero-card, .price-card, .offer-card, .pre-sim-card {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--spacing-sm) !important;
+  padding-right: var(--spacing-sm) !important;
+}
+
+/* Ajusta inputs para mobile */
+.sim-field input, .hero-input-row input {
+  min-height: 44px !important;
+  font-size: 16px !important;
+}
+
+/* Todas as seções em 100% da tela */
+.section, .conv-block, .top-copy, .pre-sim {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: var(--spacing-sm) !important;
+  padding-right: var(--spacing-sm) !important;
+}
+
+/* Tira sombras e animações pesadas para desempenho */
+.simulation-panel::after, .offer-card::before, .simulation-panel::before {
+  display: none !important;
+}
+
+/* Ajusta o container principal */
+main, #app {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
