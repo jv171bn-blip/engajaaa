@@ -23,6 +23,8 @@ const buildProfileShell = (handle) => {
 
 const CACHE_KEY = "engaja_profile_cache";
 const CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000; // 24 horas
+const LIMIT_KEY = "engaja_used_limit";
+const LAST_PROFILE_KEY = "engaja_last_profile";
 
 const getProfileCache = () => {
   try {
@@ -129,6 +131,36 @@ const analysisScoreFill = byId("analysisScoreFill");
 let currentProfile = null;
 let analysisTimer = null;
 let logTimers = [];
+let isAdmin = false;
+
+const checkAdmin = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  isAdmin = urlParams.get('admin') === 'true';
+  return isAdmin;
+};
+
+const hasUsedLimit = () => {
+  if (isAdmin) return false;
+  try {
+    return localStorage.getItem(LIMIT_KEY) === 'true';
+  } catch (e) {
+    return false;
+  }
+};
+
+const markLimitUsed = (handle) => {
+  if (isAdmin) return;
+  try {
+    localStorage.setItem(LIMIT_KEY, 'true');
+    localStorage.setItem(LAST_PROFILE_KEY, normalizeHandle(handle));
+  } catch (e) {
+    console.error("Erro ao salvar limite:", e);
+  }
+};
+
+const redirectToLimitPage = () => {
+  window.location.href = "../limite/index.html";
+};
 
 const ensureButtonInner = () => {
   if (!simActivate) return;
@@ -293,6 +325,12 @@ const captureProfileData = () => {
 
 const startAnalysis = () => {
   if (!analysisOverlay || !analysisCard || !analysisDiagnosis) return;
+  
+  // Mark limit as used before starting
+  if (currentProfile) {
+    markLimitUsed(currentProfile.handle);
+  }
+  
   if (analysisTimer) {
     clearInterval(analysisTimer);
     analysisTimer = null;
@@ -391,6 +429,13 @@ if (simForm && simUsername) {
   simForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (simActivate && simActivate.classList.contains("is-loading")) return;
+    
+    // Check limit before proceeding
+    if (hasUsedLimit()) {
+      redirectToLimitPage();
+      return;
+    }
+    
     setTimeout(setSimLoading, 0);
     const handle = normalizeHandle(simUsername.value);
     if (!handle) {
@@ -426,5 +471,13 @@ document.addEventListener("DOMContentLoaded", () => {
   window.scrollTo(0, 0);
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
+  }
+  
+  // Check admin status
+  checkAdmin();
+  
+  // Check if limit is already used
+  if (hasUsedLimit()) {
+    redirectToLimitPage();
   }
 });

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Limite Atingido · Engaja+</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="./styles/limite.css">
+</head>
+<body>
+  <canvas id="matrix-canvas" class="bg-canvas"></canvas>
+  <main>
+    <section id="limitScreen" class="limit-screen">
+      <div class="limit-wrap">
+        <div class="limit-header">
+          <div class="limit-logo">
+            <img src="../assets/img/engaja+.png" alt="Engaja+ logo" loading="lazy">
+          </div>
+          <h2 class="limit-title">
+            <span class="limit-icon">🚫</span>
+            <span class="limit-text">Limite Atingido</span>
+          </h2>
+        </div>
+        <div class="limit-subtitle" id="limitSubtitle">Você já utilizou sua pesquisa gratuita para espionar <span id="limitUsername" class="limit-user"></span></div>
+        <div class="limit-message">Adquira o acesso VIP e tenha acesso ao instagram completo agora mesmo!</div>
+        <a id="limitCta" class="limit-cta" href="../checkout/index.html">
+          <span class="limit-cta-icon">🔒</span>
+          <span class="limit-cta-text">Desbloquear Acesso VIP</span>
+        </a>
+        <div class="limit-warning">
+          <span>Sua identidade está comprometida!</span>
+          <span>NINA pode ser avisado sobre sua espionagem, somente membros VIP's tem sigilo preservado nas espionagens.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>window.engajaMatrix = true;</script>
+  <script src="../assets/js/matrix.obf.js"></script>
+  <script src="./script/limite.js"></script>
+</body>
+</html>
