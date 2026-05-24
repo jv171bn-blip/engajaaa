@@ -26,13 +26,13 @@
     .limit-title {
       font-size: 32px;
       font-weight: 800;
-      color: #ef4444;
+      color: #f87171;
       margin: 0 0 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
-      text-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
+      text-shadow: 0 0 16px rgba(248, 113, 113, 0.5);
     }
     .limit-icon {
       font-size: 32px;
@@ -75,17 +75,6 @@
     .limit-cta-icon {
       font-size: 28px;
     }
-    .limit-warning {
-      background: rgba(127, 29, 29, 0.4);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      border-radius: 18px;
-      padding: 14px 16px;
-      display: grid;
-      gap: 4px;
-      color: #ef4444;
-      font-size: 16px;
-      line-height: 1.4;
-    }
     @media (max-width: 520px) {
       .limit-wrap {
         padding: clamp(18px, 5vw, 24px) clamp(16px, 4.5vw, 20px) clamp(16px, 4.5vw, 20px);
@@ -103,8 +92,5 @@
       .limit-cta {
         font-size: clamp(18px, 5vw, 24px);
         padding: clamp(16px, 4.5vw, 20px) clamp(18px, 5vw, 24px);
-      }
-      .limit-warning {
-        font-size: clamp(14px, 3.8vw, 16px);
       }
     }
