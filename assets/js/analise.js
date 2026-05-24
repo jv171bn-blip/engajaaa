@@ -148,11 +148,15 @@ const hasUsedLimit = () => {
   }
 };
 
-const markLimitUsed = (handle) => {
+const markLimitUsed = (handle, avatarUrl = '') => {
   if (isAdmin) return;
   try {
     localStorage.setItem(LIMIT_KEY, 'true');
-    localStorage.setItem(LAST_PROFILE_KEY, normalizeHandle(handle));
+    const profileData = {
+      handle: normalizeHandle(handle),
+      avatarUrl: avatarUrl
+    };
+    localStorage.setItem(LAST_PROFILE_KEY, JSON.stringify(profileData));
   } catch (e) {
     console.error("Erro ao salvar limite:", e);
   }

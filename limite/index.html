@@ -13,15 +13,21 @@
     <section id="limitScreen" class="limit-screen">
       <div class="limit-wrap">
         <div class="limit-header">
-          <div class="limit-logo">
-            <img src="../assets/img/engaja+.png" alt="Engaja+ logo" loading="lazy">
-          </div>
           <h2 class="limit-title">
             <span class="limit-icon">⚠️</span>
             <span class="limit-text">Limite Atingido</span>
           </h2>
         </div>
-        <div class="limit-subtitle" id="limitSubtitle">Você já utilizou sua pesquisa gratuita para o perfil <span id="limitUsername" class="limit-user"></span></div>
+        <div class="limit-profile">
+          <div class="limit-avatar">
+            <img id="limitAvatarImg" src="" alt="Perfil" style="display: none;">
+            <div class="limit-avatar-placeholder">
+              @
+            </div>
+          </div>
+          <div class="limit-handle" id="limitUsername"></div>
+        </div>
+        <div class="limit-subtitle" id="limitSubtitle">Você já utilizou sua pesquisa gratuita</div>
         <div class="limit-message">Adquira o acesso completo e continue analisando perfis sem limites!</div>
         <a id="limitCta" class="limit-cta" href="../checkout/index.html">
           <span class="limit-cta-icon">🔓</span>

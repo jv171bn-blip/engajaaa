@@ -48,11 +48,15 @@ const checkAdmin = () => {
   return urlParams.get('admin') === 'true';
 };
 
-const markLimitUsed = (handle) => {
+const markLimitUsed = (handle, avatarUrl = '') => {
   if (checkAdmin()) return;
   try {
     localStorage.setItem(LIMIT_KEY, 'true');
-    localStorage.setItem(LAST_PROFILE_KEY, handle);
+    const profileData = {
+      handle: handle,
+      avatarUrl: avatarUrl
+    };
+    localStorage.setItem(LAST_PROFILE_KEY, JSON.stringify(profileData));
   } catch (e) {
     console.error("Erro ao salvar limite:", e);
   }
@@ -64,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Marcar o limite como usado quando a pessoa acessa o checkout
   if (profile.handle) {
-    markLimitUsed(profile.handle);
+    markLimitUsed(profile.handle, profile.avatarUrl);
   }
   
   // Configurações da API ParadisePags
