@@ -440,17 +440,32 @@ const startProcessing = () => {
 
   if (profile.isPrivate) {
     if (modalCarousel) modalCarousel.style.display = "none";
-  } else if (carouselTrack && profile.postsList.length > 0) {
+  } else if (carouselTrack) {
     if (modalCarousel) modalCarousel.style.display = "block";
     carouselTrack.innerHTML = "";
     const labels = ["Conteúdo analisado", "Engajamento avaliado", "Performance calculada", "Potencial identificado"];
     
-    const displayList = [...profile.postsList, ...profile.postsList];
+    // Garantir que sempre tenha pelo menos 6 itens para animação
+    let postsToUse = [...profile.postsList];
+    if (postsToUse.length < 3) {
+      // Adicionar posts falsos se não houver suficientes
+      const fakePosts = [
+        { image: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=200&h=200&fit=crop" },
+        { image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=200&h=200&fit=crop" },
+        { image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&h=200&fit=crop" },
+        { image: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=200&h=200&fit=crop" },
+        { image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=200&h=200&fit=crop" },
+        { image: "https://images.unsplash.com/photo-1483721310020-03333e577078?w=200&h=200&fit=crop" }
+      ];
+      postsToUse = [...postsToUse, ...fakePosts].slice(0, 6);
+    }
+    
+    const displayList = [...postsToUse, ...postsToUse];
     
     displayList.forEach((post, i) => {
       const item = document.createElement("div");
       item.className = "carousel-item";
-      const imgUrl = post.image || post.imageUrl || post.thumb || "";
+      const imgUrl = post.image || post.imageUrl || post.thumb || "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=200&h=200&fit=crop";
       const label = labels[i % labels.length];
       
       item.innerHTML = `
