@@ -1,5 +1,6 @@
 window.engajaMatrix = true;
 
+document.addEventListener("DOMContentLoaded", () => {
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
 
@@ -466,7 +467,6 @@ if (btnConfirmUname) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
   window.scrollTo(0, 0);
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";

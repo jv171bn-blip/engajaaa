@@ -1,4 +1,5 @@
 
+document.addEventListener("DOMContentLoaded", () => {
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
 
@@ -1297,7 +1298,6 @@ const applyOptimizedState = (state) => {
   if (finalIndicator) finalIndicator.classList.add("is-visible");
 };
 
-document.addEventListener("DOMContentLoaded", () => {
   window.scrollTo(0, 0);
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";

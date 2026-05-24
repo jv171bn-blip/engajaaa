@@ -1,6 +1,7 @@
 
 window.engajaMatrix = true;
 
+document.addEventListener("DOMContentLoaded", () => {
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
 
@@ -451,3 +452,4 @@ if (trustCount) {
 if (trustDay) {
   trustDay.textContent = new Date().toLocaleDateString("pt-BR", { weekday: "long" });
 }
+});
