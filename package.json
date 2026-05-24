@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Engaja+ - Análise de perfil do Instagram",
   "scripts": {
-    "dev": "echo 'Projeto estático, abra index.html no navegador'",
-    "build": "echo 'Projeto estático, não precisa de build'"
+    "build": "echo 'Static project, no build required'"
   },
   "keywords": ["instagram", "analysis", "social-media"],
   "author": "",
