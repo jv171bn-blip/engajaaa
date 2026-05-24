@@ -40,8 +40,8 @@ const generateUniqueReference = () => {
   return `ENG-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 };
 
-const LIMIT_KEY = "engaja_used_limit";
-const LAST_PROFILE_KEY = "engaja_last_profile";
+const LIMIT_KEY = "engaja_used_limit_v2";
+const LAST_PROFILE_KEY = "engaja_last_profile_v2";
 
 const checkAdmin = () => {
   const urlParams = new URLSearchParams(window.location.search);
