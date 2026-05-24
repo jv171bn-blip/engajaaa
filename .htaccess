@@ -1,0 +1,12 @@
+# Habilita o motor de reescrita
+RewriteEngine On
+
+# Redireciona a raiz para a pasta /quiz/ (302 temporário, use 301 para permanente)
+RewriteRule ^$ /quiz/ [R=302,L]
+
+# Garante que index.html seja o arquivo padrão em todas as pastas
+DirectoryIndex index.html
+
+# Remove o index.html da URL quando acessado diretamente
+RewriteCond %{THE_REQUEST} /index\.html [NC]
+RewriteRule ^(.*?)index\.html$ /$1 [L,R=302,NC,NE]

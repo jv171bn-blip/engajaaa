@@ -4,6 +4,7 @@ const fmt = new Intl.NumberFormat("pt-BR");
 
 const LIMIT_KEY = "engaja_used_limit_v4";
 const LAST_PROFILE_KEY = "engaja_last_profile_v4";
+const OPTIMIZATION_STATE_KEY = "engaja_optimization_state_v5";
 
 const checkAdmin = () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -796,6 +797,56 @@ const startProcessing = () => {
           const startComments = Math.floor(startLikes * 0.1) || 5;
           const endComments = Math.floor(endLikes * 0.15);
 
+          const perfEnd = 88 + Math.floor(Math.random() * 8);
+          
+          const similarVal = parseFloat(rateSimilar ? rateSimilar.textContent : "84.4") || 84.4;
+          const targetRateVal = similarVal + 2.5 + (Math.random() * 2.3);
+          
+          const maxLikes = Math.floor(endFollowers * 0.75);
+          const postEndLikes = [];
+          const postEndComments = [];
+          const postEndPerfs = [];
+          
+          const postLikes = document.querySelectorAll(".post-likes-val");
+          const postComments = document.querySelectorAll(".post-comments-val");
+          const postPerfVals = document.querySelectorAll(".post-perf-val-el");
+
+          postLikes.forEach((el, idx) => {
+            const start = parseInt(el.getAttribute("data-val") || "0");
+            let end;
+            if (idx === 0) {
+              end = Math.floor(maxLikes * (0.6 + Math.random() * 0.4));
+            } else {
+              end = Math.floor(Math.random() * maxLikes * 0.7);
+              if (end < Math.floor(maxLikes * 0.05)) {
+                end = Math.floor(maxLikes * 0.05) + Math.floor(Math.random() * Math.floor(maxLikes * 0.15));
+              }
+            }
+            postEndLikes.push(end);
+          });
+
+          postComments.forEach((el, idx) => {
+            const start = parseInt(el.getAttribute("data-val") || "0");
+            let end;
+            if (idx === 0) {
+              end = 4000 + Math.floor(Math.random() * 1000);
+            } else {
+              end = 1000 + Math.floor(Math.random() * 3000);
+            }
+            postEndComments.push(end);
+          });
+
+          postPerfVals.forEach((el, idx) => {
+            const start = parseInt(el.getAttribute("data-val") || "0");
+            let end;
+            if (idx === 0) {
+              end = 92 + Math.floor(Math.random() * 8);
+            } else {
+              end = 82 + Math.floor(Math.random() * 10);
+            }
+            postEndPerfs.push(end);
+          });
+
           animateValue(metricFollowers, startFollowers, endFollowers, 2500);
           
           setTimeout(() => {
@@ -822,10 +873,9 @@ const startProcessing = () => {
             const perfValueText = document.querySelector(".perf-value");
             if (perfScoreEl) {
               const start = parseInt(perfScoreEl.textContent || "0");
-              const end = 88 + Math.floor(Math.random() * 8);
-              animateValue(perfScoreEl, start, end, 2500);
+              animateValue(perfScoreEl, start, perfEnd, 2500);
               if (perfBarFill) {
-                 perfBarFill.style.width = `${end}%`;
+                 perfBarFill.style.width = `${perfEnd}%`;
                  perfBarFill.style.background = "linear-gradient(90deg, #22c55e, #4ade80)";
                  perfBarFill.style.boxShadow = "0 0 25px rgba(34, 197, 94, 0.6)";
              }
@@ -839,20 +889,19 @@ const startProcessing = () => {
              }
            }
 
+           let rateCurrentVarText = "";
            if (rateCurrent && rateSimilar) {
              const startVal = parseFloat(rateCurrent.textContent) || 0;
-             const similarVal = parseFloat(rateSimilar.textContent) || 84.4;
              
-             const targetVal = similarVal + 2.5 + (Math.random() * 2.3);
-             
-             animateValue(rateCurrent, startVal, targetVal, 2500, "%");
+             animateValue(rateCurrent, startVal, targetRateVal, 2500, "%");
              
              rateCurrent.style.color = "#22c55e";
              rateCurrent.style.textShadow = "0 0 15px rgba(34, 197, 94, 0.4)";
              
              if (rateCurrentVar) {
-               const diff = targetVal - startVal;
-               rateCurrentVar.textContent = `▲ +${diff.toFixed(1)}%`;
+               const diff = targetRateVal - startVal;
+               rateCurrentVarText = `▲ +${diff.toFixed(1)}%`;
+               rateCurrentVar.textContent = rateCurrentVarText;
                rateCurrentVar.style.color = "#22c55e";
                rateCurrentVar.style.background = "rgba(34, 197, 94, 0.12)";
              }
@@ -869,24 +918,9 @@ const startProcessing = () => {
              }
            }
 
-           const postLikes = document.querySelectorAll(".post-likes-val");
-           const postComments = document.querySelectorAll(".post-comments-val");
-           const postPerfBars = document.querySelectorAll(".post-perf-fill-el");
-           const postPerfVals = document.querySelectorAll(".post-perf-val-el");
-
-           const maxLikes = Math.floor(endFollowers * 0.75);
-           
            postLikes.forEach((el, idx) => {
              const start = parseInt(el.getAttribute("data-val") || "0");
-             let end;
-             if (idx === 0) {
-               end = Math.floor(maxLikes * (0.6 + Math.random() * 0.4));
-             } else {
-               end = Math.floor(Math.random() * maxLikes * 0.7);
-               if (end < Math.floor(maxLikes * 0.05)) {
-                 end = Math.floor(maxLikes * 0.05) + Math.floor(Math.random() * Math.floor(maxLikes * 0.15));
-               }
-             }
+             const end = postEndLikes[idx];
              
              let startTimestamp = null;
              const step = (timestamp) => {
@@ -901,12 +935,7 @@ const startProcessing = () => {
 
            postComments.forEach((el, idx) => {
              const start = parseInt(el.getAttribute("data-val") || "0");
-             let end;
-             if (idx === 0) {
-               end = 4000 + Math.floor(Math.random() * 1000);
-             } else {
-               end = 1000 + Math.floor(Math.random() * 3000);
-             }
+             const end = postEndComments[idx];
              
              let startTimestamp = null;
              const step = (timestamp) => {
@@ -921,12 +950,7 @@ const startProcessing = () => {
 
            postPerfVals.forEach((el, idx) => {
              const start = parseInt(el.getAttribute("data-val") || "0");
-             let end;
-             if (idx === 0) {
-               end = 92 + Math.floor(Math.random() * 8);
-             } else {
-               end = 82 + Math.floor(Math.random() * 10);
-             }
+             const end = postEndPerfs[idx];
              
              let startTimestamp = null;
              const step = (timestamp) => {
@@ -939,14 +963,10 @@ const startProcessing = () => {
              window.requestAnimationFrame(step);
            });
 
+           const postPerfBars = document.querySelectorAll(".post-perf-fill-el");
            postPerfBars.forEach((el, idx) => {
              const start = parseInt(el.style.width || "0");
-             let end;
-             if (idx === 0) {
-               end = 92 + Math.floor(Math.random() * 8);
-             } else {
-               end = 82 + Math.floor(Math.random() * 10);
-             }
+             const end = postEndPerfs[idx];
              
              setTimeout(() => {
                el.style.width = `${end}%`;
@@ -954,6 +974,23 @@ const startProcessing = () => {
                el.style.boxShadow = "0 0 15px rgba(34, 197, 94, 0.5)";
              }, 500);
            });
+
+           // Salvar o estado de otimização depois que as animações terminarem
+           setTimeout(() => {
+             const optimizationState = {
+               handle: profile.handle,
+               avatarUrl: profile.avatarUrl,
+               followersBoosted: endFollowers,
+               addFollowers: addFollowers,
+               perfScore: perfEnd,
+               rateCurrent: targetRateVal,
+               rateCurrentVar: rateCurrentVarText,
+               postLikes: postEndLikes,
+               postComments: postEndComments,
+               postPerfs: postEndPerfs
+             };
+             saveOptimizationState(optimizationState);
+           }, 3000);
         }, 800);
       }, 500);
     }
@@ -962,8 +999,319 @@ const startProcessing = () => {
   update();
 };
 
-if (simulateBtn) {
-  simulateBtn.addEventListener("click", startProcessing);
-}
+const saveOptimizationState = (state) => {
+  try {
+    localStorage.setItem(OPTIMIZATION_STATE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.error("Erro ao salvar estado de otimização:", e);
+  }
+};
 
-initReveal();
+const getOptimizationState = () => {
+  try {
+    const raw = localStorage.getItem(OPTIMIZATION_STATE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.error("Erro ao carregar estado de otimização:", e);
+    return null;
+  }
+};
+
+const applyOptimizedState = (state) => {
+  if (!state) return;
+
+  // Alterar o header
+  const header = document.querySelector(".header");
+  if (header) {
+    header.innerHTML = `
+      <div class="reveal is-visible" style="animation: fadeIn 0.8s ease-out forwards;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
+          <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 12px #22c55e; animation: statusPulse 2s infinite;"></span>
+          <span style="color: #22c55e; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">SIMULAÇÃO DE PERFORMANCE CONCLUÍDA</span>
+        </div>
+        <p style="margin: 0 0 16px; color: #94a3b8; font-size: 15px; font-weight: 500;">
+          Impacto estimado para o perfil <span style="color: #ffffff; font-weight: 700;">@${profile.handle}</span> após a ativação da tecnologia <span style="color: #ffffff; font-weight: 700;">ENGAJA+</span>.
+        </p>
+        <h1 style="margin: 0; font-size: 28px; color: #ffffff; font-weight: 900; letter-spacing: -0.02em; line-height: 1.2;">
+           Esse é o seu perfil em: <span style="color: #8b5cf6;">7 Dias</span>
+         </h1>
+      </div>
+    `;
+  }
+
+  // Remover o processing modal e o cta wrap
+  const modal = byId("processingModal");
+  if (modal) modal.classList.add("hidden");
+  
+  const ctaWrap = document.querySelector(".cta-wrap");
+  if (ctaWrap) ctaWrap.remove();
+
+  const compareRows = document.querySelectorAll(".compare-row");
+  if (compareRows.length > 1) {
+    compareRows[1].remove();
+  }
+
+  // Criar o activation card
+  const compareSection = document.querySelector(".card.compare");
+  if (compareSection) {
+    const activationCard = document.createElement("div");
+    activationCard.className = "card activation-card reveal is-visible";
+    activationCard.style.cssText = `
+      margin-top: 24px;
+      padding: 32px 24px;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(10, 13, 20, 0.95) 100%);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.1);
+      animation: fadeIn 1s ease-out forwards;
+    `;
+
+    activationCard.innerHTML = `
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div style="display: inline-block; padding: 6px 16px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 999px; color: #4ade80; font-size: 12px; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 16px;">
+           TECNOLOGIA DISPONÍVEL
+         </div>
+         <h2 style="margin: 0; font-size: 22px; color: #ffffff; font-weight: 800; letter-spacing: -0.02em;">Seu perfil está pronto para ativar essa otimização</h2>
+         <div style="margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+           <div style="width: 140px; height: 140px; border-radius: 50%; border: 4px solid #8b5cf6; padding: 4px; background: rgba(139, 92, 246, 0.1); box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);">
+             <img src="${state.avatarUrl || profile.avatarUrl}" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+           </div>
+           <div style="font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: -0.01em; opacity: 0.9;">
+             @${state.handle || profile.handle}
+           </div>
+         </div>
+       </div>
+
+      <div style="background: rgba(255, 255, 255, 0.03); border-radius: 18px; padding: 20px; margin-bottom: 28px; border: 1px solid rgba(255, 255, 255, 0.05);">
+        <h3 style="margin: 0 0 16px 0; font-size: 13px; color: #a78bfa; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; text-align: center;">O que acontece após a ativação:</h3>
+        <div style="display: grid; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: #e2e8f0; font-weight: 500;">
+            <div style="width: 20px; height: 20px; background: rgba(34, 197, 94, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            Aplicação imediata dos ajustes de algoritmo detectados
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: #e2e8f0; font-weight: 500;">
+            <div style="width: 20px; height: 20px; background: rgba(34, 197, 94, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            Otimização da distribuição para novos seguidores qualificados
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: #e2e8f0; font-weight: 500;">
+            <div style="width: 20px; height: 20px; background: rgba(34, 197, 94, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            Ativação dos sinais de crescimento orgânico constante
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center;">
+        <a id="goToCheckoutBtn" href="#" style="text-decoration: none; width: 100%; max-width: 300px; display: block;">
+          <button class="cta-btn" style="
+            width: 100%; 
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 50%, #4c1d95 100%); 
+            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.1) inset, inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            height: 72px;
+            border-radius: 999px;
+            position: relative;
+            overflow: hidden;
+            animation: pulse-glow 2.5s infinite ease-in-out;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: none;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+           " onmouseover="this.style.transform='translateY(-6px) scale(1.02)'; this.style.boxShadow='0 30px 70px rgba(139, 92, 246, 0.7), 0 0 0 2px rgba(255, 255, 255, 0.15) inset, inset 0 1px 0 rgba(255, 255, 255, 0.3)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 20px 50px rgba(139, 92, 246, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.1) inset, inset 0 1px 0 rgba(255, 255, 255, 0.2)';" onmousedown="this.style.transform='scale(0.97) translateY(2px)';">
+            <div style="
+              position: absolute;
+              top: 0;
+              left: -100%;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+              animation: shine-sweep 2.5s infinite linear;
+            "></div>
+            <div style="
+              position: absolute;
+              inset: -2px;
+              background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 50%), 
+                          radial-gradient(circle at 70% 80%, rgba(216, 180, 254, 0.3) 0%, transparent 50%);
+              pointer-events: none;
+            "></div>
+            <div style="
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+              width: 44px;
+              height: 44px;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+              z-index: 1;
+            ">
+               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));">
+                 <path d="M5 12h14"></path>
+                 <path d="m12 5 7 7-7 7"></path>
+               </svg>
+             </div>
+            <span style="
+              font-size: 17px; 
+              font-weight: 900; 
+              letter-spacing: 0.08em; 
+              text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+              text-transform: uppercase;
+              z-index: 1;
+            ">ATIVAR AGORA</span>
+          </button>
+        </a>
+      </div>
+      <p style="text-align: center; margin-top: 16px; font-size: 11px; color: #64748b; font-weight: 500;">
+        Sessão segura • Ativação em menos de 2 minutos
+      </p>
+    `;
+
+    compareSection.parentNode.insertBefore(activationCard, compareSection.nextSibling);
+
+    // Adicionar evento de clique no botão
+    const goToCheckoutBtn = document.getElementById('goToCheckoutBtn');
+    if (goToCheckoutBtn) {
+      goToCheckoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        markLimitUsed(profile.handle, profile.avatarUrl);
+        window.location.href = '../checkout/index.html';
+      });
+    }
+  }
+
+  // Aplicar os valores otimizados
+  if (metricFollowers) metricFollowers.textContent = fmt.format(state.followersBoosted);
+  if (metricFollowers) metricFollowers.classList.add("is-boosted");
+
+  // Adicionar o badge de seguidores
+  if (metricFollowers && metricFollowers.parentElement && state.addFollowers) {
+    metricFollowers.parentElement.style.position = "relative";
+    const addBadge = document.createElement("div");
+    addBadge.className = "added-followers-badge";
+    addBadge.textContent = `+${fmt.format(state.addFollowers)}`;
+    addBadge.style.cssText = `
+      position: absolute;
+      top: -20px;
+      right: -10px;
+      background: #22c55e;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 10;
+    `;
+    metricFollowers.parentElement.appendChild(addBadge);
+  }
+
+  // Aplicar o score
+  const perfScoreEl = byId("perfScore");
+  const perfBarFill = byId("perfBarFill");
+  const perfValueText = document.querySelector(".perf-value");
+  if (perfScoreEl && state.perfScore) {
+    perfScoreEl.textContent = state.perfScore;
+    perfScoreEl.style.color = "#4ade80";
+    perfScoreEl.style.textShadow = "0 0 10px rgba(74, 222, 128, 0.5)";
+  }
+  if (perfBarFill && state.perfScore) {
+    perfBarFill.style.width = `${state.perfScore}%`;
+    perfBarFill.style.background = "linear-gradient(90deg, #22c55e, #4ade80)";
+    perfBarFill.style.boxShadow = "0 0 25px rgba(34, 197, 94, 0.6)";
+  }
+  if (perfValueText) {
+    perfValueText.style.color = "#4ade80";
+    perfValueText.style.textShadow = "0 0 10px rgba(74, 222, 128, 0.5)";
+  }
+
+  // Aplicar o rate current
+  if (rateCurrent && state.rateCurrent) {
+    rateCurrent.textContent = `${Number(state.rateCurrent).toFixed(1)}%`;
+    rateCurrent.style.color = "#22c55e";
+    rateCurrent.style.textShadow = "0 0 15px rgba(34, 197, 94, 0.4)";
+  }
+  if (rateCurrentVar && state.rateCurrentVar) {
+    rateCurrentVar.textContent = state.rateCurrentVar;
+    rateCurrentVar.style.color = "#22c55e";
+    rateCurrentVar.style.background = "rgba(34, 197, 94, 0.12)";
+  }
+
+  // Alterar a primeira linha de comparação
+  const firstCompareRow = document.querySelector(".compare-row:first-child");
+  if (firstCompareRow) {
+    firstCompareRow.style.borderLeftColor = "#22c55e";
+    firstCompareRow.style.background = "rgba(34, 197, 94, 0.02)";
+    const labelSpan = firstCompareRow.querySelector("span");
+    if (labelSpan) {
+      labelSpan.textContent = "Perfomance do seu perfil após Otimização ativada";
+    }
+  }
+
+  // Aplicar os valores dos posts
+  if (state.postLikes) {
+    const postLikes = document.querySelectorAll(".post-likes-val");
+    postLikes.forEach((el, idx) => {
+      if (state.postLikes[idx]) {
+        el.innerHTML = `❤️ ${fmt.format(state.postLikes[idx])}`;
+      }
+    });
+  }
+  if (state.postComments) {
+    const postComments = document.querySelectorAll(".post-comments-val");
+    postComments.forEach((el, idx) => {
+      if (state.postComments[idx]) {
+        el.innerHTML = `💬 ${fmt.format(state.postComments[idx])}`;
+      }
+    });
+  }
+  if (state.postPerfs) {
+    const postPerfVals = document.querySelectorAll(".post-perf-val-el");
+    postPerfVals.forEach((el, idx) => {
+      if (state.postPerfs[idx]) {
+        el.innerHTML = `${state.postPerfs[idx]}% <span style='font-size:10px;'>✅</span>`;
+      }
+    });
+  }
+  if (state.postPerfs) {
+    const postPerfBars = document.querySelectorAll(".post-perf-fill-el");
+    postPerfBars.forEach((el, idx) => {
+      if (state.postPerfs[idx]) {
+        el.style.width = `${state.postPerfs[idx]}%`;
+        el.style.background = "linear-gradient(90deg, #22c55e, #4ade80)";
+        el.style.boxShadow = "0 0 15px rgba(34, 197, 94, 0.5)";
+      }
+    });
+  }
+
+  // Mostrar o final indicator
+  if (finalIndicator) finalIndicator.classList.add("is-visible");
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  window.scrollTo(0, 0);
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+
+  // Verificar se temos estado de otimização salvo
+  const savedState = getOptimizationState();
+  if (savedState) {
+    // Aplicar o estado salvo diretamente
+    applyOptimizedState(savedState);
+  } else if (simulateBtn) {
+    // Se não tem estado salvo, adicionar o listener normal
+    simulateBtn.addEventListener("click", startProcessing);
+  }
+
+  initReveal();
+});
