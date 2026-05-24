@@ -326,11 +326,6 @@ const captureProfileData = () => {
 const startAnalysis = () => {
   if (!analysisOverlay || !analysisCard || !analysisDiagnosis) return;
   
-  // Mark limit as used before starting
-  if (currentProfile) {
-    markLimitUsed(currentProfile.handle);
-  }
-  
   if (analysisTimer) {
     clearInterval(analysisTimer);
     analysisTimer = null;

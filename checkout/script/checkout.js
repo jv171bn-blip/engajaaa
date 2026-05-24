@@ -40,9 +40,32 @@ const generateUniqueReference = () => {
   return `ENG-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 };
 
+const LIMIT_KEY = "engaja_used_limit";
+const LAST_PROFILE_KEY = "engaja_last_profile";
+
+const checkAdmin = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('admin') === 'true';
+};
+
+const markLimitUsed = (handle) => {
+  if (checkAdmin()) return;
+  try {
+    localStorage.setItem(LIMIT_KEY, 'true');
+    localStorage.setItem(LAST_PROFILE_KEY, handle);
+  } catch (e) {
+    console.error("Erro ao salvar limite:", e);
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   const profile = JSON.parse(sessionStorage.getItem("engajaProfile") || localStorage.getItem("engajaProfileSnapshot") || "{}");
   const fmt = new Intl.NumberFormat("pt-BR");
+  
+  // Marcar o limite como usado quando a pessoa acessa o checkout
+  if (profile.handle) {
+    markLimitUsed(profile.handle);
+  }
   
   // Configurações da API ParadisePags
   const PIX_CONFIG = {
