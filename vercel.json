@@ -1,5 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "echo 'No build needed'",
-  "outputDirectory": "."
+  "builds": [
+    { "src": "**/*.html", "use": "@vercel/static" },
+    { "src": "**/*.css", "use": "@vercel/static" },
+    { "src": "**/*.js", "use": "@vercel/static" },
+    { "src": "**/*.png", "use": "@vercel/static" },
+    { "src": "**/*.jpg", "use": "@vercel/static" },
+    { "src": "**/*.jpeg", "use": "@vercel/static" },
+    { "src": "**/*.svg", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" }
+  ]
 }
