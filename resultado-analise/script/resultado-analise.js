@@ -2,6 +2,28 @@
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
 
+const LIMIT_KEY = "engaja_used_limit_v4";
+const LAST_PROFILE_KEY = "engaja_last_profile_v4";
+
+const checkAdmin = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('admin') === 'true';
+};
+
+const markLimitUsed = (handle, avatarUrl = '') => {
+  if (checkAdmin()) return;
+  try {
+    localStorage.setItem(LIMIT_KEY, 'true');
+    const profileData = {
+      handle: handle,
+      avatarUrl: avatarUrl
+    };
+    localStorage.setItem(LAST_PROFILE_KEY, JSON.stringify(profileData));
+  } catch (e) {
+    console.error("Erro ao salvar limite:", e);
+  }
+};
+
 const safeText = (value) => {
   const text = String(value || "").trim();
   return text ? text : "—";
@@ -643,7 +665,7 @@ const startProcessing = () => {
             </div>
 
             <div style="display: flex; justify-content: center;">
-              <a href="../checkout/index.html" style="text-decoration: none; width: 100%; max-width: 300px; display: block;">
+              <a id="goToCheckoutBtn" href="#" style="text-decoration: none; width: 100%; max-width: 300px; display: block;">
                 <button class="cta-btn" style="
                   width: 100%; 
                   background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 50%, #4c1d95 100%); 
@@ -711,6 +733,16 @@ const startProcessing = () => {
           `;
           
           compareSection.parentNode.insertBefore(activationCard, compareSection.nextSibling);
+          
+          // Adicionar evento de clique no botão para marcar o limite
+          const goToCheckoutBtn = document.getElementById('goToCheckoutBtn');
+          if (goToCheckoutBtn) {
+            goToCheckoutBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              markLimitUsed(profile.handle, profile.avatarUrl);
+              window.location.href = '../checkout/index.html';
+            });
+          }
         }
         
         const estimate = profile.recoveryEstimate;
