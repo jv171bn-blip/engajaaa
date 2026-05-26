@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
 
-const LIMIT_KEY = "engaja_used_limit_v4";
-const LAST_PROFILE_KEY = "engaja_last_profile_v4";
-const OPTIMIZATION_STATE_KEY = "engaja_optimization_state_v5";
+const LIMIT_KEY = "engaja_used_limit_v6";
+const LAST_PROFILE_KEY = "engaja_last_profile_v6";
+const OPTIMIZATION_STATE_KEY = "engaja_optimization_state_v6";
 
 const checkAdmin = () => {
   const urlParams = new URLSearchParams(window.location.search);
