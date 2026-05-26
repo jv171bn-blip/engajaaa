@@ -764,7 +764,7 @@ const startProcessing = () => {
             goToCheckoutBtn.addEventListener('click', (e) => {
               e.preventDefault();
               markLimitUsed(profile.handle, profile.avatarUrl);
-              window.location.href = '../checkout/index.html';
+              window.location.href = '../checkout/';
             });
           }
         }
@@ -1208,7 +1208,7 @@ const applyOptimizedState = (state) => {
       goToCheckoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
         markLimitUsed(profile.handle, profile.avatarUrl);
-        window.location.href = '../checkout/index.html';
+        window.location.href = '../checkout/';
       });
     }
   }

@@ -668,7 +668,7 @@ const startProcessing = () => {
             </div>
 
             <div style="display: flex; justify-content: center;">
-              <a href="../checkout/index.html" style="text-decoration: none; width: 100%; max-width: 300px; display: block;">
+              <a href="../checkout/" style="text-decoration: none; width: 100%; max-width: 300px; display: block;">
                 <button class="cta-btn" style="
                   width: 100%; 
                   background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 50%, #4c1d95 100%); 
