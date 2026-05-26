@@ -184,43 +184,58 @@ if (metricFollowers) metricFollowers.textContent = formatCount(profile.followers
 if (metricFollowing) metricFollowing.textContent = formatCount(profile.following);
 if (metricPosts) metricPosts.textContent = formatCount(profile.posts);
 
-const renderPosts = () => {
+const renderPosts = (optimizedState = null) => {
   if (!postsGrid) return;
   postsGrid.innerHTML = "";
   const list = Array.isArray(profile.postsList) ? profile.postsList : [];
   const total = list.length;
   
-  const updatePerformanceBar = () => {
+  const updatePerformanceBar = (score = null) => {
     const perfScoreEl = byId("perfScore");
     const perfBarFill = byId("perfBarFill");
     if (!perfScoreEl || !perfBarFill) return;
 
-    let score = 0;
-    if (total > 0) {
-      if (profile.engagementRate) {
-        score = Math.floor(profile.engagementRate);
-      } else {
-        const handle = profile.handle || "usuario";
-        let hash = 0;
-        for (let i = 0; i < handle.length; i++) {
-          hash = (hash << 5) - hash + handle.charCodeAt(i);
-          hash |= 0;
+    let finalScore = score;
+    if (finalScore === null) {
+      if (total > 0) {
+        if (profile.engagementRate) {
+          finalScore = Math.floor(profile.engagementRate);
+        } else {
+          const handle = profile.handle || "usuario";
+          let hash = 0;
+          for (let i = 0; i < handle.length; i++) {
+            hash = (hash << 5) - hash + handle.charCodeAt(i);
+            hash |= 0;
+          }
+          const seed = Math.abs(hash);
+          const baseScore = 25 + (seed % 15);
+          finalScore = baseScore;
         }
-        const seed = Math.abs(hash);
-        const baseScore = 25 + (seed % 15);
-        score = baseScore;
+      } else {
+        finalScore = 0;
       }
-    } else {
-      score = 0;
     }
 
     setTimeout(() => {
-      perfScoreEl.textContent = score;
-      perfBarFill.style.width = `${score}%`;
+      perfScoreEl.textContent = finalScore;
+      perfBarFill.style.width = `${finalScore}%`;
+      if (optimizedState) {
+        perfBarFill.style.background = "linear-gradient(90deg, #22c55e, #4ade80)";
+        perfBarFill.style.boxShadow = "0 0 25px rgba(34, 197, 94, 0.6)";
+        const perfValueText = document.querySelector(".perf-value");
+        if (perfValueText) {
+          perfValueText.style.color = "#4ade80";
+          perfValueText.style.textShadow = "0 0 10px rgba(74, 222, 128, 0.5)";
+        }
+      }
     }, 800);
   };
 
-  updatePerformanceBar();
+  if (optimizedState && optimizedState.perfScore) {
+    updatePerformanceBar(optimizedState.perfScore);
+  } else {
+    updatePerformanceBar();
+  }
   
   if (!total) {
     if (postsEmpty) {
@@ -350,8 +365,32 @@ const renderPosts = () => {
 
     const metrics = document.createElement("div");
     metrics.className = "post-metrics";
-    const likesCount = pEng.likes;
-    const commentsCount = pEng.comments;
+    
+    let likesCount, commentsCount, perfScore;
+    
+    if (optimizedState && optimizedState.postLikes && optimizedState.postComments && optimizedState.postPerfs) {
+      likesCount = optimizedState.postLikes[i] || pEng.likes;
+      commentsCount = optimizedState.postComments[i] || pEng.comments;
+      perfScore = optimizedState.postPerfs[i] || 0;
+    } else {
+      likesCount = pEng.likes;
+      commentsCount = pEng.comments;
+      
+      const rangeEng = maxEng - minEng || 1;
+      const normalized = (pEng.eng - minEng) / rangeEng;
+      const baseEng = profile.engagementRate ? Number(profile.engagementRate) : 32;
+      
+      if (isBest) {
+        perfScore = Math.floor(baseEng * (1.2 + (normalized * 0.3)));
+        perfScore = Math.min(65, perfScore);
+      } else {
+        perfScore = Math.floor(baseEng * (0.6 + (normalized * 0.5)));
+        perfScore = Math.min(Math.floor(baseEng * 1.1), perfScore);
+      }
+      
+      perfScore = Math.max(15, perfScore);
+    }
+    
     metrics.innerHTML = `
       <span class="post-likes-val" data-val="${likesCount}" style="font-size:13px; font-weight:800; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,0.5); display:flex; align-items:center; gap:4px;">❤️ ${formatCount(likesCount)}</span>
       <span class="post-comments-val" data-val="${commentsCount}" style="font-size:13px; font-weight:800; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,0.5); display:flex; align-items:center; gap:4px;">💬 ${formatCount(commentsCount)}</span>
@@ -361,24 +400,9 @@ const renderPosts = () => {
 
     const footer = document.createElement("div");
     footer.className = "post-perf-footer";
-    
-    const rangeEng = maxEng - minEng || 1;
-    const normalized = (pEng.eng - minEng) / rangeEng;
-
-    const baseEng = profile.engagementRate ? Number(profile.engagementRate) : 32;
-
-    let perfScore;
-    if (isBest) {
-      perfScore = Math.floor(baseEng * (1.2 + (normalized * 0.3)));
-      perfScore = Math.min(65, perfScore);
-    } else {
-      perfScore = Math.floor(baseEng * (0.6 + (normalized * 0.5)));
-      perfScore = Math.min(Math.floor(baseEng * 1.1), perfScore);
-    }
-
-    perfScore = Math.max(15, perfScore);
 
     const labelText = "PERFORMANCE";
+    const perfIcon = optimizedState ? "✅" : "⚠️";
 
     footer.innerHTML = `
       <div class="post-perf-label">${labelText}</div>
@@ -387,7 +411,7 @@ const renderPosts = () => {
           <div class="post-perf-bar-fill post-perf-fill-el" style="width: ${perfScore}%"></div>
         </div>
         <div class="post-perf-num post-perf-val-el" data-val="${perfScore}" style="display:flex; align-items:center; gap:2px;">
-          ${perfScore}% <span style='font-size:10px;'>⚠️</span>
+          ${perfScore}% <span style='font-size:10px;'>${perfIcon}</span>
         </div>
       </div>
     `;
@@ -396,8 +420,6 @@ const renderPosts = () => {
     postsGrid.appendChild(post);
   }
 };
-
-renderPosts();
 
 const rateValue = profile.engagementRate;
 const simValue = profile.similarRate;
@@ -1021,6 +1043,9 @@ const getOptimizationState = () => {
 const applyOptimizedState = (state) => {
   if (!state) return;
 
+  // Primeiro renderizar os posts com o estado otimizado
+  renderPosts(state);
+
   // Alterar o header
   const header = document.querySelector(".header");
   if (header) {
@@ -1258,41 +1283,7 @@ const applyOptimizedState = (state) => {
     }
   }
 
-  // Aplicar os valores dos posts
-  if (state.postLikes) {
-    const postLikes = document.querySelectorAll(".post-likes-val");
-    postLikes.forEach((el, idx) => {
-      if (state.postLikes[idx]) {
-        el.innerHTML = `❤️ ${fmt.format(state.postLikes[idx])}`;
-      }
-    });
-  }
-  if (state.postComments) {
-    const postComments = document.querySelectorAll(".post-comments-val");
-    postComments.forEach((el, idx) => {
-      if (state.postComments[idx]) {
-        el.innerHTML = `💬 ${fmt.format(state.postComments[idx])}`;
-      }
-    });
-  }
-  if (state.postPerfs) {
-    const postPerfVals = document.querySelectorAll(".post-perf-val-el");
-    postPerfVals.forEach((el, idx) => {
-      if (state.postPerfs[idx]) {
-        el.innerHTML = `${state.postPerfs[idx]}% <span style='font-size:10px;'>✅</span>`;
-      }
-    });
-  }
-  if (state.postPerfs) {
-    const postPerfBars = document.querySelectorAll(".post-perf-fill-el");
-    postPerfBars.forEach((el, idx) => {
-      if (state.postPerfs[idx]) {
-        el.style.width = `${state.postPerfs[idx]}%`;
-        el.style.background = "linear-gradient(90deg, #22c55e, #4ade80)";
-        el.style.boxShadow = "0 0 15px rgba(34, 197, 94, 0.5)";
-      }
-    });
-  }
+
 
   // Mostrar o final indicator
   if (finalIndicator) finalIndicator.classList.add("is-visible");
@@ -1308,9 +1299,12 @@ const applyOptimizedState = (state) => {
   if (savedState) {
     // Aplicar o estado salvo diretamente
     applyOptimizedState(savedState);
-  } else if (simulateBtn) {
-    // Se não tem estado salvo, adicionar o listener normal
-    simulateBtn.addEventListener("click", startProcessing);
+  } else {
+    // Se não tem estado salvo, renderizar posts originais e adicionar listener
+    renderPosts();
+    if (simulateBtn) {
+      simulateBtn.addEventListener("click", startProcessing);
+    }
   }
 
   initReveal();
