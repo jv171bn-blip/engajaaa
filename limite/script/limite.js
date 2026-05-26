@@ -1,6 +1,6 @@
 const byId = (id) => document.getElementById(id);
 const normalizeHandle = (value) => String(value || "").trim().replace(/^@+/, "").toLowerCase();
-const LAST_PROFILE_KEY = "engaja_last_profile_v7";
+const LAST_PROFILE_KEY = "engaja_last_profile_v8";
 
 document.addEventListener("DOMContentLoaded", () => {
   const limitUsername = byId("limitUsername");
