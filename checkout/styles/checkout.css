@@ -1146,19 +1146,22 @@ body.modal-open {
   background: rgba(4, 6, 7, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
-  padding: 8px 14px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11px;
+  justify-content: center;
+  gap: 0;
+  font-size: 0;
   font-weight: 700;
   z-index: 999999;
   transition: all 0.3s;
   text-transform: none;
   letter-spacing: normal;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
 }
 
 .modal-back-above svg {
@@ -1170,6 +1173,7 @@ body.modal-open {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
   color: #fff;
+  transform: scale(1.05);
 }
 
 .modal-overlay.active {

@@ -258,8 +258,6 @@ document.addEventListener("DOMContentLoaded", () => {
         stepPaymentSelection.classList.remove("active");
         stepPaymentPix.classList.add("active");
         stepSuccess.classList.remove("active");
-        // Scroll instantâneo para o topo da página
-        window.scrollTo(0, 0);
         // Iniciar contador de expiração (7 minutos = 420 segundos)
         startExpirationTimer(420);
         // Mudar banner para tutorial
@@ -271,6 +269,26 @@ document.addEventListener("DOMContentLoaded", () => {
         stepSuccess.classList.add("active");
         stopExpirationTimer();
     }
+    
+    // Scrollar o modal para o topo (aplicar depois que o DOM atualizar)
+    setTimeout(() => {
+      const modalOverlay = document.querySelector('.modal-overlay');
+      const modalContent = document.querySelector('.modal-content');
+      if (modalOverlay) {
+        modalOverlay.scrollTop = 0;
+        modalOverlay.scrollTo(0, 0);
+      }
+      if (modalContent) {
+        modalContent.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
+      // Segunda tentativa para garantir
+      setTimeout(() => {
+        const overlay = document.querySelector('.modal-overlay');
+        if (overlay) {
+          overlay.scrollTop = 0;
+        }
+      }, 100);
+    }, 50);
     
     // Update mobile button text based on step
     if (btnMobileAction) {
@@ -289,6 +307,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (modal) {
         modal.classList.add("active");
         document.body.classList.add("modal-open");
+        // Scrollar o modal para o topo ao abrir
+        const modalOverlay = document.querySelector('.modal-overlay');
+        if (modalOverlay) {
+          modalOverlay.scrollTop = 0;
+        }
         showStep("step-customer-data");
         if (modalBackAbove) {
           modalBackAbove.style.display = "flex";
@@ -497,6 +520,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Mudar para etapa do QR Code
       showStep("step-payment-pix");
+      
+      // Scrollar o modal para o topo imediatamente
+      const modalOverlay = document.querySelector('.modal-overlay');
+      if (modalOverlay) {
+        modalOverlay.scrollTop = 0;
+        modalOverlay.scrollTo(0, 0);
+      }
+      // Garantir novamente após 100ms
+      setTimeout(() => {
+        const overlay = document.querySelector('.modal-overlay');
+        if (overlay) {
+          overlay.scrollTop = 0;
+        }
+      }, 100);
       
       // Iniciar polling para verificar pagamento
       if (paymentPollingInterval) clearInterval(paymentPollingInterval);
