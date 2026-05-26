@@ -1018,3 +1018,38 @@
       transition: opacity 0.2s;
     }
     .private-alert-btn:hover { opacity: 0.9; }
+    .profile-not-found {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 16px;
+      margin-top: 12px;
+    }
+    .profile-not-found.hidden {
+      display: none;
+    }
+    .profile-not-found-icon {
+      width: 24px;
+      height: 24px;
+      color: #ef4444;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .profile-not-found-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .profile-not-found-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ef4444;
+    }
+    .profile-not-found-text {
+      font-size: 13px;
+      color: #d1d5db;
+      line-height: 1.5;
+    }

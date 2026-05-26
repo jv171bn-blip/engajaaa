@@ -128,6 +128,7 @@ const statusData = byId("statusData");
 const statusEngagement = byId("statusEngagement");
 const analysisScoreText = byId("analysisScoreText");
 const analysisScoreFill = byId("analysisScoreFill");
+const profileNotFound = byId("profileNotFound");
 
 let currentProfile = null;
 let analysisTimer = null;
@@ -425,6 +426,25 @@ if (simActivate) {
   });
 }
 
+if (simUsername) {
+  simUsername.addEventListener("input", () => {
+    if (profileNotFound) {
+      profileNotFound.classList.add("hidden");
+    }
+  });
+}
+
+const isProfileValid = (profile) => {
+  if (!profile) return false;
+  // Verifica se o perfil tem dados válidos (não é só o shell)
+  if (profile.name && profile.name.trim() !== "") return true;
+  if (profile.followers && profile.followers > 0) return true;
+  if (profile.posts && profile.posts > 0) return true;
+  if (profile.postsList && Array.isArray(profile.postsList) && profile.postsList.length > 0) return true;
+  if (profile.avatarUrl && profile.avatarUrl.trim() !== "") return true;
+  return false;
+};
+
 if (simForm && simUsername) {
   simForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -448,6 +468,19 @@ if (simForm && simUsername) {
       currentProfile = buildProfileShell(handle);
     }
     clearSimLoading();
+    
+    // Verifica se o perfil é válido
+    if (!isProfileValid(currentProfile)) {
+      if (profileNotFound) {
+        profileNotFound.classList.remove("hidden");
+      }
+      return;
+    }
+    
+    // Se perfil for válido, esconde o aviso e mostra o confirm
+    if (profileNotFound) {
+      profileNotFound.classList.add("hidden");
+    }
     showConfirm(currentProfile);
   });
 }
