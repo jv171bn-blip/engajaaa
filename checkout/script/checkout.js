@@ -139,15 +139,13 @@ document.addEventListener("DOMContentLoaded", () => {
         badge.textContent = `+${formatCount(gained)}`;
         badge.style.cssText = `
           position: absolute;
-          top: -15px;
-          right: -5px;
-          background: #22c55e;
-          color: #fff;
+          top: -12px;
+          right: 0;
+          background: transparent;
+          color: #22c55e;
           font-size: 12px;
           font-weight: 900;
-          padding: 4px 10px;
-          border-radius: 8px;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+          padding: 0;
           z-index: 10;
         `;
         igAfterFollowers.parentElement.style.position = "relative";
@@ -290,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       if (modal) {
         modal.classList.add("active");
-        document.body.style.overflow = "hidden";
+        document.body.classList.add("modal-open");
         showStep("step-customer-data");
         if (modalBackAbove) {
           modalBackAbove.style.display = "flex";
@@ -302,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (closeModal) {
     closeModal.addEventListener("click", () => {
       modal.classList.remove("active");
-      document.body.style.overflow = "auto";
+      document.body.classList.remove("modal-open");
       if (modalBackAbove) {
         modalBackAbove.style.display = "none";
       }
@@ -318,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (modalBackAbove) {
     modalBackAbove.addEventListener("click", () => {
       modal.classList.remove("active");
-      document.body.style.overflow = "auto";
+      document.body.classList.remove("modal-open");
       modalBackAbove.style.display = "none";
       // Parar polling e contador ao fechar modal
       if (paymentPollingInterval) {
