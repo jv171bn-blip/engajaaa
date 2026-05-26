@@ -224,7 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Plan selection (Modal Logic)
   const modal = document.getElementById("checkout-modal");
-  const closeModal = document.getElementById("close-modal");
   const modalBackAbove = document.getElementById("modal-back-above");
   const planBtns = document.querySelectorAll(".plan-action-btn");
   
@@ -320,21 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  if (closeModal) {
-    closeModal.addEventListener("click", () => {
-      modal.classList.remove("active");
-      document.body.classList.remove("modal-open");
-      if (modalBackAbove) {
-        modalBackAbove.style.display = "none";
-      }
-      // Parar polling e contador ao fechar modal
-      if (paymentPollingInterval) {
-        clearInterval(paymentPollingInterval);
-        paymentPollingInterval = null;
-      }
-      stopExpirationTimer();
-    });
-  }
+
 
   if (modalBackAbove) {
     modalBackAbove.addEventListener("click", () => {
