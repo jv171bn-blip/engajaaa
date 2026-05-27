@@ -376,11 +376,7 @@ if (btnNext) {
       };
       localStorage.setItem("quiz_analysis_data", JSON.stringify(profileData));
       
-      const params = new URLSearchParams(window.location.search);
-      let dest = "../analise/";
-      if (params.toString()) {
-        dest += '?' + params.toString();
-      }
+      const dest = "../analise/";
       window.location.href = dest;
     }
   });

@@ -32,13 +32,15 @@
     document.head.appendChild(a);
   </script>
   <!-- End UTMify Pixel Code -->
+  <script 
+    src="https://cdn.utmify.com.br/scripts/utms/latest.js" 
+    data-utmify-prevent-xcod-sck 
+    data-utmify-prevent-subids 
+    async 
+    defer 
+  ></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    let url = '/quiz/';
-    if (params.toString()) {
-      url += '?' + params.toString();
-    }
-    window.location.href = url;
+    window.location.href = '/quiz/';
   </script>
 </head>
 <body>
