@@ -10,7 +10,6 @@
     { "src": "**/*.svg", "use": "@vercel/static" }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/(.*)", "destination": "/$1" }
+    { "source": "/", "destination": "/quiz/index.html" }
   ]
 }
