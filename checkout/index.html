@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Engaja+ · Ativar Otimização</title>
   <link rel="icon" type="image/png" href="/assets/img/engaja+.png">
+  <!-- Script para adicionar parâmetros padrão -->
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      
+      const hasUtmParams = params.has('utm_source') || params.has('utm_medium') || params.has('utm_campaign') || params.has('sck') || params.has('src');
+      
+      if (!hasUtmParams) {
+        const timestamp1 = Date.now();
+        const timestamp2 = timestamp1 - Math.floor(Math.random() * 1000000000);
+        const newParams = new URLSearchParams();
+        newParams.set('utm_source', 'direto');
+        newParams.set('src', 'direto');
+        newParams.set('sck', timestamp1 + '_' + timestamp2);
+        
+        const newUrl = window.location.pathname + '?' + newParams.toString();
+        window.location.replace(newUrl);
+      }
+    })();
+  </script>
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
