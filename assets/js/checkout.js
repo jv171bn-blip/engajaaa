@@ -549,7 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnAccessPlatform) {
     btnAccessPlatform.addEventListener("click", () => {
       alert("Redirecionando para a plataforma Engaja+...");
-      window.location.href = "./analise/"; // Exemplo de redirecionamento
+      window.location.href = "./analise/" + window.location.search; // Exemplo de redirecionamento
     });
   }
 

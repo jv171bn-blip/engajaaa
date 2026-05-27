@@ -74,5 +74,18 @@
   <script>window.engajaMatrix = true;</script>
   <script src="../assets/js/matrix.obf.js"></script>
   <script src="./script/limite.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = window.location.search;
+      if (params) {
+        const links = document.querySelectorAll('a[href^="../"], a[href^="./"]');
+        links.forEach(link => {
+          if (!link.href.includes('?')) {
+            link.href += params;
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

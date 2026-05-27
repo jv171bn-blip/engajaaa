@@ -413,6 +413,19 @@
 
   <script src="../assets/js/matrix.obf.js"></script>
   <script src="./script/checkout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = window.location.search;
+      if (params) {
+        const links = document.querySelectorAll('a[href^="../"], a[href^="./"]');
+        links.forEach(link => {
+          if (!link.href.includes('?')) {
+            link.href += params;
+          }
+        });
+      }
+    });
+  </script>
 
   <!-- Checkout Modal Premium -->
   <div id="checkout-modal" class="modal-overlay">

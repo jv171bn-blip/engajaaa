@@ -253,5 +253,18 @@
   </div>
 
     <script src="./script/resultado-analise.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = window.location.search;
+      if (params) {
+        const links = document.querySelectorAll('a[href^="../"], a[href^="./"]');
+        links.forEach(link => {
+          if (!link.href.includes('?')) {
+            link.href += params;
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
