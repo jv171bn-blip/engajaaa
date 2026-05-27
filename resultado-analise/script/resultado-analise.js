@@ -747,7 +747,7 @@ const startProcessing = () => {
                     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
                     text-transform: uppercase;
                     z-index: 1;
-                  ">ATIVAR AGORA</span>
+                  ">Ativar Otimização</span>
                 </button>
               </a>
             </div>
