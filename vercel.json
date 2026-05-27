@@ -8,8 +8,5 @@
     { "src": "**/*.jpg", "use": "@vercel/static" },
     { "src": "**/*.jpeg", "use": "@vercel/static" },
     { "src": "**/*.svg", "use": "@vercel/static" }
-  ],
-  "rewrites": [
-    { "source": "/", "destination": "/quiz/index.html" }
   ]
 }
