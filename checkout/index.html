@@ -240,22 +240,22 @@
         
         <div class="dm-carousel">
           <div class="dm-slide active">
-            <img src="../assets/img/instagram-dm.png" alt="Depoimento 1">
+            <img src="/assets/img/instagram-dm.png" alt="Depoimento 1">
           </div>
           <div class="dm-slide">
-            <img src="../assets/img/instagram-dm (1).png" alt="Depoimento 2">
+            <img src="/assets/img/instagram-dm (1).png" alt="Depoimento 2">
           </div>
           <div class="dm-slide">
-            <img src="../assets/img/instagram-dm (2).png" alt="Depoimento 3">
+            <img src="/assets/img/instagram-dm (2).png" alt="Depoimento 3">
           </div>
           <div class="dm-slide">
-            <img src="../assets/img/instagram-dm (3).png" alt="Depoimento 4">
+            <img src="/assets/img/instagram-dm (3).png" alt="Depoimento 4">
           </div>
           <div class="dm-slide">
-            <img src="../assets/img/instagram-dm (4).png" alt="Depoimento 5">
+            <img src="/assets/img/instagram-dm (4).png" alt="Depoimento 5">
           </div>
           <div class="dm-slide">
-            <img src="../assets/img/instagram-dm (5).png" alt="Depoimento 6">
+            <img src="/assets/img/instagram-dm (5).png" alt="Depoimento 6">
           </div>
         </div>
         
@@ -286,7 +286,7 @@
 
     <div class="dashboard-preview-frame">
       <img
-        src="../assets/img/d2df13bc-bd88-4fc0-8c2f-77708359342e.png"
+        src="/assets/img/d2df13bc-bd88-4fc0-8c2f-77708359342e.png"
         alt="Painel de otimização do Engaja+"
         class="dashboard-preview-image"
       >
@@ -417,7 +417,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const params = window.location.search;
       if (params) {
-        const links = document.querySelectorAll('a[href^="../"], a[href^="./"]');
+        const links = document.querySelectorAll('a[href^="/"]');
         links.forEach(link => {
           if (!link.href.includes('?')) {
             link.href += params;
@@ -486,7 +486,7 @@
               <div class="payment-model-grid">
                 <div class="payment-model-item active" style="grid-column: span 2;">
                   <div class="payment-model-content">
-                    <img src="../assets/img/logo-pix-520x520.png" alt="Pix" style="width: 20px; height: 20px; object-fit: contain;">
+                    <img src="/assets/img/logo-pix-520x520.png" alt="Pix" style="width: 20px; height: 20px; object-fit: contain;">
                     <span>Pix</span>
                   </div>
                   <div class="selected-check">
@@ -559,7 +559,7 @@
                 <div class="qr-code-wrapper">
                   <img src="" alt="QR Code Pix" class="qr-code-img" id="qr-code-img">
                   <div class="qr-overlay-logo">
-                    <img src="../assets/img/logo-pix-520x520.png" alt="Pix">
+                    <img src="/assets/img/logo-pix-520x520.png" alt="Pix">
                   </div>
                 </div>
                 

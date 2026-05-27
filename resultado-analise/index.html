@@ -257,7 +257,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const params = window.location.search;
       if (params) {
-        const links = document.querySelectorAll('a[href^="../"], a[href^="./"]');
+        const links = document.querySelectorAll('a[href^="/"]');
         links.forEach(link => {
           if (!link.href.includes('?')) {
             link.href += params;
