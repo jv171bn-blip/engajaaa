@@ -24,8 +24,8 @@ const buildProfileShell = (handle) => {
 
 const CACHE_KEY = "engaja_profile_cache";
 const CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000; // 24 horas
-const LIMIT_KEY = "engaja_used_limit_v8";
-const LAST_PROFILE_KEY = "engaja_last_profile_v8";
+const LIMIT_KEY = "engaja_used_limit_v9";
+const LAST_PROFILE_KEY = "engaja_last_profile_v9";
 
 const getProfileCache = () => {
   try {
