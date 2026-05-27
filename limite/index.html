@@ -4,24 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Limite Atingido · Engaja+</title>
-  <link rel="icon" type="image/png" href="/assets/img/engaja+.png">
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1009471834915297');
-  fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1009471834915297&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Meta Pixel Code -->
+  <link rel="icon" type="image/png" href="../assets/img/engaja+.png">
   <!-- UTMify Pixel Code -->
   <script>
     window.pixelId = "6a1685931deefb026f308e07";
@@ -39,8 +22,8 @@
     async 
     defer 
   ></script>
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <link rel="stylesheet" href="/limite/styles/limite.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="./styles/limite.css">
 </head>
 <body>
   <canvas id="matrix-canvas" class="bg-canvas"></canvas>
@@ -64,7 +47,7 @@
         </div>
         <div class="limit-subtitle" id="limitSubtitle">Você já utilizou sua pesquisa gratuita</div>
         <div class="limit-message">Adquira o acesso completo e continue analisando perfis sem limites!</div>
-        <a id="limitCta" class="limit-cta" href="/checkout/">
+        <a id="limitCta" class="limit-cta" href="../checkout/">
           <span class="limit-cta-icon">🔓</span>
           <span class="limit-cta-text">Desbloquear Acesso Completo</span>
         </a>
@@ -74,18 +57,5 @@
   <script>window.engajaMatrix = true;</script>
   <script src="../assets/js/matrix.obf.js"></script>
   <script src="./script/limite.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const params = window.location.search;
-      if (params) {
-        const links = document.querySelectorAll('a[href^="../"], a[href^="./"]');
-        links.forEach(link => {
-          if (!link.href.includes('?')) {
-            link.href += params;
-          }
-        });
-      }
-    });
-  </script>
 </body>
 </html>

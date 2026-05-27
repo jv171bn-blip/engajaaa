@@ -370,7 +370,7 @@ if (btnNext) {
       };
       localStorage.setItem("quiz_analysis_data", JSON.stringify(profileData));
       
-      const dest = "/analise/" + window.location.search;
+      const dest = "../analise/";
       window.location.href = dest;
     }
   });

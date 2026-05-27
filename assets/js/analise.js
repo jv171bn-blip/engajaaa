@@ -165,7 +165,7 @@ const markLimitUsed = (handle, avatarUrl = '') => {
 };
 
 const redirectToLimitPage = () => {
-  window.location.href = "/limite/" + window.location.search;
+  window.location.href = "../limite/";
 };
 
 const ensureButtonInner = () => {

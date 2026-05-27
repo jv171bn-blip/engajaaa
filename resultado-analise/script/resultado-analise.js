@@ -764,7 +764,7 @@ const startProcessing = () => {
             goToCheckoutBtn.addEventListener('click', (e) => {
               e.preventDefault();
               markLimitUsed(profile.handle, profile.avatarUrl);
-              window.location.href = '/checkout/' + window.location.search;
+              window.location.href = '../checkout/';
             });
           }
         }
