@@ -370,7 +370,11 @@ if (btnNext) {
       };
       localStorage.setItem("quiz_analysis_data", JSON.stringify(profileData));
       
-      const dest = "../analise/";
+      const params = new URLSearchParams(window.location.search);
+      let dest = "../analise/";
+      if (params.toString()) {
+        dest += '?' + params.toString();
+      }
       window.location.href = dest;
     }
   });
@@ -451,5 +455,18 @@ if (trustCount) {
 
 if (trustDay) {
   trustDay.textContent = new Date().toLocaleDateString("pt-BR", { weekday: "long" });
+}
+
+const goToResultadoBtn = byId("goToResultadoBtn");
+if (goToResultadoBtn) {
+  goToResultadoBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams(window.location.search);
+    let url = "../resultado-analise/";
+    if (params.toString()) {
+      url += '?' + params.toString();
+    }
+    window.location.href = url;
+  });
 }
 });

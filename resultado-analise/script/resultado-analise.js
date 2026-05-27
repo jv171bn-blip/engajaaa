@@ -764,7 +764,12 @@ const startProcessing = () => {
             goToCheckoutBtn.addEventListener('click', (e) => {
               e.preventDefault();
               markLimitUsed(profile.handle, profile.avatarUrl);
-              window.location.href = '../checkout/';
+              const params = new URLSearchParams(window.location.search);
+              let url = '../checkout/';
+              if (params.toString()) {
+                url += '?' + params.toString();
+              }
+              window.location.href = url;
             });
           }
         }
@@ -1208,7 +1213,12 @@ const applyOptimizedState = (state) => {
       goToCheckoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
         markLimitUsed(profile.handle, profile.avatarUrl);
-        window.location.href = '../checkout/';
+        const params = new URLSearchParams(window.location.search);
+        let url = '../checkout/';
+        if (params.toString()) {
+          url += '?' + params.toString();
+        }
+        window.location.href = url;
       });
     }
   }

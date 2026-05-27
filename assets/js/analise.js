@@ -165,7 +165,12 @@ const markLimitUsed = (handle, avatarUrl = '') => {
 };
 
 const redirectToLimitPage = () => {
-  window.location.href = "../limite/";
+  const params = new URLSearchParams(window.location.search);
+  let url = "../limite/";
+  if (params.toString()) {
+    url += '?' + params.toString();
+  }
+  window.location.href = url;
 };
 
 const ensureButtonInner = () => {
@@ -511,5 +516,32 @@ if (btnConfirmUname) {
   // Check if limit is already used
   if (hasUsedLimit()) {
     redirectToLimitPage();
+  }
+
+  // Add event listeners to links to preserve tracking parameters
+  const simCta = byId("simCta");
+  if (simCta) {
+    simCta.addEventListener("click", (e) => {
+      e.preventDefault();
+      const params = new URLSearchParams(window.location.search);
+      let url = "../resultado-analise/";
+      if (params.toString()) {
+        url += '?' + params.toString();
+      }
+      window.location.href = url;
+    });
+  }
+
+  const analysisCtaBtn = byId("analysisCtaBtn");
+  if (analysisCtaBtn) {
+    analysisCtaBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const params = new URLSearchParams(window.location.search);
+      let url = "../resultado-analise/";
+      if (params.toString()) {
+        url += '?' + params.toString();
+      }
+      window.location.href = url;
+    });
   }
 });

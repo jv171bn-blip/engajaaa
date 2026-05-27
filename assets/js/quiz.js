@@ -376,7 +376,11 @@ if (btnNext) {
       };
       localStorage.setItem("quiz_analysis_data", JSON.stringify(profileData));
       
-      const dest = "../analise/";
+      const params = new URLSearchParams(window.location.search);
+      let dest = "../analise/";
+      if (params.toString()) {
+        dest += '?' + params.toString();
+      }
       window.location.href = dest;
     }
   });
