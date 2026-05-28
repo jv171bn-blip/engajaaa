@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     API_URL: 'https://multi.paradisepags.com/api/v1/transaction.php',
     API_KEY: 'sk_6dfc60ecc38cb17c97db4289f4905e112907862899c828c47efb76eb3d23fbcb',
     PRODUCT_HASH: 'prod_c94f5ef13363061b',
-    AMOUNT_CENTS: 100, // R$ 37,90 (ajuste conforme seu plano)
+    AMOUNT_CENTS: 3790, // R$ 37,90
     DESCRIPTION: 'Engaja+ Premium'
   };
   
@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let paymentPollingInterval = null;
   let expirationTimerInterval = null;
   let expirationTimeLeft = 0; // segundos
+  let purchaseEventFired = false; // Flag para garantir que o evento Purchase dispare apenas uma vez
   
   // SRCs originais das imagens
   const ORIGINAL_BANNER_SRC = '../assets/img/7bf7b808-14b7-441d-939e-f0c8023f741f.png';
@@ -505,9 +506,22 @@ document.addEventListener("DOMContentLoaded", () => {
       paymentPollingInterval = setInterval(async () => {
         const statusData = await checkPaymentStatus(currentTransactionId);
         
-        if (statusData && statusData.status === 'approved') {
+        if (statusData && statusData.status === 'approved' && !purchaseEventFired) {
+          purchaseEventFired = true;
           clearInterval(paymentPollingInterval);
           paymentPollingInterval = null;
+          
+          // Disparar evento Purchase do Meta Pixel
+          if (typeof fbq !== 'undefined') {
+            fbq('track', 'Purchase', {
+              value: (PIX_CONFIG.AMOUNT_CENTS / 100).toFixed(2),
+              currency: 'BRL'
+            });
+            console.log('Meta Pixel: Evento Purchase disparado com sucesso');
+          } else {
+            console.warn('Meta Pixel (fbq) não está disponível');
+          }
+          
           showStep("step-success");
         }
       }, 3000); // Verificar a cada 3 segundos
