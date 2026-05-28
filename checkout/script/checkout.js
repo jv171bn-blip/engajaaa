@@ -413,6 +413,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Salvar dados do usuário no localStorage para usar no upsell
+    localStorage.setItem('engajaCustomerName', name);
+    localStorage.setItem('engajaCustomerWhatsapp', whatsapp);
+
     // Validate complete phone number
     const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
     if (!phoneRegex.test(whatsapp)) {
@@ -543,7 +547,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn('Meta Pixel (fbq) não está disponível');
           }
           
-          showStep("step-success");
+          // Redirecionar para a página de upsell
+          window.location.href = '../upsell/';
         }
       }, 3000); // Verificar a cada 3 segundos
       

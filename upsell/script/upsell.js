@@ -1,4 +1,3 @@
-
 // Função para gerar CPF válido (mod11)
 const generateValidCPF = () => {
   const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -26,6 +25,33 @@ const generateValidCPF = () => {
   return cpf.join('');
 };
 
+// Função para gerar nome aleatório
+const generateRandomName = () => {
+  const firstNames = [
+    "João", "Maria", "Pedro", "Ana", "Carlos", "Mariana", "Lucas", "Juliana",
+    "Mateus", "Beatriz", "Gustavo", "Camila", "Ricardo", "Fernanda", "Daniel", "Amanda"
+  ];
+  const lastNames = [
+    "Silva", "Santos", "Oliveira", "Souza", "Rodrigues", "Ferreira", "Almeida", "Costa",
+    "Gomes", "Martins", "Araújo", "Barbosa", "Pereira", "Lima", "Carvalho", "Ribeiro"
+  ];
+  
+  const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+  const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+  
+  return `${randomFirstName} ${randomLastName}`;
+};
+
+// Função para gerar telefone aleatório formatado
+const generateRandomPhone = () => {
+  const ddds = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24", "27", "28", "31", "32", "33", "34", "35", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48", "49", "51", "53", "54", "55", "61", "62", "63", "64", "65", "66", "67", "68", "69", "71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91", "92", "93", "94", "95", "96", "97", "98", "99"];
+  const randomDDD = ddds[Math.floor(Math.random() * ddds.length)];
+  const firstPart = "9" + Math.floor(Math.random() * 90000 + 10000);
+  const secondPart = Math.floor(Math.random() * 9000 + 1000);
+  
+  return `(${randomDDD}) ${firstPart}-${secondPart}`;
+};
+
 // Função para gerar email único
 const generateUniqueEmail = (name) => {
   const timestamp = Date.now();
@@ -36,20 +62,38 @@ const generateUniqueEmail = (name) => {
 
 // Função para gerar referência única
 const generateUniqueReference = () => {
-  return `ENG-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  return `ENG-PROT-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   const profile = JSON.parse(sessionStorage.getItem("engajaProfile") || localStorage.getItem("engajaProfileSnapshot") || "{}");
-  const fmt = new Intl.NumberFormat("pt-BR");
   
-  // Configurações da API ParadisePags
+  if (profile.handle) {
+    const realAvatars = document.querySelectorAll(".real-avatar");
+    const placeholders = document.querySelectorAll(".placeholder-avatar");
+    
+    // Danger box profile
+    const dangerUsername = document.querySelector(".danger-username");
+    if (dangerUsername) dangerUsername.textContent = `@${profile.handle}`;
+    
+    if (profile.avatarUrl) {
+      realAvatars.forEach(img => {
+        img.src = profile.avatarUrl;
+        img.style.display = "block";
+      });
+      placeholders.forEach(div => {
+        div.style.display = "none";
+      });
+    }
+  }
+  
+  // Configurações da API ParadisePags para o upsell
   const PIX_CONFIG = {
     API_URL: 'https://multi.paradisepags.com/api/v1/transaction.php',
     API_KEY: 'sk_6dfc60ecc38cb17c97db4289f4905e112907862899c828c47efb76eb3d23fbcb',
-    PRODUCT_HASH: 'prod_c94f5ef13363061b',
-    AMOUNT_CENTS: 100, // R$ 37,90
-    DESCRIPTION: 'Engaja+ Premium'
+    PRODUCT_HASH: 'prod_4f4f9e2c89d39e0e', // Hash do upsell fornecido
+    AMOUNT_CENTS: 2990, // R$ 29,90
+    DESCRIPTION: 'Proteção Engaja+'
   };
   
   let currentTransactionId = null;
@@ -62,145 +106,85 @@ document.addEventListener("DOMContentLoaded", () => {
   const ORIGINAL_BANNER_SRC = '../assets/img/7bf7b808-14b7-441d-939e-f0c8023f741f.png';
   const ORIGINAL_TUTORIAL_SRC = '../assets/img/12bb9b63-7a03-4f56-94b3-7290173d7580.png';
 
-  const formatCount = (value) => {
-    const num = Number(value);
-    return Number.isFinite(num) && num >= 0 ? fmt.format(num) : "0";
-  };
-  
-  if (profile.handle) {
-    // Header
-    const usernameHeader = document.querySelector(".username-header");
-    const realAvatars = document.querySelectorAll(".real-avatar");
-    const placeholders = document.querySelectorAll(".placeholder-avatar");
-    
-    if (usernameHeader) usernameHeader.textContent = `@${profile.handle}`;
-    
-    if (profile.avatarUrl) {
-      realAvatars.forEach(img => {
-        img.src = profile.avatarUrl;
-        img.style.display = "block";
-      });
-      placeholders.forEach(div => {
-        div.style.display = "none";
-      });
-    }
-
-    // Profile Stats Comparison - Cache elements
-    const $ = (id) => document.getElementById(id);
-    const beforePosts = $("before-posts");
-    const beforeFollowers = $("before-followers");
-    const beforeFollowing = $("before-following");
-    const afterPosts = $("after-posts");
-    const afterFollowers = $("after-followers");
-    const afterFollowing = $("after-following");
-    const growthValue = $("growth-value");
-
-    // Instagram-style Profile Card Elements
-    const igAfterPosts = $("ig-after-posts");
-    const igAfterFollowers = $("ig-after-followers");
-    const igAfterFollowing = $("ig-after-following");
-    const igAfterName = $("ig-after-name");
-    const igAfterBio = $("ig-after-bio");
-
-    // Populate Before (Current)
-    if (beforePosts) beforePosts.textContent = formatCount(profile.posts);
-    if (beforeFollowers) beforeFollowers.textContent = formatCount(profile.followers);
-    if (beforeFollowing) beforeFollowing.textContent = formatCount(profile.following);
-
-    // Populate After (Boosted)
-    if (afterPosts) afterPosts.textContent = formatCount(profile.posts);
-    if (afterFollowers) {
-      const count = profile.followersBoosted || profile.followers;
-      afterFollowers.textContent = formatCount(count);
+  // FAQ Accordion
+  document.querySelectorAll('.faq-question').forEach(button => {
+    button.addEventListener('click', () => {
+      const faqItem = button.parentElement;
+      const answer = faqItem.querySelector('.faq-answer');
+      const isActive = faqItem.classList.contains('active');
       
-      // Calculate new followers gained
-      if (profile.addFollowers && growthValue) {
-        growthValue.textContent = `+${formatCount(profile.addFollowers)} seguidores`;
-      } else if (profile.followers && profile.followersBoosted) {
-        const gained = profile.followersBoosted - profile.followers;
-        if (gained > 0 && growthValue) {
-          growthValue.textContent = `+${formatCount(gained)} seguidores`;
+      // Close all other FAQ items
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+        const itemAnswer = item.querySelector('.faq-answer');
+        if (itemAnswer) {
+          itemAnswer.style.maxHeight = null;
         }
-      }
-    }
-    if (afterFollowing) afterFollowing.textContent = formatCount(profile.following);
-
-    // Populate Instagram After
-    if (igAfterPosts) igAfterPosts.textContent = formatCount(profile.posts);
-    if (igAfterFollowers) {
-      const count = profile.followersBoosted || profile.followers;
-      igAfterFollowers.textContent = formatCount(count);
+      });
       
-      // Calculate and show added followers badge
-      const gained = profile.addFollowers || (profile.followersBoosted && profile.followers ? profile.followersBoosted - profile.followers : 0);
-      if (gained > 0 && igAfterFollowers.parentElement) {
-        const badge = document.createElement("div");
-        badge.className = "added-followers-badge-ig";
-        badge.textContent = `+${formatCount(gained)}`;
-        badge.style.cssText = `
-          position: absolute;
-          top: -15px;
-          right: -5px;
-          background: #22c55e;
-          color: #fff;
-          font-size: 12px;
-          font-weight: 900;
-          padding: 4px 10px;
-          border-radius: 8px;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-          z-index: 10;
-        `;
-        igAfterFollowers.parentElement.style.position = "relative";
-        igAfterFollowers.parentElement.appendChild(badge);
-      }
-    }
-    if (igAfterFollowing) igAfterFollowing.textContent = formatCount(profile.following);
-    if (igAfterName) igAfterName.textContent = profile.name || profile.handle;
-    if (igAfterBio) {
-      igAfterBio.textContent = profile.bio || "";
-    }
-
-    // Show verified badge only if profile is verified
-    const verifiedBadge = document.querySelector(".ig-verified-badge");
-    if (verifiedBadge && profile.isVerified) {
-      verifiedBadge.style.display = "inline";
-    }
-
-    // Final CTA
-    const finalUsername = document.querySelector(".final-username");
-    if (finalUsername) finalUsername.textContent = `@${profile.handle}`;
-  }
-
-  // Smooth scroll to plans
-  const scrollToPlans = (e) => {
-    e.preventDefault();
-    const plansSection = document.getElementById("engaja-trimestral");
-    if (plansSection) {
-      plansSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  const heroScrollBtn = document.querySelector('.hero-checkout .btn-main');
-  if (heroScrollBtn) {
-    heroScrollBtn.parentElement.addEventListener('click', scrollToPlans);
-  }
-
-  // FAQ Toggle
-  const faqItems = document.querySelectorAll(".faq-item");
-  faqItems.forEach(item => {
-    const question = item.querySelector(".faq-question");
-    question.addEventListener("click", () => {
-      const isActive = item.classList.contains("active");
-      
-      // Close all
-      faqItems.forEach(i => i.classList.remove("active"));
-      
-      // Open current if it was not active
+      // Open clicked item if it wasn't active
       if (!isActive) {
-        item.classList.add("active");
+        faqItem.classList.add('active');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
       }
     });
   });
+
+  // Timer functionality with persistence
+  function startTimer(durationMinutes) {
+    const STORAGE_KEY = 'engajaBanTimerEnd';
+    
+    // Get or set the end time
+    let endTime = localStorage.getItem(STORAGE_KEY);
+    
+    if (!endTime) {
+      // First time, set end time to now + duration
+      endTime = Date.now() + (durationMinutes * 60 * 1000);
+      localStorage.setItem(STORAGE_KEY, endTime);
+    }
+    
+    const dangerMinutesElement = document.getElementById('danger-minutes');
+    const dangerSecondsElement = document.getElementById('danger-seconds');
+    
+    const updateTimer = () => {
+      const now = Date.now();
+      const remainingMs = endTime - now;
+      
+      if (remainingMs <= 0) {
+        // Timer ended
+        if (dangerMinutesElement) dangerMinutesElement.textContent = '00';
+        if (dangerSecondsElement) dangerSecondsElement.textContent = '00';
+        localStorage.removeItem(STORAGE_KEY);
+        return;
+      }
+      
+      const totalSeconds = Math.floor(remainingMs / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      
+      // Update displays with leading zeros
+      if (dangerMinutesElement) dangerMinutesElement.textContent = minutes.toString().padStart(2, '0');
+      if (dangerSecondsElement) dangerSecondsElement.textContent = seconds.toString().padStart(2, '0');
+    };
+    
+    // Update immediately
+    updateTimer();
+    
+    // Update every second
+    const timerInterval = setInterval(() => {
+      updateTimer();
+      
+      // Check if timer ended
+      const now = Date.now();
+      if (endTime - now <= 0) {
+        clearInterval(timerInterval);
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }, 1000);
+  }
+
+  // Start timer when page loads (7 minutes duration)
+  startTimer(7);
 
   // Phone Mask Function
   const applyPhoneMask = (input) => {
@@ -213,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (value.length > 2) {
         value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
       } else if (value.length > 0) {
-        value = `(${value.slice(0, 2)}`;
+        value = `(${value.slice(0, 2)})`;
       }
       
       e.target.value = value;
@@ -226,9 +210,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Plan selection (Modal Logic)
   const modal = document.getElementById("checkout-modal");
-  const closeModal = document.getElementById("close-modal");
   const modalBackAbove = document.getElementById("modal-back-above");
-  const planBtns = document.querySelectorAll(".plan-action-btn");
+  const activateProtectionBtn = document.getElementById("activate-protection");
   
   // Checkout Steps
   const stepCustomer = document.getElementById("step-customer-data");
@@ -260,8 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
         stepPaymentSelection.classList.remove("active");
         stepPaymentPix.classList.add("active");
         stepSuccess.classList.remove("active");
-        // Scroll instantâneo para o topo da página
-        window.scrollTo(0, 0);
         // Iniciar contador de expiração (7 minutos = 420 segundos)
         startExpirationTimer(420);
         // Mudar banner para tutorial
@@ -273,6 +254,26 @@ document.addEventListener("DOMContentLoaded", () => {
         stepSuccess.classList.add("active");
         stopExpirationTimer();
     }
+    
+    // Scrollar o modal para o topo (aplicar depois que o DOM atualizar)
+    setTimeout(() => {
+      const modalOverlay = document.querySelector('.modal-overlay');
+      const modalContent = document.querySelector('.modal-content');
+      if (modalOverlay) {
+        modalOverlay.scrollTop = 0;
+        modalOverlay.scrollTo(0, 0);
+      }
+      if (modalContent) {
+        modalContent.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
+      // Segunda tentativa para garantir
+      setTimeout(() => {
+        const overlay = document.querySelector('.modal-overlay');
+        if (overlay) {
+          overlay.scrollTop = 0;
+        }
+      }, 100);
+    }, 50);
     
     // Update mobile button text based on step
     if (btnMobileAction) {
@@ -286,39 +287,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  planBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      if (modal) {
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
-        showStep("step-customer-data");
-        if (modalBackAbove) {
-          modalBackAbove.style.display = "flex";
-        }
+  activateProtectionBtn.addEventListener("click", () => {
+    if (modal) {
+      modal.classList.add("active");
+      document.body.classList.add("modal-open");
+      
+      // Preencher campos com dados do localStorage ou gerar aleatórios
+      const savedName = localStorage.getItem('engajaCustomerName');
+      const savedWhatsapp = localStorage.getItem('engajaCustomerWhatsapp');
+      
+      const nameInput = document.getElementById('checkout-name');
+      const whatsappInput = document.getElementById('checkout-whatsapp');
+      
+      if (nameInput) {
+        nameInput.value = savedName || generateRandomName();
       }
-    });
-  });
-
-  if (closeModal) {
-    closeModal.addEventListener("click", () => {
-      modal.classList.remove("active");
-      document.body.style.overflow = "auto";
+      
+      if (whatsappInput) {
+        whatsappInput.value = savedWhatsapp || generateRandomPhone();
+      }
+      
+      // Ocultar o formulário de dados pessoais
+      if (stepCustomer) {
+        stepCustomer.style.display = 'none';
+      }
+      
+      // Scrollar o modal para o topo ao abrir
+      const modalOverlay = document.querySelector('.modal-overlay');
+      if (modalOverlay) {
+        modalOverlay.scrollTop = 0;
+      }
+      
+      // Manter a etapa de pagamento visível (mas não exibir a etapa de dados)
+      stepPaymentSelection.classList.add("active");
+      
       if (modalBackAbove) {
-        modalBackAbove.style.display = "none";
+        modalBackAbove.style.display = "flex";
       }
-      // Parar polling e contador ao fechar modal
-      if (paymentPollingInterval) {
-        clearInterval(paymentPollingInterval);
-        paymentPollingInterval = null;
-      }
-      stopExpirationTimer();
-    });
-  }
+    }
+  });
 
   if (modalBackAbove) {
     modalBackAbove.addEventListener("click", () => {
       modal.classList.remove("active");
-      document.body.style.overflow = "auto";
+      document.body.classList.remove("modal-open");
       modalBackAbove.style.display = "none";
       // Parar polling e contador ao fechar modal
       if (paymentPollingInterval) {
@@ -399,18 +411,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // Generate Pix Action
   const handleGeneratePix = async () => {
     const name = document.getElementById("checkout-name").value;
-    const whatsapp = document.getElementById("checkout-whatsapp").value;
+    let whatsapp = document.getElementById("checkout-whatsapp").value;
 
-    if (!name || !whatsapp) {
-      alert("Por favor, preencha todos os campos para continuar.");
-      return;
+    // Se por algum motivo os campos estiverem vazios, gerar dados aleatórios
+    if (!name) {
+      document.getElementById("checkout-name").value = generateRandomName();
+    }
+    if (!whatsapp) {
+      document.getElementById("checkout-whatsapp").value = generateRandomPhone();
+      whatsapp = document.getElementById("checkout-whatsapp").value;
     }
 
-    // Validate complete phone number
+    // Validate complete phone number (se não for válido, gerar um novo)
     const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
     if (!phoneRegex.test(whatsapp)) {
-      alert("Por favor, digite um telefone válido no formato (11) 99999-9999.");
-      return;
+      const newPhone = generateRandomPhone();
+      document.getElementById("checkout-whatsapp").value = newPhone;
+      whatsapp = newPhone;
     }
 
     // Limpar telefone para enviar apenas números
@@ -500,6 +517,20 @@ document.addEventListener("DOMContentLoaded", () => {
       // Mudar para etapa do QR Code
       showStep("step-payment-pix");
       
+      // Scrollar o modal para o topo imediatamente
+      const modalOverlay = document.querySelector('.modal-overlay');
+      if (modalOverlay) {
+        modalOverlay.scrollTop = 0;
+        modalOverlay.scrollTo(0, 0);
+      }
+      // Garantir novamente após 100ms
+      setTimeout(() => {
+        const overlay = document.querySelector('.modal-overlay');
+        if (overlay) {
+          overlay.scrollTop = 0;
+        }
+      }, 100);
+      
       // Iniciar polling para verificar pagamento
       if (paymentPollingInterval) clearInterval(paymentPollingInterval);
       
@@ -522,8 +553,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn('Meta Pixel (fbq) não está disponível');
           }
           
-          // Redirecionar para a página de upsell
-          window.location.href = './upsell/';
+          // Redirecionar para a página principal ou agradecimento
+          window.location.href = '../';
         }
       }, 3000); // Verificar a cada 3 segundos
       
@@ -541,7 +572,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnMobileAction.addEventListener("click", () => {
       if (stepCustomer.classList.contains("active")) {
         handleGeneratePix();
-      } else if (stepPayment.classList.contains("active")) {
+      } else if (stepPaymentPix.classList.contains("active")) {
         handleCopyPix();
       }
     });
@@ -564,7 +595,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnAccessPlatform) {
     btnAccessPlatform.addEventListener("click", () => {
       alert("Redirecionando para a plataforma Engaja+...");
-      window.location.href = "./analise/"; // Exemplo de redirecionamento
+      window.location.href = '../'; // Redirecionar para a página principal
     });
   }
 
@@ -577,105 +608,4 @@ document.addEventListener("DOMContentLoaded", () => {
       summaryCard.classList.toggle("is-collapsed");
     });
   }
-
-  // Reveal animations on scroll
-  const observerOptions = {
-    threshold: 0.1
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("animate-enter");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll(".testimonial-card, .section-title, .step-item, .feature-item, .benefits-banner").forEach(el => {
-    el.style.opacity = "0";
-    observer.observe(el);
-  });
-
-  // Live Notifications System
-  const notifications = [
-    { name: "Mariana L.", city: "São Paulo", time: "há 1 minuto" },
-    { name: "Ricardo G.", city: "Rio de Janeiro", time: "há 3 minutos" },
-    { name: "Ana Paula", city: "Belo Horizonte", time: "há 5 minutos" },
-    { name: "Bruno M.", city: "Curitiba", time: "há 2 minutos" },
-    { name: "Lucas F.", city: "Salvador", time: "há 4 minutos" },
-    { name: "Juliana K.", city: "Porto Alegre", time: "há 1 minuto" }
-  ];
-
-  const notificationEl = document.getElementById('live-notification');
-  const notiMessage = document.getElementById('noti-message');
-  const notiAvatar = document.getElementById('noti-avatar');
-
-  function showNotification() {
-    if (!notificationEl || !notiMessage || !notiAvatar) return;
-    const rand = Math.floor(Math.random() * notifications.length);
-    const data = notifications[rand];
-    
-    notiMessage.innerHTML = `<strong>${data.name}</strong> (${data.city}) acabou de ativar a otimização!`;
-    notiAvatar.src = `https://i.pravatar.cc/100?u=${data.name}`;
-    
-    notificationEl.classList.add('show');
-    
-    setTimeout(() => {
-      notificationEl.classList.remove('show');
-    }, 5000);
-  }
-
-  // Show first notification after 3 seconds
-  setTimeout(() => {
-    showNotification();
-    // Then every 12-20 seconds
-    setInterval(showNotification, 12000 + Math.random() * 8000);
-  }, 3000);
-
-  // DM Carousel Logic
-  const dmSlides = document.querySelectorAll('.dm-slide');
-  const dmDots = document.querySelectorAll('.dm-dot');
-  const dmPrevBtn = document.querySelector('.dm-carousel-nav.prev');
-  const dmNextBtn = document.querySelector('.dm-carousel-nav.next');
-  
-  let currentDmIndex = 0;
-  const totalDmSlides = dmSlides.length;
-
-  const updateDmCarousel = (index) => {
-    dmSlides.forEach((slide, i) => {
-      slide.classList.toggle('active', i === index);
-    });
-    
-    dmDots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
-    });
-    
-    currentDmIndex = index;
-  };
-
-  const nextDmSlide = () => {
-    const nextIndex = (currentDmIndex + 1) % totalDmSlides;
-    updateDmCarousel(nextIndex);
-  };
-
-  const prevDmSlide = () => {
-    const prevIndex = (currentDmIndex - 1 + totalDmSlides) % totalDmSlides;
-    updateDmCarousel(prevIndex);
-  };
-
-  if (dmNextBtn) {
-    dmNextBtn.addEventListener('click', nextDmSlide);
-  }
-
-  if (dmPrevBtn) {
-    dmPrevBtn.addEventListener('click', prevDmSlide);
-  }
-
-  dmDots.forEach((dot) => {
-    dot.addEventListener('click', () => {
-      const index = parseInt(dot.getAttribute('data-index'));
-      updateDmCarousel(index);
-    });
-  });
 });
