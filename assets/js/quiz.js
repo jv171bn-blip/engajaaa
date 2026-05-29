@@ -1,5 +1,11 @@
 window.engajaMatrix = true;
 
+// Função para navegar preservando parâmetros UTM
+const navigateTo = (path) => {
+  const query = window.location.search || "";
+  window.location.href = path + query;
+};
+
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
 
@@ -377,7 +383,7 @@ if (btnNext) {
       localStorage.setItem("quiz_analysis_data", JSON.stringify(profileData));
       
       const dest = "../analise/";
-      window.location.href = dest;
+      navigateTo(dest);
     }
   });
 }

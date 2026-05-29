@@ -1,3 +1,9 @@
+// Função para navegar preservando parâmetros UTM
+const navigateTo = (path) => {
+  const query = window.location.search || "";
+  window.location.href = path + query;
+};
+
 // Função para gerar CPF válido (mod11)
 const generateValidCPF = () => {
   const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -554,7 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           
           // Redirecionar para a página principal ou agradecimento
-          window.location.href = '../';
+          navigateTo('../');
         }
       }, 3000); // Verificar a cada 3 segundos
       
@@ -595,7 +601,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnAccessPlatform) {
     btnAccessPlatform.addEventListener("click", () => {
       alert("Redirecionando para a plataforma Engaja+...");
-      window.location.href = '../'; // Redirecionar para a página principal
+      navigateTo('../'); // Redirecionar para a página principal
     });
   }
 

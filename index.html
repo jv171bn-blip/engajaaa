@@ -40,7 +40,8 @@
     defer 
   ></script>
   <script>
-    window.location.href = '/quiz/';
+    const query = window.location.search || "";
+    window.location.replace("/quiz/" + query);
   </script>
 </head>
 <body>

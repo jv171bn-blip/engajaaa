@@ -1,5 +1,11 @@
 window.engajaMatrix = true;
 
+// Função para navegar preservando parâmetros UTM
+const navigateTo = (path) => {
+  const query = window.location.search || "";
+  window.location.href = path + query;
+};
+
 document.addEventListener("DOMContentLoaded", () => {
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
@@ -165,7 +171,7 @@ const markLimitUsed = (handle, avatarUrl = '') => {
 };
 
 const redirectToLimitPage = () => {
-  window.location.href = "../limite/";
+  navigateTo("../limite/");
 };
 
 const ensureButtonInner = () => {

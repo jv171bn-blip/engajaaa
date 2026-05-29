@@ -1,4 +1,10 @@
 
+// Função para navegar preservando parâmetros UTM
+const navigateTo = (path) => {
+  const query = window.location.search || "";
+  window.location.href = path + query;
+};
+
 document.addEventListener("DOMContentLoaded", () => {
 const byId = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("pt-BR");
@@ -764,7 +770,7 @@ const startProcessing = () => {
             goToCheckoutBtn.addEventListener('click', (e) => {
               e.preventDefault();
               markLimitUsed(profile.handle, profile.avatarUrl);
-              window.location.href = '../checkout/';
+              navigateTo('../checkout/');
             });
           }
         }
@@ -1208,7 +1214,7 @@ const applyOptimizedState = (state) => {
       goToCheckoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
         markLimitUsed(profile.handle, profile.avatarUrl);
-        window.location.href = '../checkout/';
+        navigateTo('../checkout/');
       });
     }
   }
