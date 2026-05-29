@@ -27,15 +27,18 @@ body {
   color: #F9F9F9; 
   min-height: 100vh; 
   min-height: -webkit-fill-available;
-  width: 100vw;
+  height: auto;
+  width: 100%;
+  max-width: 100vw;
   line-height: 1.7; 
   position: relative; 
   overflow-x: hidden; 
+  overflow-y: auto;
   transition: opacity 0.35s ease; 
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  touch-action: manipulation;
-  overscroll-behavior-y: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: auto;
 }
 body[data-transition="out"] { opacity: 0; }
 body[data-transition="in"] { opacity: 1; }
