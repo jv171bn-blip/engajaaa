@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     API_URL: 'https://multi.paradisepags.com/api/v1/transaction.php',
     API_KEY: 'sk_6dfc60ecc38cb17c97db4289f4905e112907862899c828c47efb76eb3d23fbcb',
     PRODUCT_HASH: 'prod_4f4f9e2c89d39e0e', // Hash do upsell fornecido
-    AMOUNT_CENTS: 109, // R$ 29,90
+    AMOUNT_CENTS: 2990, // R$ 29,90
     DESCRIPTION: 'Proteção Engaja+'
   };
   
