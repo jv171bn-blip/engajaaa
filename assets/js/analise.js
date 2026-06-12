@@ -6,8 +6,10 @@ const navigateTo = (path) => {
   window.location.href = path + query;
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+// Função para obter elemento por ID (global)
 const byId = (id) => document.getElementById(id);
+
+document.addEventListener("DOMContentLoaded", () => {
 const fmt = new Intl.NumberFormat("pt-BR");
 
 const normalizeHandle = (value) => String(value || "").trim().replace(/^@+/, "").toLowerCase();
@@ -273,11 +275,32 @@ const showConfirm = (profile) => {
   confirmModal.classList.remove("hidden");
 };
 
-const hideConfirm = () => {
+window.hideConfirm = () => {
+  const confirmModal = byId("confirmModal");
   if (confirmModal) confirmModal.classList.add("hidden");
-  if (typeof clearSimLoading === "function") {
-    clearSimLoading();
+  const simActivate = byId("simActivate");
+  const simUsername = byId("simUsername");
+  if (simActivate) {
+    simActivate.classList.remove("is-loading");
+    simActivate.disabled = false;
+    simActivate.removeAttribute("aria-busy");
+    simActivate.style.width = "";
+    // Ensure button inner HTML is correct
+    if (!simActivate.querySelector(".btn-inner")) {
+      simActivate.innerHTML = `
+        <span class="btn-inner">
+          <svg class="btn-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M23 4v6h-6"></path>
+            <path d="M1 20v-6h6"></path>
+            <path d="M3.51 9a9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 0 0 0 20.49 15"></path>
+          </svg>
+          <span class="btn-label">&gt;</span>
+        </span>`;
+    }
+    const label = simActivate.querySelector(".btn-label");
+    if (label) label.textContent = ">";
   }
+  if (simUsername) simUsername.focus();
 };
 
 const clearLogTimers = () => {
@@ -492,16 +515,14 @@ if (simForm && simUsername) {
 }
 
 if (btnFixUname) {
-  btnFixUname.addEventListener("click", () => {
-    hideConfirm();
-    clearSimLoading();
-    if (simUsername) simUsername.focus();
+  btnFixUname.addEventListener('click', () => {
+    window.hideConfirm();
   });
 }
 
 if (btnConfirmUname) {
   btnConfirmUname.addEventListener("click", () => {
-    hideConfirm();
+    window.hideConfirm();
     setTimeout(startAnalysis, 0);
   });
 }
