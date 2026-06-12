@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     API_URL: 'https://multi.paradisepags.com/api/v1/transaction.php',
     API_KEY: 'sk_6dfc60ecc38cb17c97db4289f4905e112907862899c828c47efb76eb3d23fbcb',
     PRODUCT_HASH: 'prod_c94f5ef13363061b',
-    AMOUNT_CENTS: 100, // R$ 37,90
+    AMOUNT_CENTS: 110, // R$ 37,90
     DESCRIPTION: 'Engaja+ Premium'
   };
   
