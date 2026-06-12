@@ -537,13 +537,22 @@ document.addEventListener("DOMContentLoaded", () => {
       paymentPollingInterval = setInterval(async () => {
         const statusData = await checkPaymentStatus(currentTransactionId);
         
-        if (statusData && statusData.status === 'approved' && !purchaseEventFired) {
+        const purchaseKey = `purchase_${currentTransactionId}`;
+        if (statusData && statusData.status === 'approved' && !purchaseEventFired && !localStorage.getItem(purchaseKey)) {
           purchaseEventFired = true;
+          localStorage.setItem(purchaseKey, 'true');
           clearInterval(paymentPollingInterval);
           paymentPollingInterval = null;
           
           // Disparar evento de compra via UTMify
-          if (typeof window.utmify !== 'undefined') {
+          if (typeof window.utmf !== 'undefined' && Array.isArray(window.utmf)) {
+            window.utmf.push(['track', 'purchase', {
+              value: (PIX_CONFIG.AMOUNT_CENTS / 100).toFixed(2),
+              currency: 'BRL',
+              transaction_id: currentTransactionId
+            }]);
+            console.log('UTMify: Evento Purchase disparado com sucesso (window.utmf.push)');
+          } else if (typeof window.utmify !== 'undefined') {
             if (typeof window.utmify.track === 'function') {
               window.utmify.track('purchase', {
                 value: (PIX_CONFIG.AMOUNT_CENTS / 100).toFixed(2),
