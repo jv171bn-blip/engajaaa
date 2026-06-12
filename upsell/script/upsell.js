@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let paymentPollingInterval = null;
   let expirationTimerInterval = null;
   let expirationTimeLeft = 0; // segundos
+  let purchaseEventFired = false; // Flag para evitar disparar evento mais de uma vez
   
   // SRCs originais das imagens
   const ORIGINAL_BANNER_SRC = '../assets/img/7bf7b808-14b7-441d-939e-f0c8023f741f.png';
@@ -542,9 +543,33 @@ document.addEventListener("DOMContentLoaded", () => {
       paymentPollingInterval = setInterval(async () => {
         const statusData = await checkPaymentStatus(currentTransactionId);
         
-        if (statusData && statusData.status === 'approved') {
+        if (statusData && statusData.status === 'approved' && !purchaseEventFired) {
+          purchaseEventFired = true;
           clearInterval(paymentPollingInterval);
           paymentPollingInterval = null;
+          
+          // Disparar evento de compra via UTMify
+          if (typeof window.utmify !== 'undefined') {
+            if (typeof window.utmify.track === 'function') {
+              window.utmify.track('purchase', {
+                value: (PIX_CONFIG.AMOUNT_CENTS / 100).toFixed(2),
+                currency: 'BRL',
+                transaction_id: currentTransactionId
+              });
+              console.log('UTMify: Evento Purchase disparado com sucesso (window.utmify.track)');
+            } else if (typeof window.utmify === 'function') {
+              window.utmify('track', 'purchase', {
+                value: (PIX_CONFIG.AMOUNT_CENTS / 100).toFixed(2),
+                currency: 'BRL',
+                transaction_id: currentTransactionId
+              });
+              console.log('UTMify: Evento Purchase disparado com sucesso (window.utmify())');
+            } else {
+              console.warn('UTMify está carregado, mas a função de track não foi encontrada');
+            }
+          } else {
+            console.warn('UTMify não está disponível para disparar evento Purchase');
+          }
           
           // Redirecionar para a página principal ou agradecimento
           navigateTo('../');
