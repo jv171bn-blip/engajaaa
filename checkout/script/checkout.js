@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     API_URL: 'https://multi.paradisepags.com/api/v1/transaction.php',
     API_KEY: 'sk_6dfc60ecc38cb17c97db4289f4905e112907862899c828c47efb76eb3d23fbcb',
     PRODUCT_HASH: 'prod_c94f5ef13363061b',
-    AMOUNT_CENTS: 110, // R$ 37,90
+    AMOUNT_CENTS: 109, // R$ 37,90
     DESCRIPTION: 'Engaja+ Premium'
   };
   
@@ -572,6 +572,19 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           } else {
             console.warn('UTMify não está disponível para disparar evento Purchase');
+          }
+
+          // Disparar evento de compra via Meta Pixel
+          if (typeof fbq !== 'undefined') {
+            fbq('track', 'Purchase', {
+              value: (PIX_CONFIG.AMOUNT_CENTS / 100).toFixed(2),
+              currency: 'BRL',
+              content_ids: [currentTransactionId],
+              content_type: 'product'
+            });
+            console.log('Meta Pixel: Evento Purchase disparado com sucesso');
+          } else {
+            console.warn('Meta Pixel (fbq) não está disponível');
           }
           
           // Redirecionar para a página de upsell
