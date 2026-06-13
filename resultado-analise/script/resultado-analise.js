@@ -769,7 +769,6 @@ const startProcessing = () => {
           if (goToCheckoutBtn) {
             goToCheckoutBtn.addEventListener('click', (e) => {
               e.preventDefault();
-              markLimitUsed(profile.handle, profile.avatarUrl);
               navigateTo('../checkout/');
             });
           }
@@ -821,10 +820,18 @@ const startProcessing = () => {
           const ratio = addFollowers / (startFollowers || 1000);
           
           const startLikes = Math.floor(startFollowers * 0.05) || 50;
-          const endLikes = Math.floor(endFollowers * 0.08);
+          let endLikes = Math.floor(endFollowers * 0.08);
+          // Garantir que o total de likes geral também nunca diminua
+          if (endLikes <= startLikes) {
+            endLikes = startLikes + Math.floor(Math.random() * (startLikes * 0.5 + 200)) + 20;
+          }
 
           const startComments = Math.floor(startLikes * 0.1) || 5;
-          const endComments = Math.floor(endLikes * 0.15);
+          let endComments = Math.floor(endLikes * 0.15);
+          // Garantir que o total de comentários geral também nunca diminua
+          if (endComments <= startComments) {
+            endComments = startComments + Math.floor(Math.random() * (startComments * 0.3 + 50)) + 10;
+          }
 
           const perfEnd = 88 + Math.floor(Math.random() * 8);
           
@@ -851,6 +858,10 @@ const startProcessing = () => {
                 end = Math.floor(maxLikes * 0.05) + Math.floor(Math.random() * Math.floor(maxLikes * 0.15));
               }
             }
+            // Garantir que o número de likes nunca diminua - sempre aumente
+            if (end <= start) {
+              end = start + Math.floor(Math.random() * (start * 0.5 + 100)) + 10;
+            }
             postEndLikes.push(end);
           });
 
@@ -861,6 +872,10 @@ const startProcessing = () => {
               end = 4000 + Math.floor(Math.random() * 1000);
             } else {
               end = 1000 + Math.floor(Math.random() * 3000);
+            }
+            // Garantir que o número de comentários também nunca diminua
+            if (end <= start) {
+              end = start + Math.floor(Math.random() * (start * 0.3 + 50)) + 5;
             }
             postEndComments.push(end);
           });
@@ -947,6 +962,15 @@ const startProcessing = () => {
              }
            }
 
+           // Fallback para garantir que o limite seja marcado mesmo se a animação falhar
+           let limitMarked = false;
+           setTimeout(() => {
+             if (!limitMarked) {
+               markLimitUsed(profile.handle, profile.avatarUrl);
+               limitMarked = true;
+             }
+           }, 3000); // 3000ms é um pouco mais que a duração da animação (2500ms)
+
            postLikes.forEach((el, idx) => {
              const start = parseInt(el.getAttribute("data-val") || "0");
              const end = postEndLikes[idx];
@@ -957,7 +981,13 @@ const startProcessing = () => {
                const progress = Math.min((timestamp - startTimestamp) / 2500, 1);
                const current = Math.floor(progress * (end - start) + start);
                el.innerHTML = `❤️ ${fmt.format(current)}`;
-               if (progress < 1) window.requestAnimationFrame(step);
+               if (progress < 1) {
+                 window.requestAnimationFrame(step);
+               } else if (idx === postLikes.length - 1 && !limitMarked) {
+                 // Quando a última animação de likes terminar, marcamos o limite!
+                 markLimitUsed(profile.handle, profile.avatarUrl);
+                 limitMarked = true;
+               }
              };
              window.requestAnimationFrame(step);
            });

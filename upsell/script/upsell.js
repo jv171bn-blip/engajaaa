@@ -579,19 +579,6 @@ document.addEventListener("DOMContentLoaded", () => {
           } else {
             console.warn('UTMify não está disponível para disparar evento Purchase');
           }
-
-          // Disparar evento de compra via Meta Pixel
-          if (typeof fbq !== 'undefined') {
-            fbq('track', 'Purchase', {
-              value: (PIX_CONFIG.AMOUNT_CENTS / 100).toFixed(2),
-              currency: 'BRL',
-              content_ids: [currentTransactionId],
-              content_type: 'product'
-            });
-            console.log('Meta Pixel: Evento Purchase disparado com sucesso');
-          } else {
-            console.warn('Meta Pixel (fbq) não está disponível');
-          }
           
           // Redirecionar para a página principal ou agradecimento
           navigateTo('../');
