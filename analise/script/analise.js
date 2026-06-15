@@ -1,5 +1,5 @@
     (() => {
-      const ACTOR_ID = "coderx/instagram-profile-scraper-api";
+      const ACTOR_ID = "vulnv/instagram-profile-scraper";
       const API_BASE = "https://api.apify.com/v2";
       const APIFY_TOKEN = "apify_api_AIgFMgZHgVcH3PAO8PV1kw3Zyam1oO0CKnYP";
 
@@ -14,11 +14,12 @@
 
       const runActor = async (usernames) => {
         if (!APIFY_TOKEN) throw new Error("missing_token");
+        const urls = usernames.map(u => `https://www.instagram.com/${u}/`);
         const url = `${API_BASE}/acts/${encodeURIComponent(ACTOR_ID)}/runs?token=${encodeURIComponent(APIFY_TOKEN)}&waitForFinish=120`;
         const run = await requestJson(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ usernames })
+          body: JSON.stringify({ urls })
         });
         return run.data || run;
       };
@@ -42,142 +43,87 @@
 
       const buildProxyUrl = (url) => {
         if (!url) return "";
-        const cleanUrl = String(url).replace(/^\/\//, "https://");
-        return `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}`;
+        let cleanUrl = String(url).trim();
+        // Remover backticks (`), espaços e aspas no início e fim
+        cleanUrl = cleanUrl.replace(/^[\s`"']+|[\s`"']+$/g, "");
+        // Garantir que comece com https://
+        if (cleanUrl.startsWith("//")) {
+          cleanUrl = "https:" + cleanUrl;
+        } else if (cleanUrl.startsWith("http://")) {
+          cleanUrl = cleanUrl.replace("http://", "https://");
+        } else if (!cleanUrl.startsWith("https://")) {
+          cleanUrl = "https://" + cleanUrl;
+        }
+        console.log("URL limpa:", cleanUrl);
+        // Usar proxy para contornar CORS
+        const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}&default=redirect&output=jpg`;
+        console.log("URL com proxy:", proxyUrl);
+        return proxyUrl;
       };
 
       const mapProfile = async (item, fallbackHandle) => {
-        const base = item || {};
-        const user = base.user || base.owner || base.profile || {};
-        const handle = String(pickValue(base.username, base.userName, base.handle, user.username, user.userName, user.handle, fallbackHandle, "usuario"))
-          .replace(/^@+/, "")
-          .toLowerCase();
-        const name = pickValue(base.fullName, base.name, base.full_name, user.fullName, user.name, user.full_name, "");
-        const bio = pickValue(base.biography, base.bio, base.biografia, user.biography, user.bio, user.biografia, "");
-        const followers = pickValue(
-          base.followersCount,
-          base.followers,
-          base.followers_count,
-          base.followerCount,
-          base.followedByCount,
-          base.edge_followed_by?.count,
-          base.edgeFollowedBy?.count,
-          user.followersCount,
-          user.followers,
-          user.followers_count,
-          user.edge_followed_by?.count,
-          user.edgeFollowedBy?.count
-        );
-        const following = pickValue(
-          base.followingCount,
-          base.following,
-          base.following_count,
-          base.followsCount,
-          base.follows,
-          base.edge_follow?.count,
-          base.edgeFollow?.count,
-          user.followingCount,
-          user.following,
-          user.following_count,
-          user.edge_follow?.count,
-          user.edgeFollow?.count
-        );
-        const posts = pickValue(base.postsCount, base.posts, base.posts_count, base.mediaCount, base.media_count, user.postsCount, user.posts, user.posts_count);
-        let isPrivate = pickValue(base.isPrivate, base.is_private, base.private, user.isPrivate, user.is_private, user.private, false);
-        const avatarRaw = pickValue(
-          base.profilePicUrlHd,
-          base.profilePicUrlHD,
-          base.profilePicUrl,
-          base.profile_pic_url_hd,
-          base.profile_pic_url,
-          base.profile_picture,
-          base.profilePic,
-          base.profileImage,
-          base.profile_image,
-          base.profileImageUrl,
-          base.profile_image_url,
-          base.avatarUrl,
-          base.avatar_url,
-          base.imageUrl,
-          base.image_url,
-          user.profilePicUrlHd,
-          user.profilePicUrlHD,
-          user.profilePicUrl,
-          user.profile_pic_url_hd,
-          user.profile_pic_url,
-          user.profile_picture,
-          user.profilePic,
-          user.profileImage,
-          user.profile_image,
-          user.profileImageUrl,
-          user.profile_image_url,
-          user.avatarUrl,
-          user.avatar_url,
-          user.imageUrl,
-          user.image_url,
-          ""
-        );
-        const avatarUrl = buildProxyUrl(avatarRaw);
-        const rawPosts = item.latestPosts || item.posts || item.postsList || item.latestMedia || item.edge_owner_to_timeline_media?.edges || [];
+        console.log("Dados recebidos do actor:", item); // Para debug
+        
+        // Verificar se o item é um array (se o actor retorna um array de perfis?)
+        let profileData = Array.isArray(item) && item.length > 0 ? item[0] : item;
+        
+        if (Array.isArray(profileData) && profileData.length > 0) {
+            profileData = profileData[0];
+        }
+
+        // Extrair campos diretamente do actor "vulnv/instagram-profile-scraper"
+        const account = profileData?.account || fallbackHandle;
+        const handle = String(account || fallbackHandle || "usuario").replace(/^@+/, "").toLowerCase();
+        const name = profileData?.full_name || profileData?.profile_name || handle;
+        const bio = profileData?.biography || "";
+        
+        const followers = profileData?.followers;
+        const following = profileData?.following;
+        const totalPosts = profileData?.posts_count;
+        const isPrivate = !!profileData?.is_private;
+        const avatarRaw = profileData?.profile_image_link;
+        
+        let avatarUrl = "";
+        if (avatarRaw) {
+          avatarUrl = buildProxyUrl(avatarRaw);
+        }
+        
+        const engagementRate = profileData?.avg_engagement;
+        
+        // Processar posts
+        const rawPosts = profileData?.posts || [];
         const postsList = Array.isArray(rawPosts)
           ? rawPosts
               .map((post) => {
-                const p = post || {};
-                const likes = [
-                  p.likesCount,
-                  p.likes,
-                  p.likeCount,
-                  p.edge_media_preview_like?.count,
-                  p.edge_liked_by?.count,
-                  p.edgeLikedBy?.count,
-                  p.node?.edge_media_preview_like?.count,
-                  p.node?.edge_liked_by?.count,
-                  p.node?.edge_media_preview_like?.count
-                ].find(v => v !== undefined && v !== null && v !== "" && v !== 0) ?? 0;
-
-                const comments = [
-                  p.commentsCount,
-                  p.comments,
-                  p.commentCount,
-                  p.edge_media_to_comment?.count,
-                  p.edgeMediaToComment?.count,
-                  p.node?.edge_media_to_comment?.count,
-                  p.node?.edge_media_to_comment?.count
-                ].find(v => v !== undefined && v !== null && v !== "" && v !== 0) ?? 0;
-
-                const image = pickValue(
-                  p.image,
-                  p.imageUrl,
-                  p.thumbnailUrl,
-                  p.displayUrl,
-                  p.thumbnail_src,
-                  p.node?.display_url,
-                  p.node?.thumbnail_src,
-                  p.node?.thumbnail_resources?.[0]?.src
-                );
-
+                console.log("Processando post:", post); // Para debug
+                const likes = post?.likes || 0;
+                const comments = post?.comments || 0;
+                const image = post?.image_url || "";
+                
+                const postImageUrl = image ? buildProxyUrl(image) : "";
+                console.log("Post image URL:", postImageUrl);
+                
                 return {
-                  image: buildProxyUrl(image),
+                  image: postImageUrl,
                   likes: getNumber(likes) || 0,
                   comments: getNumber(comments) || 0
                 };
               })
               .filter((post) => post.image)
+              .slice(0, 12)
           : [];
 
-        if (!isPrivate && getNumber(posts) > 0 && postsList.length === 0) {
-          isPrivate = true;
-        }
-
-        const engagementRate = item.engagementRate ?? item.engagement_rate ?? null;
+        console.log("Posts processados:", postsList); // Para debug
+        console.log("Dados do perfil:", { handle, name, bio, followers, following, totalPosts, isPrivate, avatarUrl, engagementRate, postsList });
+        
         return {
           handle,
           name,
           bio,
           followers: getNumber(followers),
           following: getNumber(following),
-          posts: getNumber(posts),
-          isPrivate: !!isPrivate,
+          posts: getNumber(totalPosts),
+          isPrivate: isPrivate,
           avatarUrl,
           postsList,
           engagementRate

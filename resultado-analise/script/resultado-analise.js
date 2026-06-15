@@ -163,6 +163,7 @@ const ctaHandle = byId("ctaHandle");
 const loadMoreBtn = byId("loadMoreBtn");
 
 if (profileAvatar) {
+  console.log("Resultado - profile.avatarUrl:", profile.avatarUrl);
   if (profile.avatarUrl) {
     profileAvatar.style.backgroundImage = `url("${profile.avatarUrl}")`;
   } else if (profile.avatarBg) {
