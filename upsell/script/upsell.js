@@ -71,6 +71,65 @@ const generateUniqueReference = () => {
   return `ENG-PROT-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 };
 
+// Função para coletar dados de tracking da UTMify
+function getUtmifyData() {
+  const utmifyRaw = localStorage.getItem("__utmify_utm");
+  let utmifyData = {};
+
+  try {
+    if (utmifyRaw) {
+      utmifyData = JSON.parse(utmifyRaw);
+    }
+  } catch (e) {
+    console.warn("Erro ao parsear __utmify_utm", e);
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+
+  return {
+    utm_source:
+      utmifyData.utm_source ||
+      urlParams.get("utm_source") ||
+      localStorage.getItem("utm_source") ||
+      "",
+    utm_medium:
+      utmifyData.utm_medium ||
+      urlParams.get("utm_medium") ||
+      localStorage.getItem("utm_medium") ||
+      "",
+    utm_campaign:
+      utmifyData.utm_campaign ||
+      urlParams.get("utm_campaign") ||
+      localStorage.getItem("utm_campaign") ||
+      "",
+    utm_content:
+      utmifyData.utm_content ||
+      urlParams.get("utm_content") ||
+      localStorage.getItem("utm_content") ||
+      "",
+    utm_term:
+      utmifyData.utm_term ||
+      urlParams.get("utm_term") ||
+      localStorage.getItem("utm_term") ||
+      "",
+    src:
+      utmifyData.src ||
+      urlParams.get("src") ||
+      localStorage.getItem("src") ||
+      "",
+    sck:
+      utmifyData.sck ||
+      urlParams.get("sck") ||
+      localStorage.getItem("sck") ||
+      "",
+    fbclid:
+      utmifyData.fbclid ||
+      urlParams.get("fbclid") ||
+      localStorage.getItem("fbclid") ||
+      ""
+  };
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const profile = JSON.parse(sessionStorage.getItem("engajaProfile") || localStorage.getItem("engajaProfileSnapshot") || "{}");
   
@@ -450,6 +509,9 @@ document.addEventListener("DOMContentLoaded", () => {
     btnGeneratePix.style.pointerEvents = "none";
 
     try {
+      // Coletar dados de tracking
+      const trackingData = getUtmifyData();
+      
       // Criar payload da transação
       const payload = {
         amount: PIX_CONFIG.AMOUNT_CENTS,
@@ -461,7 +523,16 @@ document.addEventListener("DOMContentLoaded", () => {
           email: email,
           phone: cleanPhone,
           document: cpf
-        }
+        },
+        tracking: trackingData,
+        utm_source: trackingData.utm_source,
+        utm_medium: trackingData.utm_medium,
+        utm_campaign: trackingData.utm_campaign,
+        utm_content: trackingData.utm_content,
+        utm_term: trackingData.utm_term,
+        src: trackingData.src,
+        sck: trackingData.sck,
+        fbclid: trackingData.fbclid
       };
 
       // Chamar API para criar transação
@@ -547,6 +618,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (statusData && statusData.status === 'approved' && !purchaseEventFired && !localStorage.getItem(purchaseKey)) {
           purchaseEventFired = true;
           localStorage.setItem(purchaseKey, 'true');
+          localStorage.setItem('engaja_upsell_paid', 'true');
           clearInterval(paymentPollingInterval);
           paymentPollingInterval = null;
           
