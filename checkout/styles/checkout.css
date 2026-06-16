@@ -639,6 +639,95 @@ body {
   padding: 0 10%;
 }
 
+.plans-header-text .section-subtitle {
+  font-size: 32px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, #ef4444 0%, #fbbf24 50%, #ef4444 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  text-align: center;
+  animation: pulse-urgent 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));
+  -webkit-text-stroke: 2px #ef4444;
+}
+
+@keyframes pulse-urgent {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
+  }
+}
+
+.countdown-container {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 20px;
+  max-width: 449px;
+  height: 164px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.countdown-badge {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fca5a5;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.countdown-timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.countdown-value {
+  font-size: 36px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-label {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.countdown-separator {
+  font-size: 32px;
+  font-weight: 900;
+  color: #ef4444;
+  margin-top: -8px;
+}
+
 section#planos > div.plans-header-text > h2.section-title {
   margin-bottom: 10px;
   font-size: clamp(30px, 4.8vw, 44px);
@@ -2682,7 +2771,7 @@ body.modal-open {
 }
 
 .dashboard-preview-frame {
-  max-width: 1080px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 14px;
   border-radius: 28px;
@@ -3528,5 +3617,28 @@ section.hero-checkout > div.stats-preview-container > div.single-profile-wrapper
   
   .success-features-list li {
     font-size: 14px;
+  }
+
+  .countdown-container {
+    padding: 16px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .countdown-value {
+    font-size: 28px;
+  }
+
+  .countdown-label {
+    font-size: 10px;
+  }
+
+  .countdown-separator {
+    font-size: 24px;
+  }
+
+  .plans-header-text .section-subtitle {
+    font-size: 20px;
+    letter-spacing: 0.1em;
   }
 }

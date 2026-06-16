@@ -64,6 +64,56 @@ document.addEventListener("DOMContentLoaded", () => {
   let expirationTimerInterval = null;
   let expirationTimeLeft = 0; // segundos
   let purchaseEventFired = false; // Flag para evitar disparar evento mais de uma vez
+
+  // Temporizador de oferta limitada (15 minutos = 900 segundos)
+  const startOfferCountdown = () => {
+    // Verificar se já temos um tempo armazenado no localStorage
+    let endTime = localStorage.getItem('engajaOfferEndTime');
+    
+    if (!endTime) {
+      // Se não existir, criar novo tempo de término (agora + 15 minutos)
+      endTime = Date.now() + (15 * 60 * 1000);
+      localStorage.setItem('engajaOfferEndTime', endTime);
+    } else {
+      endTime = parseInt(endTime);
+      // Se o tempo já expirou, reiniciar para 15 minutos
+      if (Date.now() > endTime) {
+        endTime = Date.now() + (15 * 60 * 1000);
+        localStorage.setItem('engajaOfferEndTime', endTime);
+      }
+    }
+
+    const updateCountdown = () => {
+      const now = Date.now();
+      const timeLeft = Math.max(0, endTime - now);
+      
+      const minutes = Math.floor(timeLeft / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+      
+      const minutesEl = document.getElementById('countdown-minutes');
+      const secondsEl = document.getElementById('countdown-seconds');
+      
+      if (minutesEl) {
+        minutesEl.textContent = minutes.toString().padStart(2, '0');
+      }
+      
+      if (secondsEl) {
+        secondsEl.textContent = seconds.toString().padStart(2, '0');
+      }
+      
+      if (timeLeft <= 0) {
+        // Se o tempo expirou, reiniciar para mais 15 minutos
+        endTime = Date.now() + (15 * 60 * 1000);
+        localStorage.setItem('engajaOfferEndTime', endTime);
+      }
+    };
+
+    // Atualizar imediatamente e depois a cada segundo
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  };
+
+  startOfferCountdown();
   
   // SRCs originais das imagens
   const ORIGINAL_BANNER_SRC = '../assets/img/7bf7b808-14b7-441d-939e-f0c8023f741f.png';
