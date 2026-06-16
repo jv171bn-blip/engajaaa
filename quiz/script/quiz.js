@@ -53,7 +53,7 @@ const buildProfile = (handle) => {
   };
 };
 
-const steps = Array.from({ length: 5 }, (_, i) => ({ id: i }));
+const steps = Array.from({ length: 3 }, (_, i) => ({ id: i }));
 
 const questionBlocks = [
   {
@@ -63,14 +63,6 @@ const questionBlocks = [
   {
     title: "Você sente que está ficando para trás no Instagram?",
     prompt: "Selecione a opção que mais representa seu perfil agora."
-  },
-  {
-    title: "Se o algoritmo voltasse a impulsionar seu perfil, o que você faria com esse crescimento?",
-    prompt: "Qual seria seu principal objetivo com esse crescimento?"
-  },
-  {
-    title: "Você já tentou fazer seu perfil crescer mas nada funcionou?",
-    prompt: "O que você já tentou para fazer seu perfil crescer?"
   },
   {
     title: "Se existisse uma forma segura de reativar o engajamento do seu perfil, você testaria?",
@@ -92,18 +84,6 @@ const optionSets = [
     { icon: "🤐", title: "Já pensei em desistir várias vezes", lines: ["Cansa produzir e não ver retorno."] }
   ],
   [
-    { icon: "💰", title: "Monetizar meu perfil", lines: ["Vendas, parcerias, autoridade."] },
-    { icon: "🚀", title: "Crescer seguidores de forma consistente", lines: ["Quero ver meu perfil evoluindo todo mês."] },
-    { icon: "🔥", title: "Virar referência no meu nicho", lines: ["Quero que meu nome tenha peso."] },
-    { icon: "🏆", title: "Provar que meu conteúdo funciona", lines: ["Mostrar que consigo crescer de verdade."] }
-  ],
-  [
-    { icon: "🧠", title: "Já testei estratégias diferentes", lines: ["Mudei horários, formato, hashtags… e nada mudou de verdade."] },
-    { icon: "📚", title: "Já comprei curso ou mentoria", lines: ["Aprendi técnicas, mas o alcance não voltou como antes."] },
-    { icon: "🎥", title: "Tentei melhorar o conteúdo", lines: ["Caprichei mais nos posts, mas o engajamento continuou fraco."] },
-    { icon: "🤷", title: "Nunca soube exatamente o que ajustar", lines: ["Sinto que estou tentando no escuro."] }
-  ],
-  [
     { icon: "🚀", title: "Sim, se for algo automatizado", lines: ["Quero algo que atue no perfil sem depender só de mim."] },
     { icon: "🔥", title: "Sim, se realmente acelerar o engajamento", lines: ["Preciso que o algoritmo volte a responder."] },
     { icon: "🧠", title: "Sim, desde que seja seguro e discreto", lines: ["Não quero arriscar meu perfil."] },
@@ -114,8 +94,6 @@ const optionSets = [
 const statusMessages = [
   "Selecione o que mais representa seu perfil agora",
   "Selecione o que mais representa seu perfil agora",
-  "Selecione seu principal objetivo no Instagram",
-  "Selecione o que você já tentou",
   "Selecione uma opção"
 ];
 
@@ -310,9 +288,6 @@ const calculateQuizRates = () => {
   
   const q2Weights = [6, 5, 8, 12];
   current -= q2Weights[sel[1]] || 4;
-  
-  const q4Weights = [3, 5, 4, 6];
-  current -= q4Weights[sel[3]] || 3;
   
   current += (rand() * 4 - 2);
 
