@@ -318,17 +318,9 @@ const showResult = () => {
 
 if (btnStart) {
   btnStart.addEventListener("click", () => {
-    if (startWrap) startWrap.style.display = "none";
-    if (stepWrap) stepWrap.style.display = "grid";
-    const progressEl = byId("progress");
-    if (progressEl) progressEl.style.display = "";
-    const header = byId("quizIntroHeader");
-    if (header) {
-      header.classList.add("hidden");
-      header.style.display = "none";
-    }
-    animateStep("in");
-    renderStep();
+    // Vamos direto para a análise, pulando o quiz
+    const dest = "../analise/";
+    navigateTo(dest);
   });
 }
 

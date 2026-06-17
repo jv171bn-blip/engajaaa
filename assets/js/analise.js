@@ -393,16 +393,16 @@ const startAnalysis = () => {
     ctaEl.href = `../resultado-analise/?username=${encodeURIComponent(clean)}`;
   }
   const logs = [
-    { t: 200, text: `✓ Conectando ao perfil ${handleText}`, type: "ok", status: () => { if (statusConnection) statusConnection.textContent = "ESTÁVEL"; } },
-    { t: 900, text: "✓ Coletando dados públicos", type: "ok", status: () => { if (statusData) statusData.textContent = "OK"; } },
-    { t: 1700, text: "✓ Identificando posts recentes", type: "ok" },
-    { t: 2600, text: "✓ Calculando média de curtidas", type: "ok" },
-    { t: 3400, text: "✓ Calculando média de comentários", type: "ok" },
-    { t: 4300, text: "✓ Estimando taxa de engajamento", type: "ok" },
-    { t: 5600, text: "✓ Comparando com perfis semelhantes", type: "ok" },
-    { t: 7100, text: "✓ Detectando padrões de alcance", type: "ok" },
-    { t: 8600, text: "⚠ Analisando possíveis restrições...", type: "warn" },
-    { t: 12600, text: "⚠ RESTRIÇÃO ENCONTRADA...", type: "error", status: () => { if (statusEngagement) { statusEngagement.textContent = "CRÍTICO"; statusEngagement.classList.add("is-critical"); } } }
+    { t: 100, text: `✓ Conectando ao perfil ${handleText}`, type: "ok", status: () => { if (statusConnection) statusConnection.textContent = "ESTÁVEL"; } },
+    { t: 450, text: "✓ Coletando dados públicos", type: "ok", status: () => { if (statusData) statusData.textContent = "OK"; } },
+    { t: 850, text: "✓ Identificando posts recentes", type: "ok" },
+    { t: 1300, text: "✓ Calculando média de curtidas", type: "ok" },
+    { t: 1700, text: "✓ Calculando média de comentários", type: "ok" },
+    { t: 2150, text: "✓ Estimando taxa de engajamento", type: "ok" },
+    { t: 2800, text: "✓ Comparando com perfis semelhantes", type: "ok" },
+    { t: 3550, text: "✓ Detectando padrões de alcance", type: "ok" },
+    { t: 4300, text: "⚠ Analisando possíveis restrições...", type: "warn" },
+    { t: 6300, text: "⚠ RESTRIÇÃO ENCONTRADA...", type: "error", status: () => { if (statusEngagement) { statusEngagement.textContent = "CRÍTICO"; statusEngagement.classList.add("is-critical"); } } }
   ];
   logs.forEach((log) => {
     const timer = setTimeout(() => {
@@ -411,7 +411,7 @@ const startAnalysis = () => {
     }, log.t);
     logTimers.push(timer);
   });
-  const totalDuration = 14000;
+  const totalDuration = 7000;
   const startAt = Date.now();
   if (analysisProgressBar) analysisProgressBar.style.width = "0%";
   analysisTimer = setInterval(() => {

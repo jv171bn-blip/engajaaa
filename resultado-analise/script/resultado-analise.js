@@ -531,7 +531,7 @@ const startProcessing = () => {
 
   modal.classList.add("is-active");
 
-  const duration = 8000 + Math.random() * 4000;
+  const duration = 4000 + Math.random() * 2000;
   const startTime = Date.now();
   
   const statusUpdates = profile.isPrivate ? [
