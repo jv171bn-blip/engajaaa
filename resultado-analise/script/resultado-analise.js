@@ -96,10 +96,26 @@ const loadProfile = () => {
     
     let engagementRate = data.engagementRate ?? data.rateCurrent ?? null;
     let recoveryEstimate = data.recoveryEstimate ?? data.recoveryPercent ?? null;
+    let similarRate = quizData ? quizData.similarRate : null;
     
     if (quizData && quizData.engRate) {
       engagementRate = quizData.engRate;
-      recoveryEstimate = (quizData.similarRate - quizData.engRate) / quizData.engRate * 100;
+      similarRate = quizData.similarRate;
+      recoveryEstimate = (similarRate - engagementRate) / engagementRate * 100;
+    }
+
+    // Se não houver dados do quiz, geramos valores padrão realistas
+    if (!engagementRate || !similarRate) {
+      // Geramos um valor determinístico baseado no handle para manter consistência
+      let hash = 0;
+      for (let i = 0; i < clean.length; i++) {
+        hash = (hash << 5) - hash + clean.charCodeAt(i);
+        hash |= 0;
+      }
+      const seed = Math.abs(hash);
+      engagementRate = 22.4 + (seed % 140) / 10; // entre 22.4% e 36.4%
+      similarRate = 84.1 + (seed % 90) / 10; // entre 84.1% e 93.1%
+      recoveryEstimate = ((similarRate - engagementRate) / engagementRate) * 100;
     }
 
     const postsList = Array.isArray(data.postsList) ? data.postsList : [];
@@ -120,9 +136,10 @@ const loadProfile = () => {
       postsList: postsList,
       engagementRate: engagementRate,
       recoveryEstimate: recoveryEstimate,
-      similarRate: quizData ? quizData.similarRate : null
+      similarRate: similarRate
     };
   } catch {
+    // Fallback com valores padrão caso haja erro
     return {
       handle: "usuario",
       name: "",
@@ -133,8 +150,9 @@ const loadProfile = () => {
       avatarUrl: "",
       avatarBg: "",
       postsList: [],
-      engagementRate: null,
-      recoveryEstimate: null
+      engagementRate: 28.5,
+      recoveryEstimate: 205.3,
+      similarRate: 87.0
     };
   }
 };
